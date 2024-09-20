@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import Header from "./Header";
+import Bookmark from "./BookMark";
 
 
 function NavBar() {
@@ -8,6 +10,7 @@ function NavBar() {
     <>
     
           <div >
+            <Header title={"NETFLIX"}/>
             <form >
               <button
                 type="submit"
@@ -19,6 +22,7 @@ function NavBar() {
                 placeholder="Search Movie Name from here"
               />
             </form>
+            <Bookmark/>
           </div>
         
           <div >
