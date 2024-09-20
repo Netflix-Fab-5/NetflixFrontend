@@ -8,13 +8,21 @@ on:
   push:
     branches:
       - main # Detta körs varje gång kod pushas till main
-      - test-2-actions
+      - test-2-actions # Din testbranch
 
 jobs:
   lint_and_prettify:
     runs-on: ubuntu-latest
 
     steps:
+<<<<<<< HEAD
+=======
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+>>>>>>> c7640b4 (try again)
       - name: Checkout code
         uses: actions/checkout@v3
 
