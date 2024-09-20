@@ -1,38 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
+import { MyContext } from '../CONTEXT/Context'; // Importera din context
 
-interface Movie {
-  title: string;
-  year: number;
-  rating: string;
-  actors: string[];
-  genre: string;
-  synopsis: string;
-  thumbnail: string;
-}
+const AllMoviesScreen: React.FC = () => {
+  // Använd context för att få tillgång till data
+  const context = useContext(MyContext);
 
-const AllMoviesScreen = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // Kontrollera om context är undefined (det bör inte vara det om provider är korrekt omgiven)
+  if (context === undefined) {
+    throw new Error('AllMoviesScreen must be used within a MyContextProvider');
+  }
 
-  // Fetch all movies from the API using Axios
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/movies');
-        setMovies(response.data); // Sätter filmerna från servern
-        setLoading(false); // Slutar visa laddning
-      } catch (err: any) {
-        setError(err.message || 'Något gick fel vid hämtning av data'); // Hanterar fel
-        setLoading(false);
-      }
-    };
+  // Destrukturera context-värdet
+  const { movies, loading, error } = context;
 
-    fetchMovies();
-  }, []);
-
-  // Renderingen av komponenten
   return (
     <div style={{ padding: '20px' }}>
       <h1>Alla Filmer</h1>
