@@ -1,34 +1,30 @@
-name: Continuous Integration
+name: Prettier and ESLint Check
 
-# This action works with pull requests and pushes
+# This action works with pull requests to main and optional pushes
 on:
   pull_request:
     branches:
-      - main
+      - main # Detta körs när någon öppnar eller uppdaterar en PR till main
+  push:
+    branches:
+      - main # Detta körs varje gång kod pushas till main
+      - test-2-actions
 
 jobs:
-  lint_and_prettier:
+  lint_and_prettify:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: install dep
-        run: npm ci
-        
-      - name: run Eslint
-        run: npm run lint
-        continue-on-error: false
+      - name: Install dependencies
+        run: npm ci # Snabbare än npm install för CI-miljö
 
-      - name: check code Prettier
-        run: npm run format
-        # with:
-        #   # Make sure the actual branch is checked out when running on pull requests
-     
-        
+      # Kör ESLint och fixa automatiskt problem
+      - name: Run ESLint with fix
+        run: npm run lint -- --fix # ESLint med --fix för att automatiskt fixa problem
 
-    #   - name: Prettify code
-    #     uses: creyD/prettier_action@v4.3
-    #     with:
-    #       prettier_options: --write "*/.{tsx,js,ts,md,json,css,html}"
+      # Kör Prettier och formatera automatiskt kod
+      - name: Run Prettier
+        run: npm run format # Kör Prettier med --write för att fixa formateringen
