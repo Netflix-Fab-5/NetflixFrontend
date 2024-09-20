@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+   "lint": "eslint 'src//*.{js,ts,jsx,tsx}'",
     "preview": "vite preview",
-    "format": "prettier --write ."
+    "format": "prettier --write '*/.{js,ts,jsx,tsx,json,css,html}'",
+      "prettier:check": "prettier --check '/*.{js,ts,jsx,tsx,json,css,html}'"
+
   },
   "dependencies": {
     "react": "^18.3.1",

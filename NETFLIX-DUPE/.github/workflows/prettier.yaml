@@ -3,22 +3,32 @@ name: Continuous Integration
 # This action works with pull requests and pushes
 on:
   pull_request:
-  push:
     branches:
       - main
 
 jobs:
-  prettier:
+  lint_and_prettier:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
-        with:
-          prettier_options: --write "*/.{tsx,js,ts,md,json,css,html}"
+      - name: install dep
+        run: npm ci
+        
+      - name: run Eslint
+        run: npm run lint
+        continue-on-error: false
+
+      - name: check code Prettier
+        run: npm run format
+        # with:
+        #   # Make sure the actual branch is checked out when running on pull requests
+     
+        
+
+    #   - name: Prettify code
+    #     uses: creyD/prettier_action@v4.3
+    #     with:
+    #       prettier_options: --write "*/.{tsx,js,ts,md,json,css,html}"
