@@ -15,24 +15,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-<<<<<<< HEAD
-=======
       - name: Set up Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
->>>>>>> c7640b4 (try again)
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm ci # Snabbare än npm install för CI-miljö
+        run: npm ci
 
-      # Kör ESLint och fixa automatiskt problem
       - name: Run ESLint with fix
-        run: npm run lint -- --fix # ESLint med --fix för att automatiskt fixa problem
+        run: npm run lint -- --fix
 
-      # Kör Prettier och formatera automatiskt kod
       - name: Run Prettier
-        run: npm run format # Kör Prettier med --write för att fixa formateringen
+        run: npm run format
