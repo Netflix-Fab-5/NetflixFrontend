@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Bookmark = () => {
+const BookmarkButton = () => {
   return (
     <Link
       to="/favorites" // Länkar till sidan med dina favoritfilmer
@@ -27,4 +27,4 @@ const Bookmark = () => {
   );
 };
 
-export default Bookmark;
+export default BookmarkButton;
