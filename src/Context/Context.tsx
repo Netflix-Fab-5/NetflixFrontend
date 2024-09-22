@@ -10,6 +10,7 @@ interface Movie {
   genre: string;
   synopsis: string;
   thumbnail: string;
+  isTrending: boolean;
 }
 
 // Definiera typ för Context-värdet

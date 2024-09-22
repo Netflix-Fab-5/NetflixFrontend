@@ -1,0 +1,109 @@
+.carousel-container {
+    position: relative;
+    width: 80%; /* Minskar bredden något för att centrera karusellen */
+    margin: 0 auto; /* Centrera karusellen */
+    overflow: hidden;
+    
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+   
+}
+
+.carousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+   
+}
+
+.carousel-item {
+    min-width: 200px; /* Minskar storleken på korten med 20% */
+    margin: 10px;
+    flex-shrink: 0;
+    text-align: center;
+    border: none; /* Ingen kantlinje för renare utseende */
+    padding: 15px;
+    background-color: #f8f9fa; /* Lätt bakgrundsfärg för kort */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lägg till en lätt skugga */
+    transition: transform 0.3s ease;
+    height: 450px; /* Sätter en fast höjd för alla kort */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.carousel-item:hover {
+    transform: scale(1.05); /* Lite zoom-effekt vid hover */
+}
+
+.carousel-image {
+    width: 100%; /* Behåller full bredd inom item */
+    height: 280px; /* Minskar bildhöjden med cirka 20% */
+    object-fit: cover; /* Ser till att bilder inte förvrängs */
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.carousel-item h3,
+.carousel-item p {
+    margin: 5px 0; /* Minskar marginalen mellan titeln och texten */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Förhindrar att text breder ut sig för mycket */
+    
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 50%; /* Rundare knappar */
+    font-size: 18px; /* Större fontstorlek för knapparna */
+    z-index: 1; /* Sätter knapparna framför karusellen */
+    transition: background-color 0.3s ease;
+}
+
+.left-btn {
+    left: 10px; /* Justera avstånd till vänster kant */
+}
+
+.right-btn {
+    right: 10px; /* Justera avstånd till höger kant */
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Mörkare vid hover */
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        min-width: 160px; /* Minska bredden på korten ännu mer för mindre skärmar */
+        height: 350px; /* Anpassar höjden för mindre skärmar */
+    }
+
+    .carousel-image {
+        height: 220px; /* Anpassa bildhöjden för mindre skärmar */
+    }
+
+    .carousel-btn {
+        padding: 10px; /* Mindre knappar för små skärmar */
+        font-size: 16px;
+    }
+
+    .left-btn,
+    .right-btn {
+        left: 5px;
+        right: 5px;
+    }
+}
