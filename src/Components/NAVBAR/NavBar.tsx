@@ -1,10 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import Header from "./Header";
-import Bookmark from "./BookMark";
+import BookmarkButton from "./BookMarkButton";
+import MoviesButton from "./AllMoviesButton";
 
 
 function NavBar() {
+ 
   return (
     <>
     
@@ -21,7 +23,8 @@ function NavBar() {
                 placeholder="Search Movie Name from here"
               />
             </form>
-            <Bookmark/>
+            <BookmarkButton/>
+            <MoviesButton/>
           </div>
         
           <div >
