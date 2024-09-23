@@ -23,7 +23,6 @@ function RegisterScreen() {
       username,
       email,
       password,  // In a real-world app, don't store passwords like this!
-      
     };
 
     try {
