@@ -18,9 +18,7 @@ type ContextType = {
   movies: Movie[];
   loading: boolean;
   error: string | null;
-  movies: Movie[];
-  loading: boolean;
-  error: string | null;
+
 };
 
 // Skapa Context
@@ -47,9 +45,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     fetchMovies();
   }, []);
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+
 
   // Fetch all movies from the API using Axios
   useEffect(() => {
@@ -68,7 +64,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <MyContext.Provider value={{ movies, loading, error }}>
+ 
     <MyContext.Provider value={{ movies, loading, error }}>
       {children}
     </MyContext.Provider>
