@@ -69,20 +69,33 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         'https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json',
         newUser
       );
-
-      console.log(response.data); // Detta innehåller det unika Firebase ID:t för den nya användaren
+  
+      const userId = response.data.name; // Detta är det unika ID:t från Firebase
+  
+      // Spara användarens data tillsammans med det genererade ID:t
+      const registeredUser = {
+        id: userId,
+        username: newUser.username, // Kopiera användarens information (username, email, password)
+      };
+  
+      // Logga hela användarobjektet
+      console.log("User registered:", registeredUser);
+  
+      // Spara användaren i localStorage eller sessionStorage
+      // localStorage.setItem('user', JSON.stringify(registeredUser)); // För persistent storage
+      sessionStorage.setItem('user', JSON.stringify(registeredUser)); // För session storage
+  
       setSuccess(true);
       setError(null);
       setIsLoggedIn(true);
-
-      // Omdirigera till startsidan efter registrering
-      navigate('/');
+      navigate("/")
+  
     } catch (err) {
       setError('Failed to register user. Please try again.');
       setSuccess(false);
     }
   };
-
+  
   return (
     <MyContext.Provider value={{ movies, loading, error, isLoggedIn, success, registerUser }}>
       {children}
