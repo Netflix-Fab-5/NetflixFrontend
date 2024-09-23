@@ -24,6 +24,8 @@ type ContextType = {
 // Skapa Context
 const MyContext = createContext<ContextType | undefined>(undefined);
 
+
+
 // Skapa en provider-komponent
 function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Movie[]>([]);

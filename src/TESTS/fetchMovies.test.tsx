@@ -12,6 +12,8 @@ const mockAxios = new MockAdapter(axios);
 // Testdata
 const mockMovies = [
   {
+
+    
     title: 'Movie 1',
     year: 2021,
     rating: 'PG-13',

@@ -10,8 +10,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 const Trending = () => {
+
   const { movies } = useContext(MyContext); // Hämtar filmer från Context
 
+
+  
   // Kontrollera att filmer finns innan vi filtrerar
   const trendingMovies = movies?.filter((movie) => movie.isTrending) || []; 
 
