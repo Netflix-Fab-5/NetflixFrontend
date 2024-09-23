@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { MyContext } from '../CONTEXT/Context'; // Importera din context
+import { MyContext } from '../constants/Context'; // Importera din context
 
 const AllMoviesScreen: React.FC = () => {
   // Använd context för att få tillgång till data
