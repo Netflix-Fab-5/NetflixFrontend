@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 // import Titles from "./../Titles";
 // import {
 //   BsBookmarkStarFill,
@@ -13,14 +12,7 @@ import React, { useState } from "react";
 // import Rating from "../Stars";
 
 function Recommended() {
-
-
-  return (
-    <div>
-        RECOMMENDED
-     
-    </div>
-  );
+  return <div>RECOMMENDED</div>;
 }
 
 export default Recommended;
