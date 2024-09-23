@@ -5,7 +5,6 @@ import Bookmark from "./BookMark";
 
 
 function NavBar() {
- 
   return (
     <>
     
