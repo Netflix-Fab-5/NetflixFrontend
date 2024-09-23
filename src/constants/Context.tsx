@@ -1,6 +1,6 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import  React,{ createContext, useState, ReactNode, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 // Definiera typ för en film
 interface Movie {
@@ -32,7 +32,7 @@ type ContextType = {
 };
 
 // Skapa Context
-const MyContext = createContext<ContextType | undefined>(undefined);
+const MyContext = createContext<ContextType >(null!);
 
 
 
@@ -43,7 +43,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Fetch all movies from the API using Axios
   useEffect(() => {
@@ -88,7 +88,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       setSuccess(true);
       setError(null);
       setIsLoggedIn(true);
-      navigate("/")
+      // navigate("/")
   
     } catch (err) {
       setError('Failed to register user. Please try again.');
