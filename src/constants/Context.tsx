@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Definiera typ för en film
 interface Movie {
@@ -13,12 +14,21 @@ interface Movie {
   isTrending: boolean;
 }
 
+// Definiera typ för användarregistrering och inloggning
+interface User {
+  username: string;
+  email: string;
+  password: string;
+}
+
 // Definiera typ för Context-värdet
 type ContextType = {
   movies: Movie[];
   loading: boolean;
   error: string | null;
-
+  isLoggedIn: boolean;
+  success: boolean;
+  registerUser: (user: User) => void;
 };
 
 // Skapa Context
@@ -31,6 +41,9 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   // Fetch all movies from the API using Axios
   useEffect(() => {
@@ -48,16 +61,33 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     fetchMovies();
   }, []);
 
+  // Registrera en användare i Firebase
+  const registerUser = async (newUser: User) => {
+    try {
+      // Skicka användarens data till Firebase
+      const response = await axios.post(
+        'https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json',
+        newUser
+      );
 
- 
+      console.log(response.data); // Detta innehåller det unika Firebase ID:t för den nya användaren
+      setSuccess(true);
+      setError(null);
+      setIsLoggedIn(true);
+
+      // Omdirigera till startsidan efter registrering
+      navigate('/');
+    } catch (err) {
+      setError('Failed to register user. Please try again.');
+      setSuccess(false);
+    }
+  };
 
   return (
- 
-    <MyContext.Provider value={{ movies, loading, error }}>
+    <MyContext.Provider value={{ movies, loading, error, isLoggedIn, success, registerUser }}>
       {children}
     </MyContext.Provider>
   );
 }
 
 export { MyContext, MyContextProvider };
-
