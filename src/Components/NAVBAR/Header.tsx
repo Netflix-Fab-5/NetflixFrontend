@@ -1,6 +1,6 @@
 import React from "react";
 
-function Head({ title }) {
+function Head({ title })  {
   return (
     <div>
       <img />

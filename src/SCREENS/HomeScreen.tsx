@@ -1,6 +1,10 @@
-import Trending from "./Trending";
-import Recommended from "./Recommended";
-import NavBar from "../../Layout/NavBar";
+import React from 'react';
+import Trending from '../Components/HOME/Trending';
+import Recommended from '../Components/HOME/Recommended';
+import NavBar from '../Components/NAVBAR/NavBar';
+
+
+
 
 function HomeScreen() {
   return (
