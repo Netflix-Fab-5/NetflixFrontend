@@ -18,6 +18,9 @@ type ContextType = {
   movies: Movie[];
   loading: boolean;
   error: string | null;
+  movies: Movie[];
+  loading: boolean;
+  error: string | null;
 };
 
 // Skapa Context
@@ -44,8 +47,28 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     fetchMovies();
   }, []);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch all movies from the API using Axios
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/movies');
+        setMovies(response.data); // Sätter filmerna från servern
+        setLoading(false); // Slutar visa laddning
+      } catch (err: any) {
+        setError(err.message || 'Något gick fel vid hämtning av data'); // Hanterar fel
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, []);
 
   return (
+    <MyContext.Provider value={{ movies, loading, error }}>
     <MyContext.Provider value={{ movies, loading, error }}>
       {children}
     </MyContext.Provider>
@@ -53,3 +76,4 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 }
 
 export { MyContext, MyContextProvider };
+
