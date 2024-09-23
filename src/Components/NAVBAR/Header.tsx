@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Head({ title }) {
+function Head({ title })  {
   return (
     <div>
       <img/>
@@ -12,5 +12,18 @@ function Head({ title }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default Head;
