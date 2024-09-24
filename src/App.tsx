@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 
 import { MyContextProvider } from "./constants/Context";
-import HomeScreen from "./screens/HomeScreen";
-import FavoriteScreen from "./screens/FavoriteScreen";
-import AllMoviesScreen from "./screens/AllMoviesScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+import HomeScreen from "./SCREENS/HomeScreen";
+import FavoriteScreen from "./SCREENS/FavoriteScreen";
+import AllMoviesScreen from "./SCREENS/AllMoviesScreen";
+import RegisterScreen from "./SCREENS/RegisterScreen";
 
 function App() {
   return (
