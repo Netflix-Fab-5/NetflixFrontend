@@ -10,7 +10,9 @@ import "@testing-library/jest-dom";
 const mockAxios = new MockAdapter(axios);
 
 // Testdata
-const mockMovies = [
+const mockMovies = 
+{
+  "0":
   {
     title: "Movie 1",
     year: 2021,
@@ -20,6 +22,7 @@ const mockMovies = [
     synopsis: "A great action movie",
     thumbnail: "url/to/thumbnail1",
   },
+  "1":
   {
     title: "Movie 2",
     year: 2020,
@@ -28,8 +31,9 @@ const mockMovies = [
     genre: "Drama",
     synopsis: "A great drama movie",
     thumbnail: "url/to/thumbnail2",
-  },
-];
+  }
+}
+
 
 // Testkomponent för att använda context
 const TestComponent = () => {
@@ -46,7 +50,7 @@ const TestComponent = () => {
 
   return (
     <div>
-      {movies.map((movie, index) => (
+      {Object.values(movies).map((movie, index) => (
         <div key={index}>
           <h3>{movie.title}</h3>
         </div>
