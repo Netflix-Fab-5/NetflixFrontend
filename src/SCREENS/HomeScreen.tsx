@@ -1,7 +1,7 @@
 import React from 'react';
-import Trending from '../Components/HOME/Trending';
-import Recommended from '../Components/HOME/Recommended';
-import NavBar from '../Components/NAVBAR/NavBar';
+import Trending from '../components/HOME/Trending';
+import Recommended from '../components/HOME/Recommended';
+import NavBar from '../components/NAVBAR/NavBar';
 
 
 
