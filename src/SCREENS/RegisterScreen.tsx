@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function RegisterScreen() {
   const [username, setUsername] = useState<string>("");
@@ -8,6 +9,7 @@ function RegisterScreen() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +25,6 @@ function RegisterScreen() {
       username,
       email,
       password,  // In a real-world app, don't store passwords like this!
-      
     };
 
     try {
@@ -38,11 +39,15 @@ function RegisterScreen() {
       setSuccess(true);
       setError(null);
 
+
       // Reset form
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+
+      navigate("/");
+
     } catch (err) {
       setError("Failed to register user. Please try again.");
       setSuccess(false);

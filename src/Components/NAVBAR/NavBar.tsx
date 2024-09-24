@@ -8,9 +8,6 @@ function NavBar() {
   return (
     <>
       <div>
-
-
-        
         <Header title={"NETFLIX"} />
         <form>
           <button type="submit">
