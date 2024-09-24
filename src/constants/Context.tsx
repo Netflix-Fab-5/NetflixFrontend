@@ -24,6 +24,8 @@ type ContextType = {
 // Skapa Context
 const MyContext = createContext<ContextType | undefined>(undefined);
 
+
+
 // Skapa en provider-komponent
 function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -34,7 +36,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/movies');
+        const response = await axios.get('https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json');
         setMovies(response.data); // Sätter filmerna från servern
         setLoading(false); // Slutar visa laddning
       } catch (err: any) {
@@ -47,21 +49,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
 
-  // Fetch all movies from the API using Axios
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/movies');
-        setMovies(response.data); // Sätter filmerna från servern
-        setLoading(false); // Slutar visa laddning
-      } catch (err: any) {
-        setError(err.message || 'Något gick fel vid hämtning av data'); // Hanterar fel
-        setLoading(false);
-      }
-    };
-
-    fetchMovies();
-  }, []);
+ 
 
   return (
  

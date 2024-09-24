@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { MyContext } from '../../Context/Context';
+import { MyContext } from '../../constants/Context';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,8 +10,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 const Trending = () => {
+
   const { movies } = useContext(MyContext); // Hämtar filmer från Context
 
+
+  
   // Kontrollera att filmer finns innan vi filtrerar
   const trendingMovies = movies?.filter((movie) => movie.isTrending) || []; 
 
