@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import SearchMovie from "../components/navbar/SearchMovie"; // Adjust the path based on your file structure
-import { MyContext } from "../constants/Context";
+import { MyContext } from "../constants/context";
 import "@testing-library/jest-dom";
 
 // Mock Fuse.js
