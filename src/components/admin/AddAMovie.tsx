@@ -13,6 +13,8 @@ interface Movie {
 }
 
 function AddAMovie() {
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [movie, setMovie] = useState<Movie>({
     title: "",
     year: 2000,
@@ -48,13 +50,18 @@ function AddAMovie() {
     e.preventDefault();
     try {
       // Send the user data to Firebase Realtime Database
-      const response = await axios.post(
+      await axios.post(
         "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json", // .json is required for Firebase Realtime Database
         movie,
       );
-      console.log("Movie added successfully :", response);
+
+      // Set success message on successful submission
+      setSuccessMessage("Movie added successfully");
+      setErrorMessage(""); // Clear error message
     } catch (err) {
-      console.error("Failed to add new movie. Please try again.", err);
+      console.log(err);
+      setErrorMessage("Failed to add new movie. Please try again.");
+      setSuccessMessage(""); // Reset the success message
     }
   };
 
@@ -71,6 +78,7 @@ function AddAMovie() {
               value={movie.title}
               onChange={handleInputChange}
               required
+              data-testid="title-input"
               className="mt-1 bg-transparent p-2 w-2/3 border border-gray-300 rounded"
             />
           </div>
@@ -83,6 +91,7 @@ function AddAMovie() {
               value={movie.year}
               onChange={handleInputChange}
               required
+              data-testid="year-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -95,6 +104,7 @@ function AddAMovie() {
               value={movie.rating}
               onChange={handleInputChange}
               required
+              data-testid="rating-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -107,6 +117,7 @@ function AddAMovie() {
               value={movie.actors.join(", ")}
               onChange={handleActorsChange}
               required
+              data-testid="actor-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -119,6 +130,7 @@ function AddAMovie() {
               value={movie.genre}
               onChange={handleInputChange}
               required
+              data-testid="genre-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -130,6 +142,7 @@ function AddAMovie() {
               value={movie.synopsis}
               onChange={handleInputChange}
               required
+              data-testid="synopsis-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -142,6 +155,7 @@ function AddAMovie() {
               value={movie.thumbnail}
               onChange={handleInputChange}
               required
+              data-testid="thumbnail-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
           </div>
@@ -153,6 +167,16 @@ function AddAMovie() {
             Add A New Movie
           </button>
         </form>
+        {successMessage && (
+          <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
+            {errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );
