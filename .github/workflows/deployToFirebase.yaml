@@ -20,10 +20,10 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install # Installera alla beroenden
+        run: npm install
 
       - name: Build the project
-        run: npm run build # Bygg projektet innan deployment
+        run: npm run build
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
@@ -32,6 +32,6 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} # Använd service account
         run: |
-          echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} > /tmp/google-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
-          firebase deploy --project netflix-dupe-942ea
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/google-credentials.json  # Skriv JSON-nyckeln till en tillfällig fil
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"  # Ställ in miljövariabeln
+          firebase deploy --project netflix-dupe-942ea  # Kör deployment
