@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Fuse from "fuse.js";
-import { MyContext } from "../../constants/Context";
+import { MyContext } from "../../constants/context";
 
 function SearchMovie() {
   const context = useContext(MyContext);
@@ -38,7 +38,7 @@ function SearchMovie() {
         <button type="submit">🔎</button>
       </form>
       <ul>
-        {results.map((movie, index) => (
+        {Object.values(results).map((movie, index) => (
           <li key={index}>{movie.title}</li>
         ))}
       </ul>
