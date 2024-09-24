@@ -68,7 +68,11 @@ describe("MyContextProvider", () => {
 
   it("hämtar och renderar filmer från API korrekt", async () => {
     // Mocka GET-anropet
-    mockAxios.onGet("http://localhost:3000/movies").reply(200, mockMovies);
+    mockAxios
+      .onGet(
+        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json",
+      )
+      .reply(200, mockMovies);
 
     render(
       <MyContextProvider>
@@ -85,7 +89,11 @@ describe("MyContextProvider", () => {
 
   it("hanterar fel från API korrekt", async () => {
     // Mocka ett fel vid GET-anrop
-    mockAxios.onGet("http://localhost:3000/movies").reply(500);
+    mockAxios
+      .onGet(
+        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json",
+      )
+      .reply(500);
 
     render(
       <MyContextProvider>
