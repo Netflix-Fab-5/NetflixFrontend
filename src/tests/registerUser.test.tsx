@@ -56,7 +56,7 @@ describe("registerUser", () => {
     );
   });
 
-  it.only("should handle registration failure", async () => {
+  it("should handle registration failure", async () => {
     // Mock response for a failed registration
     mockedAxios.post.mockRejectedValue(
       new Error(" Okänt fel inträffade vid registrering"),

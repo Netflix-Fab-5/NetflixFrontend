@@ -5,11 +5,14 @@ import "./App.css";
 import "./index.css";
 import "./carousel.css";
 import { BrowserRouter } from "react-router-dom";
+import { MyContextProvider } from "./constants/context.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <MyContextProvider>
+        <App />
+      </MyContextProvider>
     </BrowserRouter>
   </StrictMode>,
 );
