@@ -1,7 +1,8 @@
+// firebase.js
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database"; // Använd om du behöver Realtime Database
-import { getAuth } from "firebase/auth"; // Använd om du behöver autentisering
+import { getDatabase } from "firebase/database"; // Om du använder Realtime Database
 
+// Din Firebase-konfiguration (med Web SDK-nycklar)
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -13,13 +14,8 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initiera Firebase
+// Initiera Firebase-appen med Web SDK
 const app = initializeApp(firebaseConfig);
 
-// Om du använder Realtime Database
-const database = getDatabase(app);
-
-// Om du använder autentisering
-const auth = getAuth(app);
-
-export { app, database, auth }; // Exportera Firebase-tjänster för att kunna använda i hela appen
+// Exportera appen och andra Firebase-tjänster
+export default app;

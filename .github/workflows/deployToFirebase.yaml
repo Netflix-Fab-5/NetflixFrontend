@@ -3,7 +3,7 @@ name: Deploy to Firebase on Push to Main
 on:
   push:
     branches:
-      - main # Detta körs när kod mergas till main efter PR (inkl. squash and merge)
+      - main
       - 68-fix-so-github-actions-is-included-with-firebase-deployment
 
 jobs:
@@ -19,10 +19,19 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install dependencies
+        run: npm install # Installera alla beroenden
+
+      - name: Build the project
+        run: npm run build # Bygg projektet innan deployment
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase
-        run: firebase deploy --project netflix-dupe-942ea
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} # Använd service account
+        run: |
+          echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} > /tmp/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
+          firebase deploy --project netflix-dupe-942ea
