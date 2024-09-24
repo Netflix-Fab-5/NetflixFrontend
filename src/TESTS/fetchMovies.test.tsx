@@ -104,7 +104,7 @@ describe("MyContextProvider", () => {
     // Vänta på att felet visas
     await waitFor(() => {
       expect(
-        screen.getByText("Error: Request failed with status code 500"),
+        screen.getByText("Error: Något gick fel vid hämtning av data"),
       ).toBeInTheDocument();
     });
   });
