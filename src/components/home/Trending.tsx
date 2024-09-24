@@ -13,7 +13,10 @@ const Trending = () => {
   const { movies } = useContext(MyContext); // Hämtar filmer från Context
 
   // Kontrollera att filmer finns innan vi filtrerar
-  const trendingMovies = movies?.filter((movie) => movie.isTrending) || [];
+  // const trendingMovies = movies?.filter((movie) => movie.isTrending) || [];
+  const trendingMovies = Object.values(movies || {}).filter(
+    (movie) => movie.isTrending,
+  );
 
   return (
     <div className="carousel-container">
@@ -29,7 +32,7 @@ const Trending = () => {
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log("slide change")}
       >
-        {trendingMovies.map((movie, index) => (
+        {Object.values(trendingMovies).map((movie, index) => (
           <SwiperSlide key={index}>
             <div className="carousel-item">
               <img
