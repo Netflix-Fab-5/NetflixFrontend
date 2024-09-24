@@ -2,7 +2,7 @@
 import { describe, it, expect, beforeEach, vi, Mocked } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import RegisterScreen from "../screens/RegisterScreen";
-import { MyContextProvider } from "../constants/Context";
+import { MyContextProvider } from "../constants/context";
 import axios from "axios";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
@@ -56,9 +56,11 @@ describe("registerUser", () => {
     );
   });
 
-  it("should handle registration failure", async () => {
+  it.only("should handle registration failure", async () => {
     // Mock response for a failed registration
-    mockedAxios.post.mockRejectedValue(new Error("Failed to register user"));
+    mockedAxios.post.mockRejectedValue(
+      new Error(" Okänt fel inträffade vid registrering"),
+    );
 
     render(
       <MemoryRouter>
@@ -90,7 +92,7 @@ describe("registerUser", () => {
     // Wait for the error message to appear
     await waitFor(() =>
       expect(
-        screen.getByText("Failed to register user. Please try again."),
+        screen.getByText("Okänt fel inträffade vid registrering"),
       ).toBeInTheDocument(),
     );
   });

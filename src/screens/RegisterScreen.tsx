@@ -1,61 +1,40 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState, useContext, useEffect } from "react";
+import { MyContext } from "../constants/context";
 import { useNavigate } from "react-router-dom";
 
 function RegisterScreen() {
+  const { registerUser, error, success, isLoggedIn } = useContext(MyContext)!;
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Används för navigation
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Om användaren är inloggad, navigera till /
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/"); // Navigerar till startsidan
+    }
+  }, [isLoggedIn, navigate]); // Beroenden: isLoggedIn och navigate
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simple validation
+    // Enkel validering
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
 
-    // Create a new user object
+    // Skapa ett nytt användarobjekt
     const newUser = {
       username,
       email,
-      password, // In a real-world app, don't store passwords like this!
+      password,
     };
 
-    try {
-      // Send the user data to Firebase Realtime Database
-      const response = await axios.post(
-        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json", // .json is required for Firebase Realtime Database
-        newUser,
-      );
-
-      console.log(response.data); // This contains the unique Firebase ID for the new user
-
-      setSuccess(true);
-      setError(null);
-
-      // Reset form
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-
-      navigate("/");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || "Något gick fel vid hämtning av data",
-        ); // Hanterar Axios-specifika fel
-      } else {
-        setError("Ett okänt fel inträffade.");
-      }
-      setSuccess(false);
-    }
+    // Registrera användaren via Context
+    registerUser(newUser);
   };
 
   return (

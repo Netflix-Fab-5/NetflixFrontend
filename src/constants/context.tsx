@@ -55,9 +55,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         setError(null);
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
-          setError(
-            err.response?.data.message || "Något gick fel vid hämtning av data",
-          ); // Hanterar fel
+          setError("Något gick fel vid hämtning av data"); // Hanterar fel
         } else {
           setError("okänt fel inträffade");
         }

@@ -1,6 +1,6 @@
-import Trending from "../components/Home/Trending";
-import Recommended from "../components/Home/Recommended";
-import NavBar from "../components/Navbar/NavBar";
+import Trending from "../components/home/Trending";
+import Recommended from "../components/home/Recommended";
+import NavBar from "../components/navbar/NavBar";
 
 function HomeScreen() {
   return (

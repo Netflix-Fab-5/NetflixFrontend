@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import { MyContextProvider } from "./constants/Context";
+import { MyContextProvider } from "./constants/context";
 import HomeScreen from "./screens/HomeScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import AllMoviesScreen from "./screens/AllMoviesScreen";
