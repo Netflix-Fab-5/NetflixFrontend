@@ -1,6 +1,10 @@
-import React from 'react';
 
-function Head({ title })  {
+interface HeaderProps {
+title: string;
+}
+
+
+function Head ({ title } : HeaderProps)  {
   return (
     <div>
       <img/>
