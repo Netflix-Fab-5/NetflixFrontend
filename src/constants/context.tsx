@@ -23,7 +23,7 @@ interface User {
 
 // Definiera typ för Context-värdet
 type ContextType = {
-  movies: Movie[];
+  movies: Record<string, Movie>;
   loading: boolean;
   error: string | null;
   isLoggedIn: boolean;
@@ -36,7 +36,7 @@ const MyContext = createContext<ContextType>(null!);
 
 // Skapa en provider-komponent
 function MyContextProvider({ children }: { children: ReactNode }) {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Record<string, Movie>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

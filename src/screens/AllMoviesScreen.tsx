@@ -27,7 +27,7 @@ const AllMoviesScreen: React.FC = () => {
           gap: "20px",
         }}
       >
-        {movies.map((movie, index) => (
+        {Object.values(movies).map((movie, index) => (
           <div
             key={index}
             style={{
