@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Header from "./Header_temp";
-import BookmarkButton from "./BookMarkButton_temp";
-import MoviesButton from "./AllMoviesButton_temp";
+import Header from "./Header";
+import BookmarkButton from "./BookMarkButton";
+import MoviesButton from "./AllMoviesButton";
 
 function NavBar() {
   return (

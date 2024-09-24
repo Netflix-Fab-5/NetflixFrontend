@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { MyContextProvider, MyContext } from "../constants_temp/context_temp";
+import { MyContextProvider, MyContext } from "../constants/context";
 import { useContext } from "react";
 import "@testing-library/jest-dom";
 

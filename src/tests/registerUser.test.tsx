@@ -1,8 +1,8 @@
 // src/__tests__/registerUser.test.tsx
 import { describe, it, expect, beforeEach, vi, Mocked } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import RegisterScreen from "../screens_temp/RegisterScreen_temp";
-import { MyContextProvider } from "../constants_temp/context_temp";
+import RegisterScreen from "../screens/RegisterScreen";
+import { MyContextProvider } from "../constants/context";
 import axios from "axios";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
