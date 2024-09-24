@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MyContext } from "../../constants/Context";
+import { MyContext } from "../../constants_temp/context_temp";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
