@@ -5,7 +5,6 @@ import RegisterScreen from "../screens/RegisterScreen";
 import { MyContextProvider } from "../constants/Context";
 import axios from "axios";
 import "@testing-library/jest-dom";
-import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
 // Mock axios
