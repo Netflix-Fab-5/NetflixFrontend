@@ -1,16 +1,13 @@
-name: Deploy to Firebase on PR - merge to main
+name: Deploy to Firebase on Push to Main
 
-# This action works with pull requests to main and optional pushes
 on:
-  pull_request:
-    branches:
-      - main # Detta körs när någon öppnar eller uppdaterar en PR till main
   push:
     branches:
+      - main # Detta körs när kod mergas till main efter PR (inkl. squash and merge)
       - 68-fix-so-github-actions-is-included-with-firebase-deployment
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,22 +19,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm i
-
-      - name: Run ESLint
-        run: npm run lint
-
-      - name: Run Prettier
-        run: npm run format
-
-      - name: Build project
-        run: npm run build
-
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase
-        run: firebase deploy
+        run: firebase deploy --project netflix-dupe-942ea
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
