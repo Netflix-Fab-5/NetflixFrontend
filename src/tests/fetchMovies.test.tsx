@@ -10,10 +10,8 @@ import "@testing-library/jest-dom";
 const mockAxios = new MockAdapter(axios);
 
 // Testdata
-const mockMovies = 
-{
-  "0":
-  {
+const mockMovies = {
+  "0": {
     title: "Movie 1",
     year: 2021,
     rating: "PG-13",
@@ -22,8 +20,7 @@ const mockMovies =
     synopsis: "A great action movie",
     thumbnail: "url/to/thumbnail1",
   },
-  "1":
-  {
+  "1": {
     title: "Movie 2",
     year: 2020,
     rating: "R",
@@ -31,9 +28,8 @@ const mockMovies =
     genre: "Drama",
     synopsis: "A great drama movie",
     thumbnail: "url/to/thumbnail2",
-  }
-}
-
+  },
+};
 
 // Testkomponent för att använda context
 const TestComponent = () => {
