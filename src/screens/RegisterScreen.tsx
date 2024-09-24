@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { MyContext } from "../constants/Context";
+import { useState, useContext, useEffect } from "react";
+import { MyContext } from "../constants/context";
 import { useNavigate } from "react-router-dom";
 
 function RegisterScreen() {
