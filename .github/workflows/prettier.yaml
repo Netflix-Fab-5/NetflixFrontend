@@ -26,8 +26,11 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Run ESLint with fix
-        run: npm run lint -- --fix
+      - name: Run ESLint
+        run: npm run lint
 
       - name: Run Prettier
         run: npm run format
+
+      - name: Build project
+        run: npm run build
