@@ -1,10 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';  
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import { MyContextProvider, MyContext } from '../constants/Context';
-import React, { useContext } from 'react';
-import '@testing-library/jest-dom'; 
+import { render, screen, waitFor } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+import { MyContextProvider, MyContext } from "../constants/Context";
+import { useContext } from "react";
+import "@testing-library/jest-dom";
 
 // Mocka Axios
 const mockAxios = new MockAdapter(axios);
@@ -12,24 +12,22 @@ const mockAxios = new MockAdapter(axios);
 // Testdata
 const mockMovies = [
   {
-
-    
-    title: 'Movie 1',
+    title: "Movie 1",
     year: 2021,
-    rating: 'PG-13',
-    actors: ['Actor 1', 'Actor 2'],
-    genre: 'Action',
-    synopsis: 'A great action movie',
-    thumbnail: 'url/to/thumbnail1',
+    rating: "PG-13",
+    actors: ["Actor 1", "Actor 2"],
+    genre: "Action",
+    synopsis: "A great action movie",
+    thumbnail: "url/to/thumbnail1",
   },
   {
-    title: 'Movie 2',
+    title: "Movie 2",
     year: 2020,
-    rating: 'R',
-    actors: ['Actor 3', 'Actor 4'],
-    genre: 'Drama',
-    synopsis: 'A great drama movie',
-    thumbnail: 'url/to/thumbnail2',
+    rating: "R",
+    actors: ["Actor 3", "Actor 4"],
+    genre: "Drama",
+    synopsis: "A great drama movie",
+    thumbnail: "url/to/thumbnail2",
   },
 ];
 
@@ -58,46 +56,48 @@ const TestComponent = () => {
 };
 
 // Test-suite
-describe('MyContextProvider', () => {
-  it('visar laddningsstatus initialt', () => {
+describe("MyContextProvider", () => {
+  it("visar laddningsstatus initialt", () => {
     render(
       <MyContextProvider>
         <TestComponent />
-      </MyContextProvider>
+      </MyContextProvider>,
     );
-    expect(screen.getByText('Laddar...')).toBeInTheDocument();
+    expect(screen.getByText("Laddar...")).toBeInTheDocument();
   });
 
-  it('hämtar och renderar filmer från API korrekt', async () => {
+  it("hämtar och renderar filmer från API korrekt", async () => {
     // Mocka GET-anropet
-    mockAxios.onGet('http://localhost:3000/movies').reply(200, mockMovies);
+    mockAxios.onGet("http://localhost:3000/movies").reply(200, mockMovies);
 
     render(
       <MyContextProvider>
         <TestComponent />
-      </MyContextProvider>
+      </MyContextProvider>,
     );
 
     // Vänta på att filmerna hämtas och visas
     await waitFor(() => {
-      expect(screen.getByText('Movie 1')).toBeInTheDocument();
-      expect(screen.getByText('Movie 2')).toBeInTheDocument();
+      expect(screen.getByText("Movie 1")).toBeInTheDocument();
+      expect(screen.getByText("Movie 2")).toBeInTheDocument();
     });
   });
 
-  it('hanterar fel från API korrekt', async () => {
+  it("hanterar fel från API korrekt", async () => {
     // Mocka ett fel vid GET-anrop
-    mockAxios.onGet('http://localhost:3000/movies').reply(500);
+    mockAxios.onGet("http://localhost:3000/movies").reply(500);
 
     render(
       <MyContextProvider>
         <TestComponent />
-      </MyContextProvider>
+      </MyContextProvider>,
     );
 
     // Vänta på att felet visas
     await waitFor(() => {
-      expect(screen.getByText('Error: Request failed with status code 500')).toBeInTheDocument();
+      expect(
+        screen.getByText("Error: Request failed with status code 500"),
+      ).toBeInTheDocument();
     });
   });
 });

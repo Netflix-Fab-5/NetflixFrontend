@@ -24,9 +24,7 @@ function NavBar() {
         </Link>
       </div>
 
-      <div>
-        {/* Eventuella andra element */}
-      </div>
+      <div>{/* Eventuella andra element */}</div>
     </>
   );
 }

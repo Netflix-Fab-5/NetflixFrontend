@@ -1,27 +1,16 @@
-import React from 'react';
-import Trending from '../Components/HOME/Trending';
-import Recommended from '../Components/HOME/Recommended';
-import NavBar from '../Components/NAVBAR/NavBar';
-
-
-
+import Trending from "../components/Home/Trending";
+import Recommended from "../components/Home/Recommended";
+import NavBar from "../components/Navbar/NavBar";
 
 function HomeScreen() {
   return (
-  
-      <div>
-       
-        <NavBar/>
-       {/* inside header we should have login/register/bookmark/searchbar/movies link to category */}
-    
-
-        <Trending />
-       
-        <Recommended />
-        HOMESCREEN
-      </div>
-     
-  
+    <div>
+      <NavBar />
+      {/* inside header we should have login/register/bookmark/searchbar/movies link to category */}
+      <Trending />
+      <Recommended />
+      HOMESCREEN
+    </div>
   );
 }
 

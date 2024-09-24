@@ -1,5 +1,5 @@
-import  React,{ createContext, useState, ReactNode, useEffect } from 'react';
-import axios from 'axios';
+import { createContext, useState, ReactNode, useEffect } from "react";
+import axios from "axios";
 // import { useNavigate } from 'react-router-dom';
 
 // Definiera typ för en film
@@ -32,9 +32,7 @@ type ContextType = {
 };
 
 // Skapa Context
-const MyContext = createContext<ContextType >(null!);
-
-
+const MyContext = createContext<ContextType>(null!);
 
 // Skapa en provider-komponent
 function MyContextProvider({ children }: { children: ReactNode }) {
@@ -48,12 +46,22 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   // Fetch all movies from the API using Axios
   useEffect(() => {
     const fetchMovies = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get('https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json');
+        const response = await axios.get(
+          "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json",
+        );
         setMovies(response.data); // Sätter filmerna från servern
-        setLoading(false); // Slutar visa laddning
-      } catch (err: any) {
-        setError(err.message || 'Något gick fel vid hämtning av data'); // Hanterar fel
+        setError(null);
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+          setError(
+            err.response?.data.message || "Något gick fel vid hämtning av data",
+          ); // Hanterar fel
+        } else {
+          setError("okänt fel inträffade");
+        }
+      } finally {
         setLoading(false);
       }
     };
@@ -66,38 +74,46 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     try {
       // Skicka användarens data till Firebase
       const response = await axios.post(
-        'https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json',
-        newUser
+        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json",
+        newUser,
       );
-  
+
       const userId = response.data.name; // Detta är det unika ID:t från Firebase
-  
+
       // Spara användarens data tillsammans med det genererade ID:t
       const registeredUser = {
         id: userId,
         username: newUser.username, // Kopiera användarens information (username, email, password)
       };
-  
+
       // Logga hela användarobjektet
       console.log("User registered:", registeredUser);
-  
+
       // Spara användaren i localStorage eller sessionStorage
       // localStorage.setItem('user', JSON.stringify(registeredUser)); // För persistent storage
-      sessionStorage.setItem('user', JSON.stringify(registeredUser)); // För session storage
-  
+      sessionStorage.setItem("user", JSON.stringify(registeredUser)); // För session storage
+
       setSuccess(true);
       setError(null);
       setIsLoggedIn(true);
       // navigate("/")
-  
-    } catch (err) {
-      setError('Failed to register user. Please try again.');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data.message ||
+            "Failed to register user. Please try again.",
+        );
+      } else {
+        setError("Okänt fel inträffade vid registrering");
+      }
       setSuccess(false);
     }
   };
-  
+
   return (
-    <MyContext.Provider value={{ movies, loading, error, isLoggedIn, success, registerUser }}>
+    <MyContext.Provider
+      value={{ movies, loading, error, isLoggedIn, success, registerUser }}
+    >
       {children}
     </MyContext.Provider>
   );

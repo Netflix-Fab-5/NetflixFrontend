@@ -24,21 +24,20 @@ function RegisterScreen() {
     const newUser = {
       username,
       email,
-      password,  // In a real-world app, don't store passwords like this!
+      password, // In a real-world app, don't store passwords like this!
     };
 
     try {
       // Send the user data to Firebase Realtime Database
       const response = await axios.post(
         "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json", // .json is required for Firebase Realtime Database
-        newUser
+        newUser,
       );
 
       console.log(response.data); // This contains the unique Firebase ID for the new user
 
       setSuccess(true);
       setError(null);
-
 
       // Reset form
       setUsername("");
@@ -47,9 +46,14 @@ function RegisterScreen() {
       setConfirmPassword("");
 
       navigate("/");
-
-    } catch (err) {
-      setError("Failed to register user. Please try again.");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || "Något gick fel vid hämtning av data",
+        ); // Hanterar Axios-specifika fel
+      } else {
+        setError("Ett okänt fel inträffade.");
+      }
       setSuccess(false);
     }
   };
@@ -58,7 +62,9 @@ function RegisterScreen() {
     <div className="register-container">
       <h2>Register</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>User registered successfully!</p>}
+      {success && (
+        <p style={{ color: "green" }}>User registered successfully!</p>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>

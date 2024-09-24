@@ -1,22 +1,19 @@
-import React, { useContext } from 'react';
-import { MyContext } from '../../constants/Context';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useContext } from "react";
+import { MyContext } from "../../constants/Context";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 const Trending = () => {
-
   const { movies } = useContext(MyContext); // Hämtar filmer från Context
 
-
-  
   // Kontrollera att filmer finns innan vi filtrerar
-  const trendingMovies = movies?.filter((movie) => movie.isTrending) || []; 
+  const trendingMovies = movies?.filter((movie) => movie.isTrending) || [];
 
   return (
     <div className="carousel-container">
@@ -30,7 +27,7 @@ const Trending = () => {
         pagination={{ clickable: true }}
         // scrollbar={{ draggable: true }}
         onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
+        onSlideChange={() => console.log("slide change")}
       >
         {trendingMovies.map((movie, index) => (
           <SwiperSlide key={index}>
