@@ -1,4 +1,4 @@
-name: Prettier and ESLint Check
+name: Deploy to Firebase on PR - merge to main
 
 # This action works with pull requests to main and optional pushes
 on:
@@ -7,21 +7,20 @@ on:
       - main # Detta körs när någon öppnar eller uppdaterar en PR till main
   push:
     branches:
-      - main # Detta körs varje gång kod pushas till main
-      - test-2-actions # Din testbranch
+      - 68-fix-so-github-actions-is-included-with-firebase-deployment
 
 jobs:
-  lint_and_prettify:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: npm i
@@ -34,3 +33,8 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Deploy to Firebase
+        run: firebase deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
