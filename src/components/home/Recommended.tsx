@@ -1,18 +1,19 @@
-// import Titles from "./../Titles";
-// import {
-//   BsBookmarkStarFill,
-//   BsCaretLeftFill,
-//   BsCaretRightFill,
-// } from "react-icons/bs";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Autoplay, Navigation } from "swiper";
-// import { Movies } from "../../Data/MovieData";
-// import { FaHeart } from "react-icons/fa";
-// import { Link } from "react-router-dom";
-// import Rating from "../Stars";
+// Recommended.tsx
+import { useContext } from "react";
+import { MyContext } from "../../constants/context";
+import MovieCarousel from "./MovieCarousel";
 
-function Recommended() {
-  return <div>RECOMMENDED</div>;
-}
+const Recommended = () => {
+  const { movies } = useContext(MyContext);
+
+  // Filtrera fram de rekommenderade filmerna (exempelvis de som inte trendar)
+  const recommendedMovies = Object.values(movies || {}).filter(
+    (movie) => !movie.isTrending, // Här antar jag att rekommenderade filmer är de som inte trendar, ändra logiken om det behövs
+  );
+
+  return (
+    <MovieCarousel movies={recommendedMovies} title="Recommended Movies" />
+  );
+};
 
 export default Recommended;
