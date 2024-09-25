@@ -11,9 +11,7 @@ const Trending = () => {
     (movie) => movie.isTrending,
   );
 
-  return (
-    <MovieCarousel movies={trendingMovies} title="Trending Movies" />
-  );
+  return <MovieCarousel movies={trendingMovies} title="Trending Movies" />;
 };
 
 export default Trending;
