@@ -6,6 +6,7 @@ function AddAMovie() {
 
   // Using Movie from context
   const [movie, setMovie] = useState<Movie>({
+    id: "",
     title: "",
     year: 2000,
     rating: "",
