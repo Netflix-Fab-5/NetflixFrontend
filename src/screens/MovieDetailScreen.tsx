@@ -3,17 +3,20 @@ import { MyContext } from "../constants/context";
 import { useParams, Link } from "react-router-dom"; // För att få filmens ID från URL:en
 
 function MovieDetails() {
-  const { id } = useParams(); // Anta att id kommer från URL:en
+  const { id } = useParams();
   const { movie, fetchMovieById, loading, error } = useContext(MyContext);
 
   useEffect(() => {
-    if (id) {
+    console.log("Fetching movie with ID:", id);
+    if (id && (!movie || movie.id !== id)) {
+      console.log("Fetching movie with ID:", id);
       fetchMovieById(id);
     }
-  }, [id, fetchMovieById]);
+  }, [id, fetchMovieById, movie]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+  if (!movie) return <p>No movie found</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">

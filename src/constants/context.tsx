@@ -3,6 +3,7 @@ import axios from "axios";
 
 // Definiera typ för en film
 export interface Movie {
+  id: string;
   title: string;
   year: number;
   rating: string;
@@ -81,22 +82,22 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Funktion för att hämta en specifik film baserat på dess ID
   const fetchMovieById = async (id: string) => {
-    // setLoading(true); <---------- funkar inte med denna rad
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies/${id}.json`,
       );
       if (response.data) {
-        setMovie(response.data); // Sätter den enskilda filmens data till state
-        setError(null); // Nollställ eventuella tidigare fel
+        const movieData = {
+          ...response.data,
+          id,
+        };
+        setMovie(movieData);
+        setError(null);
       }
-    } catch (err: unknown) {
+    } catch (err) {
       console.error("Error fetching movie:", err);
-      if (axios.isAxiosError(err)) {
-        setError("Något gick fel vid hämtning av data"); // Hanterar fel
-      } else {
-        setError("okänt fel inträffade");
-      }
+      setError("Något gick fel vid hämtning av data");
     } finally {
       setLoading(false);
     }
