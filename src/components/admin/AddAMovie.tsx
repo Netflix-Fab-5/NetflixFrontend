@@ -6,6 +6,7 @@ function AddAMovie() {
 
   // Using Movie from context
   const [movie, setMovie] = useState<Movie>({
+    id: Math.random().toString(36).substr(2, 9),
     title: "",
     year: 2000,
     rating: "",
