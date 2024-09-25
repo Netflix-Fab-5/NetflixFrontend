@@ -23,6 +23,7 @@ interface User {
 // Definiera typ för Context-värdet
 type ContextType = {
   movies: Record<string, Movie>;
+  movie: Movie | null;
   loading: boolean;
   error: string | null;
   isLoggedIn: boolean;
@@ -31,6 +32,7 @@ type ContextType = {
   addMovie: (movie: Movie) => void;
   loginUser: (user: User) => void;
   logoutUser: () => void;
+  fetchMovieById: (id: string) => Promise<void>;
 };
 
 // Skapa Context
@@ -39,6 +41,7 @@ const MyContext = createContext<ContextType>(null!);
 // Skapa en provider-komponent
 function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Record<string, Movie>>({});
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -75,6 +78,26 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     fetchMovies();
   }, []);
+
+  // Funktion för att hämta en specifik film baserat på dess ID
+  const fetchMovieById = async (id: string) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies/${id}.json`,
+      );
+      setMovie(response.data); // Sätter den enskilda filmens data till state
+      setError(null); // Nollställ eventuella tidigare fel
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError("Något gick fel vid hämtning av data"); // Hanterar fel
+      } else {
+        setError("okänt fel inträffade");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Registrera en användare i Firebase
   const registerUser = async (newUser: User) => {
@@ -186,6 +209,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     <MyContext.Provider
       value={{
         movies,
+        movie,
         loading,
         error,
         isLoggedIn,
@@ -194,6 +218,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         addMovie,
         loginUser,
         logoutUser,
+        fetchMovieById,
       }}
     >
       {children}

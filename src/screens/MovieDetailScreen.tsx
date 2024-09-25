@@ -1,15 +1,35 @@
-import React from "react";
-import { useParams } from "react-router-dom"; // För att hämta ID från URL
+import { useContext, useEffect } from "react";
+import { MyContext } from "../constants/context";
+import { useParams } from "react-router-dom"; // För att få filmens ID från URL:en
 
-const MovieDetailScreen: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Hämta filmens ID från URL:en
+function MovieDetails() {
+  const { id } = useParams(); // Anta att id kommer från URL:en
+  const { movie, fetchMovieById, loading, error } = useContext(MyContext);
+
+  useEffect(() => {
+    if (id) {
+      fetchMovieById(id);
+    }
+  }, [id, fetchMovieById]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h1>Hej från MovieDetailScreen!</h1>
-      <p>Film-ID: {id}</p>
+      {movie ? (
+        <div>
+          <h1>{movie.title}</h1>
+          <p>{movie.synopsis}</p>
+          <p>Year: {movie.year}</p>
+          <p>Rating: {movie.rating}</p>
+          {/* Lägg till andra filmattribut här */}
+        </div>
+      ) : (
+        <p>No movie found</p>
+      )}
     </div>
   );
-};
+}
 
-export default MovieDetailScreen;
+export default MovieDetails;
