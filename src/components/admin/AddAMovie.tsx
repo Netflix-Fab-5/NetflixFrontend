@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import axios from "axios";
-
-// Movie interface
-interface Movie {
-  title: string;
-  year: number;
-  rating: string;
-  actors: string[];
-  genre: string;
-  synopsis: string;
-  thumbnail: string;
-}
+import React, { useContext, useState } from "react";
+import { MyContext, Movie } from "../../constants/context"; // Import Movie interface
 
 function AddAMovie() {
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { error, success, addMovie } = useContext(MyContext)!;
+
+  // Using Movie from context
   const [movie, setMovie] = useState<Movie>({
     title: "",
     year: 2000,
@@ -23,6 +13,7 @@ function AddAMovie() {
     genre: "",
     synopsis: "",
     thumbnail: "",
+    isTrending: false,
   });
 
   // Handle for input change
@@ -32,7 +23,7 @@ function AddAMovie() {
     const { name, value } = e.target;
     setMovie((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value, // Update the relevant field
     }));
   };
 
@@ -45,24 +36,18 @@ function AddAMovie() {
     }));
   };
 
-  // Handle form submit form
+  // Handle for isTrending checkbox
+  const handleTrendingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMovie((prev) => ({
+      ...prev,
+      isTrending: e.target.checked, // Update isTrending on the basis of checkbox
+    }));
+  };
+
+  // Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // Send the user data to Firebase Realtime Database
-      await axios.post(
-        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies.json", // .json is required for Firebase Realtime Database
-        movie,
-      );
-
-      // Set success message on successful submission
-      setSuccessMessage("Movie added successfully");
-      setErrorMessage(""); // Clear error message
-    } catch (err) {
-      console.log(err);
-      setErrorMessage("Failed to add new movie. Please try again.");
-      setSuccessMessage(""); // Reset the success message
-    }
+    addMovie(movie); // Add new movie in firesbase
   };
 
   return (
@@ -160,6 +145,18 @@ function AddAMovie() {
             />
           </div>
 
+          <div className="mb-4 flex items-center">
+            <label className="block text-gray-700 w-1/3">Is Trending:</label>
+            <input
+              type="checkbox"
+              name="isTrending"
+              checked={movie.isTrending}
+              data-testid="trending-input"
+              onChange={handleTrendingChange}
+              className="mt-1 w-2/3"
+            />
+          </div>
+
           <button
             type="submit"
             className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
@@ -167,14 +164,14 @@ function AddAMovie() {
             Add A New Movie
           </button>
         </form>
-        {successMessage && (
+        {success && (
           <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
-            {successMessage}
+            Movie added successfully
           </div>
         )}
-        {errorMessage && (
+        {error && (
           <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
-            {errorMessage}
+            {error}
           </div>
         )}
       </div>

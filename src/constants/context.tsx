@@ -3,7 +3,7 @@ import axios from "axios";
 // import { useNavigate } from 'react-router-dom';
 
 // Definiera typ för en film
-interface Movie {
+export interface Movie {
   title: string;
   year: number;
   rating: string;
@@ -29,6 +29,7 @@ type ContextType = {
   isLoggedIn: boolean;
   success: boolean;
   registerUser: (user: User) => void;
+  addMovie: (movie: Movie) => void;
 };
 
 // Skapa Context
@@ -108,9 +109,34 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  //Add new Movie
+  const addMovie = async (newMovie: Movie) => {
+    try {
+      // Send the movie data to Firebase Realtime Database
+      await axios.post(
+        "https://netflix-dupe-942ea-default-rtdb.firebaseio.om/movies.json", // .json is required for Firebase Realtime Database
+        newMovie,
+      );
+      setSuccess(true);
+      setError(null); // Clear the previous error msg if there any
+    } catch (err) {
+      console.log(err);
+      setError("Failed to add new movie. Please try again.");
+      setSuccess(false); // Clear the previous success msg if there any
+    }
+  };
+
   return (
     <MyContext.Provider
-      value={{ movies, loading, error, isLoggedIn, success, registerUser }}
+      value={{
+        movies,
+        loading,
+        error,
+        isLoggedIn,
+        success,
+        registerUser,
+        addMovie,
+      }}
     >
       {children}
     </MyContext.Provider>
