@@ -62,6 +62,8 @@ const mockContextValue = {
   success: true,
   registerUser: vi.fn(),
   addMovie: vi.fn(),
+  loginUser: vi.fn(),
+  logoutUser: vi.fn(),
 };
 
 describe("SearchMovie", () => {
