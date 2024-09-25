@@ -12,18 +12,24 @@ function MovieDetails() {
     }
   }, [id, fetchMovieById]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  //if (loading) return <p>Loading...</p>;
+  //if (error) return <p>{error}</p>;
 
   return (
     <div>
       {movie ? (
         <div>
           <h1>{movie.title}</h1>
+          <img
+            src={movie.thumbnail}
+            alt={movie.title}
+            style={{ width: "20%", borderRadius: "8px", marginBottom: "20px" }}
+          />
           <p>{movie.synopsis}</p>
           <p>Year: {movie.year}</p>
           <p>Rating: {movie.rating}</p>
-          {/* Lägg till andra filmattribut här */}
+          <p>Genre: {movie.genre}</p>
+          <p>Actors: {movie.actors.join(", ")}</p>
         </div>
       ) : (
         <p>No movie found</p>
