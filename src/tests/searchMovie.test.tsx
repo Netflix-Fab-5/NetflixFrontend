@@ -22,7 +22,6 @@ vi.mock("fuse.js", () => {
 
 const mockMovies = {
   movie1: {
-    id: "1",
     title: "Inception",
     year: 2010,
     rating: "PG-13",
@@ -33,7 +32,6 @@ const mockMovies = {
     isTrending: true,
   },
   movie2: {
-    id: "2",
     title: "Interstellar",
     year: 2014,
     rating: "PG-13",
@@ -44,7 +42,6 @@ const mockMovies = {
     isTrending: false,
   },
   movie3: {
-    id: "3",
     title: "Dunkirk",
     year: 2017,
     rating: "PG-13",
@@ -59,7 +56,6 @@ const mockMovies = {
 // Test context provider for movies
 const mockContextValue = {
   movies: mockMovies,
-  movie: null,
   loading: false,
   error: null,
   isLoggedIn: true,
@@ -68,7 +64,6 @@ const mockContextValue = {
   addMovie: vi.fn(),
   loginUser: vi.fn(),
   logoutUser: vi.fn(),
-  fetchMovieById: vi.fn(),
 };
 
 describe("SearchMovie", () => {

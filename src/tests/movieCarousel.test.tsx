@@ -8,7 +8,6 @@ import "@testing-library/jest-dom";
 // Skapa ett testdata
 const mockMovies: Movie[] = [
   {
-    id: "1",
     title: "Movie 1",
     year: 2021,
     rating: "PG",
@@ -19,7 +18,6 @@ const mockMovies: Movie[] = [
     isTrending: true,
   },
   {
-    id: "2",
     title: "Movie 2",
     year: 2022,
     rating: "PG-13",
