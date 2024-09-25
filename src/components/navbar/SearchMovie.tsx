@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Fuse from "fuse.js";
 import { MyContext } from "../../constants/context";
 
@@ -10,6 +10,13 @@ function SearchMovie() {
   const { movies, loading, error } = context;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState(Object.values(movies)); // Initialize with movies array
+
+  // Nollställ resultaten när komponenten laddas om eller när query rensas
+  useEffect(() => {
+    if (!query) {
+      setResults([]); // Töm resultatlistan när sökningen är tom
+    }
+  }, [query]);
 
   const fuse = new Fuse(Object.values(movies), {
     keys: ["title"],
@@ -35,12 +42,12 @@ function SearchMovie() {
           value={query}
           onChange={handleSearch}
         />
-        <button type="submit">🔎</button>
       </form>
       <ul>
-        {Object.values(results).map((movie, index) => (
-          <li key={index}>{movie.title}</li>
-        ))}
+        {results.length > 0 &&
+          Object.values(results).map((movie, index) => (
+            <li key={index}>{movie.title}</li>
+          ))}
       </ul>
     </div>
   );
