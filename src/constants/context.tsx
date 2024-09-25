@@ -81,13 +81,12 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Funktion för att hämta en specifik film baserat på dess ID
   const fetchMovieById = async (id: string) => {
-    // setLoading(true);
+    // setLoading(true); <---------- funkar inte med denna rad
     try {
       const response = await axios.get(
         `https://netflix-dupe-942ea-default-rtdb.firebaseio.com/movies/${id}.json`,
       );
       if (response.data) {
-        // console.log("respons data: ", response.data);
         setMovie(response.data); // Sätter den enskilda filmens data till state
         setError(null); // Nollställ eventuella tidigare fel
       }
