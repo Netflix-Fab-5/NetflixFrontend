@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { Movie } from "../constants/context";
 import MovieCarousel from "../components/home/MovieCarousel";
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 // Skapa ett testdata
 const mockMovies: Movie[] = [

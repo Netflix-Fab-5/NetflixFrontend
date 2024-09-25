@@ -1,6 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import axios from "axios";
-// import { useNavigate } from 'react-router-dom';
 
 // Definiera typ för en film
 export interface Movie {
@@ -30,6 +29,8 @@ type ContextType = {
   success: boolean;
   registerUser: (user: User) => void;
   addMovie: (movie: Movie) => void;
+  loginUser: (user: User) => void;
+  logoutUser: () => void;
 };
 
 // Skapa Context
@@ -42,7 +43,14 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  // const navigate = useNavigate();
+
+  // Kontrollera inloggningsstatus från sessionStorage/localStorage när appen startar
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("isLoggedIn");
+    if (storedUser === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   // Fetch all movies from the API using Axios
   useEffect(() => {
@@ -71,31 +79,24 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   // Registrera en användare i Firebase
   const registerUser = async (newUser: User) => {
     try {
-      // Skicka användarens data till Firebase
       const response = await axios.post(
         "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json",
         newUser,
       );
 
-      const userId = response.data.name; // Detta är det unika ID:t från Firebase
+      const userId = response.data.name;
 
-      // Spara användarens data tillsammans med det genererade ID:t
       const registeredUser = {
         id: userId,
-        username: newUser.username, // Kopiera användarens information (username, email, password)
+        username: newUser.username,
       };
 
-      // Logga hela användarobjektet
       console.log("User registered:", registeredUser);
 
-      // Spara användaren i localStorage eller sessionStorage
-      // localStorage.setItem('user', JSON.stringify(registeredUser)); // För persistent storage
-      sessionStorage.setItem("user", JSON.stringify(registeredUser)); // För session storage
-
+      sessionStorage.setItem("isLoggedIn", "true");
       setSuccess(true);
-      setError(null);
       setIsLoggedIn(true);
-      // navigate("/")
+      setError(null);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(
@@ -126,6 +127,61 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Logga in användare och kontrollera mot Firebase
+  const loginUser = async (user: User) => {
+    try {
+      // Hämta användardata från Firebase Realtime Database
+      const response = await axios.get(
+        "https://netflix-dupe-942ea-default-rtdb.firebaseio.com/users.json",
+      );
+
+      // Kontrollera om användarnamn och lösenord matchar någon post i Firebase
+      const usersData = response.data;
+
+      let validUser = false;
+      let userId = "";
+
+      for (const key in usersData) {
+        if (
+          usersData[key].username === user.username &&
+          usersData[key].password === user.password
+        ) {
+          validUser = true;
+          userId = key;
+          break;
+        }
+      }
+
+      if (validUser) {
+        // Om inloggningen lyckas, uppdatera inloggningsstatus
+        sessionStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("username", user.username);
+        sessionStorage.setItem("userId", userId);
+        setIsLoggedIn(true);
+        setError(null);
+      } else {
+        // Hantera fel om inloggningsuppgifterna inte matchar
+        setError("Felaktigt användarnamn eller lösenord");
+      }
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data.message ||
+            "Failed to login user. Please try again.",
+        );
+      } else {
+        setError("Okänt fel inträffade vid inloggning");
+      }
+      setSuccess(false);
+    }
+  };
+
+  // Logga ut användaren
+  const logoutUser = () => {
+    sessionStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+  };
+
   return (
     <MyContext.Provider
       value={{
@@ -136,6 +192,8 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         success,
         registerUser,
         addMovie,
+        loginUser,
+        logoutUser,
       }}
     >
       {children}
