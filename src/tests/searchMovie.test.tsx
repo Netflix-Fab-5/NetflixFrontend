@@ -59,6 +59,7 @@ const mockMovies = {
 // Test context provider for movies
 const mockContextValue = {
   movies: mockMovies,
+  movie: null,
   loading: false,
   error: null,
   isLoggedIn: true,
@@ -67,6 +68,7 @@ const mockContextValue = {
   addMovie: vi.fn(),
   loginUser: vi.fn(),
   logoutUser: vi.fn(),
+  fetchMovieById: vi.fn(),
 };
 
 describe("SearchMovie", () => {
