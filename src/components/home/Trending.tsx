@@ -1,17 +1,27 @@
-// Trending.tsx
 import { useContext } from "react";
-import { MyContext } from "../../constants/context";
+import { Movie, MyContext } from "../../constants/context";
 import MovieCarousel from "./MovieCarousel";
 
 const Trending = () => {
-  const { movies } = useContext(MyContext);
+  const { movies, addFavorite } = useContext(MyContext);
 
-  // Filtrera fram de filmer som trendar
+  // Filter the trending movies
   const trendingMovies = Object.values(movies || {}).filter(
-    (movie) => movie.isTrending,
+    (movie) => movie.isTrending
   );
 
-  return <MovieCarousel movies={trendingMovies} title="Trending Movies" />;
+  // Handle bookmarking a movie
+  const handleBookmark = (movie: Movie) => {
+    addFavorite(movie);
+  };
+
+  return (
+    <MovieCarousel
+      movies={trendingMovies}
+      title="Trending Movies"
+      onBookmark={handleBookmark}  // Pass the handler to MovieCarousel
+    />
+  );
 };
 
 export default Trending;

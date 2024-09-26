@@ -70,6 +70,9 @@ const mockContextValue = {
   loginUser: vi.fn(),
   logoutUser: vi.fn(),
   fetchMovieById: vi.fn(),
+  addFavorite: vi.fn(),
+  removeFavorite: vi.fn(),
+  favorites: null,
 };
 
 describe("SearchMovie", () => {
@@ -98,18 +101,6 @@ describe("SearchMovie", () => {
 
     expect(screen.getByText("Something went wrong!")).toBeInTheDocument();
   });
-
-  // it("renders list of movies", () => {
-  //   render(
-  //     <MyContext.Provider value={mockContextValue}>
-  //       <SearchMovie />
-  //     </MyContext.Provider>,
-  //   );
-
-  //   expect(screen.getByText("Inception")).toBeInTheDocument();
-  //   expect(screen.getByText("Interstellar")).toBeInTheDocument();
-  //   expect(screen.getByText("Dunkirk")).toBeInTheDocument();
-  // });
 
   it("filters movies based on search query", async () => {
     render(
