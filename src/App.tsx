@@ -22,8 +22,9 @@ function App() {
           <Route path="/" element={<HomeScreen />} />
           <Route path="/favorites" element={<FavoriteScreen />} />
           <Route path="/movies" element={<AllMoviesScreen />} />
-          <Route path="/movies/:id" element={<MovieDetailScreen />} />
-        </Route>
+          <Route path="/movies/:title" element={<MovieDetailScreen />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
       ) : (
         <>
           {/* oskyddade rutter */}

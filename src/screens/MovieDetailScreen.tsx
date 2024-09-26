@@ -1,20 +1,32 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MyContext } from "../constants/context";
-import { useParams, Link } from "react-router-dom"; // För att få filmens ID från URL:en
+import { useParams, Link } from "react-router-dom"; // För att få filmens title från URL:en
+import slugify from "slugify";
+import { Movie } from "../constants/types";
 
 function MovieDetails() {
-  const { id } = useParams();
-  const { movie, handleFetchMovieById, loading, error } = useContext(MyContext);
-  // Hämta specifik film baserat på ID
-  useEffect(() => {
-    if (id && (!movie || movie.id !== id)) {
-      handleFetchMovieById(id); // Hämta film om ID matchar inte det nuvarande
-    }
-  }, [id, handleFetchMovieById, movie]); // Kör om id eller fetchMovieById ändras
+  const { title } = useParams<{ title: string }>();
+  const { movies, loading, error } = useContext(MyContext); // movies istället för enskilt movie
 
-  if (loading) return <p>Loading...</p>;
+  const createSlug = (title: string) => {
+    return slugify(title, { lower: true, strict: true });
+  };
+
+  // Funktion för att avslugifiera och hitta rätt film
+  const findMovieBySlug = (
+    movies: Record<string, Movie>,
+    slug: string,
+  ): Movie | undefined => {
+    return Object.values(movies).find(
+      (movie) => createSlug(movie.title) === slug,
+    );
+  };
+
+  const movie = findMovieBySlug(movies, title || ""); // Hitta filmen baserat på title-slug
+
+  if (loading) return <p>Laddar...</p>;
   if (error) return <p>{error}</p>;
-  if (!movie) return <p>No movie found</p>;
+  if (!movie) return <p>Ingen film hittad</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -29,31 +41,29 @@ function MovieDetails() {
           <img
             src={movie.thumbnail}
             alt={movie.title}
-            className="w-1/3 h-auto rounded-lg mr-6" // Justera storleken på bilden
+            className="w-1/3 h-auto rounded-lg mr-6"
           />
           <div className="w-2/3">
-            {" "}
-            {/* Texten tar upp 2/3 av utrymmet */}
             <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
             <p className="text-lg mb-2">
               <strong>Synopsis:</strong> {movie.synopsis}
             </p>
             <p className="mb-2">
-              <strong>Year:</strong> {movie.year}
+              <strong>År:</strong> {movie.year}
             </p>
             <p className="mb-2">
-              <strong>Rating:</strong> {movie.rating}
+              <strong>Betyg:</strong> {movie.rating}
             </p>
             <p className="mb-2">
               <strong>Genre:</strong> {movie.genre}
             </p>
             <p className="mb-2">
-              <strong>Actors:</strong> {movie.actors.join(", ")}
+              <strong>Skådespelare:</strong> {movie.actors.join(", ")}
             </p>
           </div>
         </div>
       ) : (
-        <p>No movie found</p>
+        <p>Ingen film hittad</p>
       )}
     </div>
   );
