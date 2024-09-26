@@ -7,11 +7,15 @@ import "@testing-library/jest-dom";
 // Mock movie data
 const mockMovies = {
   movie1: {
-    title: "The Godfather: Part II",
+    id: "1",
+    title: "Inception",
+    year: 2010,
+    rating: "PG-13",
+    actors: [],
+    genre: "",
+    synopsis: "",
+    thumbnail: "",
     isTrending: true,
-    year: 1974,
-    genre: "Crime, Drama",
-    button: "Favorite",
   },
 };
 
@@ -26,6 +30,15 @@ const mockContextValue = {
   removeFavorite: vi.fn(), // Mock removeFavorite function
   login: vi.fn(), // Mock login function
   logout: vi.fn(), // Mock logout function
+
+  movie: null,
+
+  success: true,
+  registerUser: vi.fn(),
+  addMovie: vi.fn(),
+  loginUser: vi.fn(),
+  logoutUser: vi.fn(),
+  fetchMovieById: vi.fn(),
 };
 
 describe("Trending Component", () => {
