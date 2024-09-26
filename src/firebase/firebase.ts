@@ -1,6 +1,7 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database"; // Om du använder Realtime Database
+import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth"; // Om du använder Realtime Database
 
 // Din Firebase-konfiguration (med Web SDK-nycklar)
 const firebaseConfig = {
@@ -17,5 +18,6 @@ const firebaseConfig = {
 // Initiera Firebase-appen med Web SDK
 const app = initializeApp(firebaseConfig);
 
-// Exportera appen och andra Firebase-tjänster
+export const auth = getAuth(app); // Initiera auth-objektet
+export const database = getDatabase(app); // Initiera databasen
 export default app;
