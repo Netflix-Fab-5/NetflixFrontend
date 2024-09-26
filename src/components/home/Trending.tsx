@@ -7,7 +7,7 @@ const Trending = () => {
 
   // Filter the trending movies
   const trendingMovies = Object.values(movies || {}).filter(
-    (movie) => movie.isTrending
+    (movie) => movie.isTrending,
   );
 
   // Handle bookmarking a movie
@@ -19,7 +19,7 @@ const Trending = () => {
     <MovieCarousel
       movies={trendingMovies}
       title="Trending Movies"
-      onBookmark={handleBookmark}  // Pass the handler to MovieCarousel
+      onBookmark={handleBookmark} // Pass the handler to MovieCarousel
     />
   );
 };

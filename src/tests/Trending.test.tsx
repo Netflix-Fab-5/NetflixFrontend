@@ -1,12 +1,18 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { MyContext } from '../constants/context.tsx';
-import Trending from '../components/home/Trending.tsx';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { MyContext } from "../constants/context.tsx";
+import Trending from "../components/home/Trending.tsx";
 import { describe, it, expect, vi } from "vitest";
 import "@testing-library/jest-dom";
 
 // Mock movie data
 const mockMovies = {
-  movie1: { title: "The Godfather: Part II", isTrending: true, year: 1974, genre: "Crime, Drama", button: "Favorite" }
+  movie1: {
+    title: "The Godfather: Part II",
+    isTrending: true,
+    year: 1974,
+    genre: "Crime, Drama",
+    button: "Favorite",
+  },
 };
 
 // Mock the context value
@@ -22,23 +28,24 @@ const mockContextValue = {
   logout: vi.fn(), // Mock logout function
 };
 
-describe('Trending Component', () => {
-  it.only('renders trending movies and calls addFavorite when bookmarking', () => {
+describe("Trending Component", () => {
+  it.only("renders trending movies and calls addFavorite when bookmarking", () => {
     render(
       <MyContext.Provider value={mockContextValue}>
         <Trending />
-      </MyContext.Provider>
+      </MyContext.Provider>,
     );
 
     // Check if trending movies are displayed
     expect(screen.getByText("The Godfather: Part II")).toBeInTheDocument();
-
 
     // Simulate clicking the bookmark button for Movie 1
     const bookmarkButton = screen.getByText("Favorite"); // Adjust selector if necessary
     fireEvent.click(bookmarkButton);
 
     // Check if addFavorite was called
-    expect(mockContextValue.addFavorite).toHaveBeenCalledWith(mockMovies.movie1);
+    expect(mockContextValue.addFavorite).toHaveBeenCalledWith(
+      mockMovies.movie1,
+    );
   });
 });

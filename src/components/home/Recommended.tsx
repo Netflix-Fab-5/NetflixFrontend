@@ -11,13 +11,13 @@ const Recommended = () => {
   );
 
   return (
-    <MovieCarousel 
-      movies={recommendedMovies} 
-      title="Recommended Movies" 
+    <MovieCarousel
+      movies={recommendedMovies}
+      title="Recommended Movies"
       onBookmark={(movie) => {
         // Implement the bookmark functionality here
         console.log(`Bookmarking movie: ${movie.title}`);
-      }} 
+      }}
     />
   );
 };

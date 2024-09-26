@@ -1,29 +1,20 @@
-import { useState } from "react";  // Import useState for managing favorites locally
+import { useContext } from "react"; // Import useContext
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Movie } from "../../constants/context";  // Import Movie interface
+import { Movie, MyContext } from "../../constants/context"; // Import Movie interface and context
 
 interface MovieCarouselProps {
   movies: Movie[];
   title: string;
-  onBookmark: (movie: Movie) => void;  // onBookmark prop to pass function
 }
 
-const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title, onBookmark }) => {
-  // Local state to manage favorites within the component
-  const [favorites, setFavorites] = useState<Movie[]>([]);
-
-  // Add movie to favorites if it doesn't already exist
-  const addFavorite = (movie: Movie) => {
-    if (!favorites.find((fav) => fav.title === movie.title)) {
-      setFavorites([...favorites, movie]);
-      onBookmark(movie);  // Trigger onBookmark when adding a favorite
-    }
-  };
+const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
+  // Get context values
+  const { addFavorite, removeFavorite } = useContext(MyContext); // Destructure addFavorite from context
 
   return (
     <div className="carousel-container">
@@ -48,6 +39,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title, onBookmark
               <p>{movie.year}</p>
               {/* Add the Bookmark Button here */}
               <button onClick={() => addFavorite(movie)}>Favorite</button>
+              <button onClick={() => removeFavorite(movie)}>
+                Remove Favorite
+              </button>
             </div>
           </SwiperSlide>
         ))}
