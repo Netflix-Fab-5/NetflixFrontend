@@ -72,7 +72,7 @@ const mockContextValue = {
   fetchMovieById: vi.fn(),
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
-  favorites: null,
+  favorites: [],
 };
 
 describe("SearchMovie", () => {
