@@ -1,4 +1,3 @@
-// Trending.tsx
 import { useContext } from "react";
 import { MyContext } from "../../constants/context";
 import MovieCarousel from "./MovieCarousel";
@@ -6,7 +5,7 @@ import MovieCarousel from "./MovieCarousel";
 const Trending = () => {
   const { movies } = useContext(MyContext);
 
-  // Filtrera fram de filmer som trendar
+  // Filter the trending movies
   const trendingMovies = Object.values(movies || {}).filter(
     (movie) => movie.isTrending,
   );

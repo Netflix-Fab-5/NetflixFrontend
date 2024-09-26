@@ -1,4 +1,3 @@
-// Recommended.tsx
 import { useContext } from "react";
 import { MyContext } from "../../constants/context";
 import MovieCarousel from "./MovieCarousel";

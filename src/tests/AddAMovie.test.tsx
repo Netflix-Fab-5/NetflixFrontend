@@ -116,7 +116,9 @@ describe("AddAMovie", () => {
     // Wait for the error message to display
     await waitFor(() =>
       expect(
-        screen.getByText("Failed to add new movie. Please try again."),
+        screen.getByText(
+          "Misslyckades med att lägga till ny film. Försök igen.",
+        ),
       ).toBeInTheDocument(),
     );
   });
