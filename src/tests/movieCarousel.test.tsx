@@ -1,11 +1,12 @@
 // MovieCarousel.test.tsx
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { Movie } from "../constants/context";
 import MovieCarousel from "../components/home/MovieCarousel";
+import { MyContextProvider } from "../constants/context"; // Import MyContextProvider
 import "@testing-library/jest-dom";
 
-// Skapa ett testdata
+// Create test data
 const mockMovies: Movie[] = [
   {
     id: "1",
@@ -32,13 +33,24 @@ const mockMovies: Movie[] = [
 ];
 
 describe("MovieCarousel", () => {
-  it("renders with the correct title and movies", () => {
-    render(<MovieCarousel movies={mockMovies} title="Recommended Movies" />);
+  // Set up sessionStorage before each test
+  beforeEach(() => {
+    sessionStorage.setItem("isLoggedIn", "true"); // Set isLoggedIn to true
+  });
 
-    // Kontrollera att titeln renderas korrekt
+  it("renders with the correct title and movies", () => {
+    render(
+      <MyContextProvider>
+        {" "}
+        {/* Wrap MovieCarousel with MyContextProvider */}
+        <MovieCarousel movies={mockMovies} title="Recommended Movies" />
+      </MyContextProvider>,
+    );
+
+    // Check that the title renders correctly
     expect(screen.getByText("Recommended Movies")).toBeInTheDocument();
 
-    // Kontrollera att filmerna renderas korrekt
+    // Check that the movies render correctly
     mockMovies.forEach((movie) => {
       expect(screen.getByAltText(movie.title)).toBeInTheDocument();
       expect(screen.getByText(movie.title)).toBeInTheDocument();
