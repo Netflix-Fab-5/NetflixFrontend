@@ -42,7 +42,7 @@ const mockContextValue = {
 };
 
 describe("Trending Component", () => {
-  it.only("renders trending movies and calls addFavorite when bookmarking", () => {
+  it("renders trending movies and calls addFavorite when bookmarking", () => {
     render(
       <MyContext.Provider value={mockContextValue}>
         <Trending />
