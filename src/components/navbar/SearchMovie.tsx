@@ -54,7 +54,7 @@ function SearchMovie() {
       </form>
       <ul
         className="absolute left-0 right-0 mx-auto w-80 bg-white shadow-lg rounded-md divide-y divide-gray-200 z-50"
-        style={{ maxHeight: "425px", overflowY: "auto" }} // Justera för att visa 3,5 filmer
+        style={{ maxHeight: "425px", overflowY: "auto" }}
       >
         {" "}
         {results.length > 0 &&
@@ -69,8 +69,10 @@ function SearchMovie() {
                 className="w-8 h-12 object-cover rounded-md mr-4"
               />
               <div>
-                <h3 className="text-lg font-semibold">{movie.title}</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="text-lg font-semibold text-left">
+                  {movie.title}
+                </h3>
+                <p className="text-sm text-gray-500 text-left">
                   {movie.year} | {movie.rating}
                 </p>
               </div>
