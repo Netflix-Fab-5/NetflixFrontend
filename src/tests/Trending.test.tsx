@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 const mockMovies = {
   movie1: {
     id: "1",
-    title: "Inception",
+    title: "The Godfather: Part II",
     year: 2010,
     rating: "PG-13",
     actors: [],
