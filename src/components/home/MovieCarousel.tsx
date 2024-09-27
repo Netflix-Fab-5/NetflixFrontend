@@ -5,7 +5,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Movie, MyContext } from "../../constants/context"; // Import Movie interface and context
+import { MyContext } from "../../constants/context"; // Import Movie interface and context
+import { Movie } from "../../constants/types";
 
 interface MovieCarouselProps {
   movies: Movie[];

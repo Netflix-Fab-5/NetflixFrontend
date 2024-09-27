@@ -41,3 +41,72 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Header.css */
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  padding: 100px;
+  height: 100vh;
+  text-align: center;
+  transition: height 1s ease-in-out;
+}
+
+.header.shrink {
+  height: 35vh;
+}
+
+.netflix-logo {
+  width: 240px;
+  height: auto;
+  margin-bottom: 20px;
+  animation: fadeInLogo 2s ease-in-out;
+  transition: transform 1s ease-in-out;
+  filter: hue-rotate(90deg) saturate(500%);
+}
+
+.header.shrink .netflix-logo {
+  transform: scale(0.8);
+}
+
+.header-title h1 {
+  color: red;
+  font-size: 3.5rem;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  margin: 0;
+  animation: fadeInText 2s ease-in-out;
+}
+
+/* Animering för logotypen */
+@keyframes fadeInLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animering för texten */
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

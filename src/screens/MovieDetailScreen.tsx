@@ -4,15 +4,13 @@ import { useParams, Link } from "react-router-dom"; // För att få filmens ID f
 
 function MovieDetails() {
   const { id } = useParams();
-  const { movie, fetchMovieById, loading, error } = useContext(MyContext);
-
+  const { movie, handleFetchMovieById, loading, error } = useContext(MyContext);
+  // Hämta specifik film baserat på ID
   useEffect(() => {
-    console.log("Fetching movie with ID:", id);
     if (id && (!movie || movie.id !== id)) {
-      console.log("Fetching movie with ID:", id);
-      fetchMovieById(id);
+      handleFetchMovieById(id); // Hämta film om ID matchar inte det nuvarande
     }
-  }, [id, fetchMovieById, movie]);
+  }, [id, handleFetchMovieById, movie]); // Kör om id eller fetchMovieById ändras
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

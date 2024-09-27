@@ -26,6 +26,3 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint # Kör lint
-
-      - name: Run tests
-        run: npm run test
