@@ -21,10 +21,9 @@ export type ContextType = {
   error: string | null;
   success: boolean;
   user: User | null; // Lägger till användarens state
-  addMovie: (movie: Movie) => Promise<void>;
-  handleLoginUser: (user: { email: string; password: string }) => Promise<void>;
-  handleLogoutUser: () => void;
+  handleFetchMovies: () => Promise<void>;
   handleFetchMovieById: (id: string) => Promise<Movie | null>;
+  addMovie: (movie: Movie) => Promise<void>;
   addFavorite: (movie: Movie) => void; // Funktion för att lägga till favoriter
   removeFavorite: (movie: Movie) => void; // Funktion för att ta bort favoriter
 };

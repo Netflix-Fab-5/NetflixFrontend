@@ -1,12 +1,14 @@
 // Import necessary dependencies
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useCallback,
+  ReactNode,
+  useEffect,
+} from "react";
 import { User } from "firebase/auth";
 import { fetchMovies, fetchMovieById, addMovie } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
-import {
-  loginUser as firebaseLoginUser,
-  logoutUser,
-  onAuthStateChanged,
-} from "../firebase/firebaseAuth"; // Importera auth-logik
+import { onAuthStateChanged } from "../firebase/firebaseAuth"; // Importera auth-logik
 import { Movie, ContextType } from "./types";
 
 const MyContext = createContext<ContextType>(null!);
@@ -21,38 +23,19 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [success, setSuccess] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
 
-  // Fetch all movies using Firebase API
-  useEffect(() => {
-    const loadMovies = async () => {
-      setLoading(true);
-      try {
-        const moviesData = await fetchMovies();
-        setMovies(moviesData);
-        setError(null);
-      } catch (err) {
-        console.log(err);
-        setError("Något gick fel vid hämtning av data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadMovies();
-  }, []);
-
-  // Ladda användarinformation och favoriter från sessionStorage när komponenten först laddas
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
-    const storedFavorites = sessionStorage.getItem("favorites");
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Återställ användarens data från sessionStorage
-    }
-    if (storedFavorites) {
-      setFavorites(JSON.parse(storedFavorites)); // Återställ favoriter från sessionStorage
+  const handleFetchMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const moviesData = await fetchMovies();
+      setMovies(moviesData);
+      setError(null);
+    } catch (err) {
+      console.log(err);
+      setError("Något gick fel vid hämtning av data");
+    } finally {
+      setLoading(false);
     }
   }, []);
-
   // Lyssna på autentiseringsstatus från Firebase och uppdatera user-state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((firebaseUser) => {
@@ -68,17 +51,20 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Funktion för att hämta en specifik film
-  const handleFetchMovieById = async (id: string): Promise<Movie | null> => {
-    try {
-      const fetchedMovie = await fetchMovieById(id);
-      setMovie(fetchedMovie); // Sätt movie-staten
-      return fetchedMovie;
-    } catch (err) {
-      console.log(err);
-      setError("Kunde inte hämta filmen.");
-      return null;
-    }
-  };
+  const handleFetchMovieById = useCallback(
+    async (id: string): Promise<Movie | null> => {
+      try {
+        const fetchedMovie = await fetchMovieById(id);
+        setMovie(fetchedMovie); // Sätt movie-staten
+        return fetchedMovie;
+      } catch (err) {
+        console.log(err);
+        setError("Kunde inte hämta filmen.");
+        return null;
+      }
+    },
+    [],
+  );
 
   // Lägg till en ny film
   const handleAddMovie = async (newMovie: Movie) => {
@@ -90,42 +76,6 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       console.log(err);
       setError("Failed to add new movie. Please try again.");
       setSuccess(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Logga in användaren och spara i sessionsStorage
-  const handleLoginUser = async (userCredentials: {
-    email: string;
-    password: string;
-  }) => {
-    setLoading(true);
-    try {
-      const { userData } = await firebaseLoginUser(userCredentials);
-      setUser(userData); // Uppdaterar användaren i Context efter lyckad inloggning
-      sessionStorage.setItem("user", JSON.stringify(userData)); // Spara användaren i sessionStorage
-      setError(null);
-    } catch (err: unknown) {
-      console.log(err);
-
-      setError("Felaktigt användarnamn eller lösenord");
-      setSuccess(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Logga ut användaren
-  const handleLogoutUser = async () => {
-    setLoading(true);
-    try {
-      await logoutUser();
-      setUser(null); // Sätter användaren till null efter utloggning
-      sessionStorage.removeItem("user"); // Ta bort användaren från sessionStorage
-    } catch (err: unknown) {
-      console.log(err);
-      setError("Något gick fel vid utloggning");
     } finally {
       setLoading(false);
     }
@@ -162,10 +112,9 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         loading,
         error,
         success,
-        user, // Exponera användarinformation i Context
+        user,
+        handleFetchMovies, // Exponera användarinformation i Context
         addMovie: handleAddMovie,
-        handleLoginUser,
-        handleLogoutUser,
         handleFetchMovieById,
         addFavorite,
         removeFavorite,

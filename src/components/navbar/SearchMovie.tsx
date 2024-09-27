@@ -1,17 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import Fuse from "fuse.js";
-import { MyContext, Movie } from "../../constants/context";
+import { MyContext } from "../../constants/context";
+import { Movie } from "../../constants/types";
 
 function SearchMovie() {
-  const context = useContext(MyContext);
-  if (!context) {
-    throw new Error("SearchMovie must be used within a MyContextProvider");
-  }
-  const { movies, loading, error } = context;
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Movie[]>([]); // Använd Movie[] för results-typen
+  const { movies, loading, error } = useContext(MyContext); // Använd context för att hämta filmer, loading och error
+  const [query, setQuery] = useState<string>(""); // Söksträngen
+  const [results, setResults] = useState<Movie[]>([]); // Resultatlista baserad på Movie-typen
 
-  const fuse = new Fuse(Object.values(movies), {
+  const fuse = new Fuse(movies ? Object.values(movies) : [], {
     keys: ["title"],
     threshold: 0.5,
   });

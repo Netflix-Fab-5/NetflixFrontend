@@ -1,30 +1,39 @@
-import { useState, useContext } from "react";
-import { MyContext } from "../constants/context";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { loginUser } from "../firebase/firebaseAuth";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 function LoginScreen() {
-  const { handleLoginUser, error } = useContext(MyContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // Funktion för att hantera inloggningsförsöket
-  const handleLogin = (e: React.FormEvent) => {
+  if (user) {
+    navigate("/");
+  }
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("test 1, rad13");
-    const userCredentials = {
-      email, // Använd email och password för inloggning
-      password,
-    };
-    console.log("test 2");
+    setError(null); // Återställ eventuella felmeddelanden
 
-    handleLoginUser(userCredentials); // Anropar funktionen från context
-    console.log("test 3");
+    try {
+      await loginUser({ email, password }); // Logga in användaren med Firebase Auth
+      navigate("/"); // Omdirigera till HomeScreen efter lyckad inloggning
+    } catch (err: unknown) {
+      console.log(err);
+      setError("Inloggningen misslyckades. Kontrollera dina uppgifter.");
+    }
   };
 
   return (
     <div>
+      {error && (
+        <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
+      )}
+
       <h2>Logga in</h2>
-      {error && <p>{error}</p>}
 
       <form onSubmit={handleLogin}>
         <div>
@@ -51,9 +60,6 @@ function LoginScreen() {
 
         <button type="submit">Logga in</button>
       </form>
-      <Link to="/register">
-        <button>Registrera dig</button>
-      </Link>
     </div>
   );
 }

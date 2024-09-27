@@ -11,15 +11,14 @@ export function useAuth() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        setUser(firebaseUser); // Sätt användaren om någon är inloggad
+        setUser(firebaseUser); // Uppdatera endast state med användaren
       } else {
         setUser(null); // Om ingen är inloggad, sätt användaren till null
-        sessionStorage.clear(); // Rensa sessionStorage om användaren loggas ut
+        navigate("/login"); // Omdirigera till inloggningssidan
       }
       setLoading(false); // Stoppa laddning när autentiseringsstatus är laddad
     });
 
-    // Avsluta lyssnaren när komponenten avmonteras
     return () => unsubscribe();
   }, [navigate]);
 
