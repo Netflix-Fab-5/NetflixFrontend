@@ -3,13 +3,12 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "firebase/auth";
 import { fetchMovies, fetchMovieById, addMovie } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
 import {
-  loginUser,
+  loginUser as firebaseLoginUser,
   logoutUser,
   onAuthStateChanged,
 } from "../firebase/firebaseAuth"; // Importera auth-logik
 import { Movie, ContextType } from "./types";
 
-// Create Context
 const MyContext = createContext<ContextType>(null!);
 
 // Create a provider component
@@ -31,6 +30,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         setMovies(moviesData);
         setError(null);
       } catch (err) {
+        console.log(err);
         setError("Något gick fel vid hämtning av data");
       } finally {
         setLoading(false);
@@ -74,6 +74,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       setMovie(fetchedMovie); // Sätt movie-staten
       return fetchedMovie;
     } catch (err) {
+      console.log(err);
       setError("Kunde inte hämta filmen.");
       return null;
     }
@@ -85,7 +86,8 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       await addMovie(newMovie);
       setSuccess(true); // Markera att operationen lyckades
       setError(null);
-    } catch (err) {
+    } catch (err: unknown) {
+      console.log(err);
       setError("Failed to add new movie. Please try again.");
       setSuccess(false);
     } finally {
@@ -100,11 +102,13 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }) => {
     setLoading(true);
     try {
-      const { userData } = await loginUser(userCredentials);
+      const { userData } = await firebaseLoginUser(userCredentials);
       setUser(userData); // Uppdaterar användaren i Context efter lyckad inloggning
       sessionStorage.setItem("user", JSON.stringify(userData)); // Spara användaren i sessionStorage
       setError(null);
-    } catch (err) {
+    } catch (err: unknown) {
+      console.log(err);
+
       setError("Felaktigt användarnamn eller lösenord");
       setSuccess(false);
     } finally {
@@ -119,7 +123,8 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       await logoutUser();
       setUser(null); // Sätter användaren till null efter utloggning
       sessionStorage.removeItem("user"); // Ta bort användaren från sessionStorage
-    } catch (err) {
+    } catch (err: unknown) {
+      console.log(err);
       setError("Något gick fel vid utloggning");
     } finally {
       setLoading(false);
@@ -159,9 +164,9 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         success,
         user, // Exponera användarinformation i Context
         addMovie: handleAddMovie,
-        loginUser: handleLoginUser,
-        logoutUser: handleLogoutUser,
-        fetchMovieById: handleFetchMovieById,
+        handleLoginUser,
+        handleLogoutUser,
+        handleFetchMovieById,
         addFavorite,
         removeFavorite,
       }}

@@ -3,21 +3,22 @@ import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 
 function LoginScreen() {
-  const { loginUser, error } = useContext(MyContext);
-  const [username, setUsername] = useState<string>("");
+  const { handleLoginUser, error } = useContext(MyContext);
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   // Funktion för att hantera inloggningsförsöket
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const user = {
-      username,
+    console.log("test 1, rad13");
+    const userCredentials = {
+      email, // Använd email och password för inloggning
       password,
-      email: "", // Om email inte behövs för inloggning, kan detta vara tomt
     };
+    console.log("test 2");
 
-    loginUser(user);
+    handleLoginUser(userCredentials); // Anropar funktionen från context
+    console.log("test 3");
   };
 
   return (
@@ -27,12 +28,12 @@ function LoginScreen() {
 
       <form onSubmit={handleLogin}>
         <div>
-          <label htmlFor="username">Användarnamn:</label>
+          <label htmlFor="email">email:</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
