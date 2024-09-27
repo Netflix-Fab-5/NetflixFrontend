@@ -22,7 +22,7 @@ function NavBar() {
   return (
     <>
       <div>
-        <Header title={"NETFLIX"} />
+        <Header />
 
         <BookmarkButton />
         <MoviesButton />

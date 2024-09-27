@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { MyContext, Movie } from "../../constants/context"; // Import Movie interface
+import { MyContext } from "../../constants/context"; // Import Movie interface
+import { Movie } from "../../constants/types";
 
 function AddAMovie() {
   const { error, success, addMovie } = useContext(MyContext)!;
