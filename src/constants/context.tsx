@@ -24,9 +24,14 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
 
   const handleFetchMovies = useCallback(async () => {
+    const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) return; // Kontrollera att användarens UID finns
+
     setLoading(true);
     try {
-      const moviesData = await fetchMovies();
+      const moviesData = await fetchMovies(user.uid); // Skicka användarens UID
       setMovies(moviesData);
       setError(null);
     } catch (err) {
@@ -36,6 +41,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   }, []);
+
   // Lyssna på autentiseringsstatus från Firebase och uppdatera user-state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((firebaseUser) => {
@@ -53,9 +59,14 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   // Funktion för att hämta en specifik film
   const handleFetchMovieById = useCallback(
     async (id: string): Promise<Movie | null> => {
+      const storedUser = sessionStorage.getItem("user");
+      const user = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!user || !user.uid) return null;
+
       try {
-        const fetchedMovie = await fetchMovieById(id);
-        setMovie(fetchedMovie); // Sätt movie-staten
+        const fetchedMovie = await fetchMovieById(id, user.uid);
+        setMovie(fetchedMovie);
         return fetchedMovie;
       } catch (err) {
         console.log(err);
@@ -68,9 +79,14 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Lägg till en ny film
   const handleAddMovie = async (newMovie: Movie) => {
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) return;
+
     try {
-      await addMovie(newMovie);
-      setSuccess(true); // Markera att operationen lyckades
+      await addMovie(newMovie, user.uid);
+      setSuccess(true);
       setError(null);
     } catch (err: unknown) {
       console.log(err);
