@@ -3,6 +3,8 @@ import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 import { getRatingDescription } from "../constants/ratingUtils";
+import { FaEdit } from "react-icons/fa";
+//import { useNavigate } from "react-router-dom";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
@@ -24,6 +26,11 @@ const AllMoviesScreen: React.FC = () => {
     favorites,
   } = useContext(MyContext);
 
+  // const handleEdit = (title: string) => {
+  //   //  const slug = createSlug(title);
+  //   //  navigate(`/movies/edit/${slug}`);
+  //   console.log(title);
+  // };
   useEffect(() => {
     handleFetchMovies(); // Hämta filmer när sidan laddas
   }, [handleFetchMovies]);
@@ -114,6 +121,13 @@ const AllMoviesScreen: React.FC = () => {
                 (e.currentTarget.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)")
               }
             >
+              {/* {admin && ( 
+                <FaEdit
+                  size={32}
+                  className="absolute p-1 top-15 text-green-700 bg-white"
+                  onClick={() => handleEdit(movie.title)}
+                />
+              )} */}
               {/* Navigate to the movie page with a slugified title */}
               <Link to={`/movies/${createSlug(movie.title)}`}>
                 <img

@@ -9,6 +9,7 @@ import "swiper/css/scrollbar";
 import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 import { getRatingDescription } from "../../constants/ratingUtils";
+import { FaEdit } from "react-icons/fa";
 
 const createSlug = (title: string) => {
   return title
@@ -25,6 +26,8 @@ interface MovieCarouselProps {
 const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
   const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
   const navigate = useNavigate();
+
+  const admin: boolean = true; //will change this with admin later
 
   const handleThumbnailClick = (title: string) => {
     const slug = createSlug(title);
@@ -50,6 +53,12 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
             } else {
               addFavorite(movie);
             }
+          };
+
+          const handleEdit = (title: string) => {
+            //  const slug = createSlug(title);
+            //  navigate(`/movies/edit/${slug}`);
+            console.log(title);
           };
 
           return (
