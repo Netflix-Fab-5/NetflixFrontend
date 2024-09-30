@@ -3,7 +3,7 @@ import { database } from "./firebase";
 import { Movie } from "../constants/types";
 
 // Max antal requests per minut
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 20;
 const RATE_LIMIT_TIME_WINDOW = 60 * 1000; // 60 sekunder (1 minut)
 
 // Funktion för att kolla och uppdatera rate limit för en användare
