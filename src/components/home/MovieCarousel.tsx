@@ -29,6 +29,8 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
   const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
   const navigate = useNavigate();
 
+  const admin: boolean = true; //will change this with admin later
+
   const handleThumbnailClick = (title: string) => {
     const slug = createSlug(title);
     navigate(`/movies/${slug}`);
