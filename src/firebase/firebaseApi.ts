@@ -107,7 +107,9 @@ export const fetchGenres = async (userId: string): Promise<string[]> => {
   Object.values(movies).forEach((movie) => {
     const typedMovie = movie as Movie;
     if (typedMovie.genre) {
-      const genres = typedMovie.genre.split(",").map((genre: string) => genre.trim()); // Dela genrer vid kommatecken och trimma mellanslag
+      const genres = typedMovie.genre
+        .split(",")
+        .map((genre: string) => genre.trim()); // Dela genrer vid kommatecken och trimma mellanslag
       genres.forEach((genre: string) => genreSet.add(genre)); // Lägg till varje unik genre i setet
     }
   });
