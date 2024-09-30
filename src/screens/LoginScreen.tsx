@@ -9,6 +9,7 @@ function LoginScreen() {
   const auth = getAuth();
   const navigate = useNavigate();
   const { error } = useContext(MyContext);
+  console.log(error);
 
   useEffect(() => {
     const uiConfig = {
@@ -63,11 +64,13 @@ function LoginScreen() {
   }, [auth, navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h2 className="text-3xl font-bold mb-6">Logga in</h2>
-      {error && <div className="text-red-500 mb-4">{error}</div>}{" "}
-      {/* Visa felmeddelande om det finns */}
-      <div id="firebaseui-auth-container"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-stone-900">
+      <div className="firebaseui-container">
+        <h2 className="text-3xl font-bold text-center mb-6 text-green-100">
+          Login
+        </h2>
+        <div id="firebaseui-auth-container"></div>
+      </div>
     </div>
   );
 }
