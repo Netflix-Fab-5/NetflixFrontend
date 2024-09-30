@@ -14,20 +14,21 @@ function App() {
   if (loading) {
     return <div>Laddar...</div>;
   }
+
   return (
     <Routes>
-      {/* Skyddade rutter */}
       {user ? (
+        // Korrigera här genom att använda Route korrekt utan fragment
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/favorites" element={<FavoriteScreen />} />
           <Route path="/movies" element={<AllMoviesScreen />} />
           <Route path="/movies/:title" element={<MovieDetailScreen />} />
           <Route path="*" element={<Navigate to="/" />} />
-        </>
+        </Route>
       ) : (
+        // För icke-inloggade användare, rendera bara login-rutter
         <>
-          {/* oskyddade rutter */}
           <Route path="/login" element={<LoginScreen />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </>
