@@ -31,7 +31,6 @@ function SearchMovie() {
   }, [query]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Results:", results);
     const value = e.target.value;
     setQuery(value);
 
