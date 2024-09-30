@@ -166,6 +166,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         filteredMovies, // Add the missing property to the context value
         loading,
         error,
+        setError,
         success,
         user,
         handleFetchMovies, // Exponera användarinformation i Context
