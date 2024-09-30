@@ -88,3 +88,31 @@ export const addMovie = async (newMovie: Movie, userId: string) => {
   const moviesRef = ref(database, "movies");
   await push(moviesRef, newMovie);
 };
+
+// Hämtar alla kategorier (genrer) från Firebase
+export const fetchGenres = async (userId: string): Promise<string[]> => {
+  const isAllowed = await checkRateLimit(userId);
+  if (!isAllowed) {
+    throw new Error("Too many requests. Please try again later.");
+  }
+
+  const moviesRef = ref(database, "movies");
+  const snapshot = await get(moviesRef);
+  const movies = snapshot.val();
+
+  // Skapa en Set för att hålla unika genrer
+  const genreSet = new Set<string>();
+
+  // Iterera genom filmerna och extrahera genrer
+  Object.values(movies).forEach((movie) => {
+    const typedMovie = movie as Movie;
+    if (typedMovie.genre) {
+      const genres = typedMovie.genre
+        .split(",")
+        .map((genre: string) => genre.trim()); // Dela genrer vid kommatecken och trimma mellanslag
+      genres.forEach((genre: string) => genreSet.add(genre)); // Lägg till varje unik genre i setet
+    }
+  });
+
+  return Array.from(genreSet); // Returnera unika genrer som en array
+};

@@ -55,6 +55,9 @@ const mockContextValue = {
   addMovie: vi.fn(),
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
+  filteredMovies: [],
+  genres: [],
+  filterMoviesByGenre: vi.fn(),
 };
 
 describe("SearchMovie Component", () => {

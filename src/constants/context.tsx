@@ -7,7 +7,12 @@ import {
   useEffect,
 } from "react";
 import { User } from "firebase/auth";
-import { fetchMovies, fetchMovieById, addMovie } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
+import {
+  fetchMovies,
+  fetchMovieById,
+  addMovie,
+  fetchGenres,
+} from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
 import { onAuthStateChanged } from "../firebase/firebaseAuth"; // Importera auth-logik
 import { Movie, ContextType } from "./types";
 
@@ -17,14 +22,36 @@ const MyContext = createContext<ContextType>(null!);
 function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Record<string, Movie>>({});
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   const [favorites, setFavorites] = useState<Movie[]>(() => {
     const savedFavorites = sessionStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
+  const [genres, setGenres] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
+
+  const handleFetchGenres = useCallback(async () => {
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) return;
+
+    try {
+      const fetchedGenres = await fetchGenres(user.uid);
+      setGenres(fetchedGenres || []); // Se till att alltid sätta en tom array om inget hittas
+    } catch (err) {
+      console.log("Kunde inte hämta genrer:", err);
+      setError("Misslyckades med att hämta genrer.");
+    }
+  }, []);
+
+  // Använd handleFetchGenres i useEffect
+  useEffect(() => {
+    handleFetchGenres(); // Hämta genrer vid montering
+  }, [handleFetchGenres]);
 
   const handleFetchMovies = useCallback(async () => {
     const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
@@ -36,6 +63,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     try {
       const moviesData = await fetchMovies(user.uid); // Skicka användarens UID
       setMovies(moviesData);
+      setFilteredMovies(Object.values(moviesData));
       setError(null);
     } catch (err) {
       console.log(err);
@@ -79,6 +107,19 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     },
     [],
   );
+
+  // Denna funktion kommer att filtrera filmer baserat på valda genrer
+  const filterMoviesByGenre = (selectedGenres: string[]): void => {
+    if (selectedGenres.length === 0) {
+      // Om inga genrer är valda, visa alla filmer
+      setFilteredMovies(Object.values(movies));
+      return;
+    }
+    const filtered = Object.values(movies).filter((movie) =>
+      selectedGenres.some((genre) => movie.genre.includes(genre)),
+    );
+    setFilteredMovies(filtered);
+  };
 
   // Lägg till en ny film
   const handleAddMovie = async (newMovie: Movie) => {
@@ -126,7 +167,9 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       value={{
         movies,
         movie,
+        genres,
         favorites,
+        filteredMovies, // Add the missing property to the context value
         loading,
         error,
         success,
@@ -136,6 +179,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         handleFetchMovieById,
         addFavorite,
         removeFavorite,
+        filterMoviesByGenre, // Add the missing function to the context value
       }}
     >
       {children}
