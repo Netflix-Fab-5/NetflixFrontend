@@ -119,6 +119,13 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
+  useEffect(() => {
+    const savedFavorites = sessionStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  }, []);
+
   return (
     <MyContext.Provider
       value={{
