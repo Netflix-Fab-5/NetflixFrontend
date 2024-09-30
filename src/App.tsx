@@ -7,6 +7,7 @@ import MovieDetailScreen from "./screens/MovieDetailScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ProtectedLayout from "./components/ProtectedLayout";
 import AddAMovie from "./components/admin/AddAMovie";
+import EditAMovie from "./components/admin/EditAMovie";
 
 function App() {
   const { user, loading } = useAuth();
@@ -26,6 +27,7 @@ function App() {
             <Route path="/movies" element={<AllMoviesScreen />} />
 
             <Route path="/movies/:title" element={<MovieDetailScreen />} />
+            <Route path="/movies/edit/:movieId" element={<EditAMovie />} />
             <Route path="/new" element={<AddAMovie />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>

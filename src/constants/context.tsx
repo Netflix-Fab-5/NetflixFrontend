@@ -12,6 +12,7 @@ import {
   fetchMovieById,
   fetchMovieByTitle,
   addMovie,
+  editMovie,
   fetchGenres,
 } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
 import { onAuthStateChanged } from "../firebase/firebaseAuth"; // Importera auth-logik
@@ -160,6 +161,31 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Update movie in the database using fetch API
+  const handleEditMovie = async (movieId: string, updatedMovie: Movie) => {
+    setLoading(true); // Start loading state
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) {
+      setError("User not authenticated."); // User authentication error
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await editMovie(movieId, updatedMovie);
+      setSuccess(true);
+      setError(null); // Clear any previous errors
+    } catch (err: unknown) {
+      console.error("Error updating movie:", err);
+      setError("Failed to update movie. Please try again.");
+      setSuccess(false); // Mark as unsuccessful
+    } finally {
+      setLoading(false); // End loading state
+    }
+  };
+
   // Lägg till en film i favoriter
   const addFavorite = (movie: Movie) => {
     setFavorites((prev) => {
@@ -198,6 +224,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         addMovie: handleAddMovie,
         handleFetchMovieById,
         handleFetchMovieByTitle,
+        editMovie: handleEditMovie,
         addFavorite,
         removeFavorite,
         filterMoviesByGenre, // Add the missing function to the context value
