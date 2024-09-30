@@ -15,7 +15,26 @@ const AllMoviesScreen: React.FC = () => {
   const { movies, loading, error } = useContext(MyContext);
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px", position: "relative" }}>
+      {/* Home button at the top-right corner */}
+      <div style={{ position: "absolute", top: "20px", right: "20px" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
+            <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "red",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+            >
+            Home
+            </button>
+        </Link>
+      </div>
+
       <h1>Alla Filmer</h1>
 
       {loading && <p>Laddar...</p>}
