@@ -52,9 +52,9 @@ const AllMoviesScreen: React.FC = () => {
           gap: "20px",
         }}
       >
-        {filteredMovies.map((movie) => (
+        {filteredMovies.map((movie, index) => (
           <div
-            key={movie.id}
+            key={index}
             style={{
               border: "1px solid #ccc",
               padding: "15px",
