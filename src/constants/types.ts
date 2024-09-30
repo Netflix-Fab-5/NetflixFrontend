@@ -16,6 +16,8 @@ export interface Movie {
 export type ContextType = {
   movies: Record<string, Movie>;
   movie: Movie | null;
+  filteredMovies: Movie[]; 
+  genres: string[]; 
   favorites: Movie[];
   loading: boolean;
   error: string | null;
@@ -26,4 +28,5 @@ export type ContextType = {
   addMovie: (movie: Movie) => Promise<void>;
   addFavorite: (movie: Movie) => void; // Funktion för att lägga till favoriter
   removeFavorite: (movie: Movie) => void; // Funktion för att ta bort favoriter
+  filterMoviesByGenre: (genres: string[]) => void; 
 };

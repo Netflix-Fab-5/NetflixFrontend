@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
+import GenreFilter from "../components/home/GenreFilter";
 
 // Funktion för att konvertera titeln till en URL-vänlig slug
 const createSlug = (title: string) => {
@@ -12,14 +13,14 @@ const createSlug = (title: string) => {
 
 const AllMoviesScreen: React.FC = () => {
   // Använd context för att få tillgång till data
-  const { movies, loading, error } = useContext(MyContext);
+  const { filteredMovies, loading, error } = useContext(MyContext);
 
   return (
     <div style={{ padding: "20px", position: "relative" }}>
       {/* Home button at the top-right corner */}
       <div style={{ position: "absolute", top: "20px", right: "20px" }}>
         <Link to="/" style={{ textDecoration: "none" }}>
-            <button
+          <button
             style={{
               padding: "10px 20px",
               backgroundColor: "red",
@@ -29,9 +30,9 @@ const AllMoviesScreen: React.FC = () => {
               cursor: "pointer",
               fontSize: "16px",
             }}
-            >
+          >
             Home
-            </button>
+          </button>
         </Link>
       </div>
 
@@ -40,6 +41,10 @@ const AllMoviesScreen: React.FC = () => {
       {loading && <p>Laddar...</p>}
       {error && <p>Error: {error}</p>}
 
+      <div className="mb-4">
+        <GenreFilter />
+      </div>
+
       <div
         style={{
           display: "grid",
@@ -47,9 +52,9 @@ const AllMoviesScreen: React.FC = () => {
           gap: "20px",
         }}
       >
-        {Object.values(movies).map((movie) => (
+        {filteredMovies.map((movie) => (
           <div
-            key={movie.title} // Använd title som unikt nyckelvärde
+            key={movie.id}
             style={{
               border: "1px solid #ccc",
               padding: "15px",
@@ -69,7 +74,8 @@ const AllMoviesScreen: React.FC = () => {
                   marginBottom: "10px",
                 }}
               />
-              <h3>{movie.title}</h3>
+              <h3 className="text-lg font-bold">{movie.title}</h3>
+              <p className="text-sm text-gray-500">{movie.genre}</p>
             </Link>
           </div>
         ))}
