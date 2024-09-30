@@ -1,12 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import Fuse from "fuse.js";
+import { useNavigate } from "react-router-dom";
 import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
+
+// Funktion för att omvandla titeln till en URL-vänlig sträng (slug)
+const createSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+};
 
 function SearchMovie() {
   const { movies, loading, error } = useContext(MyContext); // Använd context för att hämta filmer, loading och error
   const [query, setQuery] = useState<string>(""); // Söksträngen
   const [results, setResults] = useState<Movie[]>([]); // Resultatlista baserad på Movie-typen
+  const navigate = useNavigate();
 
   const fuse = new Fuse(movies ? Object.values(movies) : [], {
     keys: ["title"],
@@ -35,6 +45,11 @@ function SearchMovie() {
     }
   };
 
+  const handleSearchClick = (title: string) => {
+    const slug = createSlug(title); // Konvertera titeln till en slug
+    navigate(`/movies/${slug}`); // Navigera till /movies/slug
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -59,6 +74,7 @@ function SearchMovie() {
             <li
               key={movie.id ? movie.id : index}
               className="p-4 hover:bg-gray-100 flex items-center"
+              onClick={() => handleSearchClick(movie.title)}
             >
               <img
                 src={movie.thumbnail}
