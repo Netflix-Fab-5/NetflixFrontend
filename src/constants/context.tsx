@@ -17,7 +17,10 @@ const MyContext = createContext<ContextType>(null!);
 function MyContextProvider({ children }: { children: ReactNode }) {
   const [movies, setMovies] = useState<Record<string, Movie>>({});
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [favorites, setFavorites] = useState<Movie[]>([]);
+  const [favorites, setFavorites] = useState<Movie[]>(() => {
+    const savedFavorites = sessionStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -99,32 +102,24 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Lägg till en film i favoriter
   const addFavorite = (movie: Movie) => {
-    if (!favorites.find((fav) => fav.title === movie.title)) {
-      const updatedFavorites = [...favorites, movie];
-      setFavorites(updatedFavorites);
-
-      // Spara uppdaterade favoriter i sessionStorage
-      sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    }
+    setFavorites((prev) => {
+      const updatedFavorites = [...prev, movie];
+      sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Spara till sessionStorage
+      return updatedFavorites;
+    });
   };
 
-  // Ta bort en film från favoriter
   const removeFavorite = (movie: Movie) => {
-    const updatedFavorites = favorites.filter(
-      (fav) => fav.title !== movie.title,
-    );
-    setFavorites(updatedFavorites);
-
-    // Spara uppdaterade favoriter i sessionStorage
-    sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    setFavorites((prev) => {
+      const updatedFavorites = prev.filter((fav) => fav.title !== movie.title);
+      sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Spara till sessionStorage
+      return updatedFavorites;
+    });
   };
 
   useEffect(() => {
-    const savedFavorites = sessionStorage.getItem("favorites");
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    }
-  }, []);
+    // Lyssna på förändringar i favorites och hantera eventuell logik här om nödvändigt
+  }, [favorites]);
 
   return (
     <MyContext.Provider
