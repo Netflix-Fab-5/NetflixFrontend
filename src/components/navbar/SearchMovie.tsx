@@ -55,9 +55,9 @@ function SearchMovie() {
       >
         {" "}
         {results.length > 0 &&
-          results.map((movie) => (
+          results.map((movie, index) => (
             <li
-              key={movie.id}
+              key={movie.id ? movie.id : index}
               className="p-4 hover:bg-gray-100 flex items-center"
             >
               <img
