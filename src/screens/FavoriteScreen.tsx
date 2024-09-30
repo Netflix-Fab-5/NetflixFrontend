@@ -6,6 +6,7 @@ const FavoriteScreen = () => {
   const { favorites, removeFavorite } = useContext(MyContext);
   const navigate = useNavigate();
 
+  // Funktion för att konvertera titeln till en slug
   const createSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -13,13 +14,39 @@ const FavoriteScreen = () => {
       .replace(/[^\w-]+/g, "");
   };
 
+  // Navigera till filmsidan
   const handleThumbnailClick = (title: string) => {
-    const slug = createSlug(title); // Konvertera titeln till en slug
-    navigate(`/movies/${slug}`); // Navigera till /movies/slug
+    const slug = createSlug(title);
+    navigate(`/movies/${slug}`);
+  };
+
+  // Navigera tillbaka till startsidan
+  const handleHomeClick = () => {
+    navigate("/"); // Navigera till startsidan
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px", position: "relative", minHeight: "100vh" }}>
+      {/* Home button in the top-right corner */}
+      <button
+        onClick={handleHomeClick}
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          padding: "10px 20px",
+          backgroundColor: "#4CAF50", // Grön bakgrund
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          fontSize: "16px",
+          zIndex: 1000, // Ensure it stays above other content
+        }}
+      >
+        Home
+      </button>
+
       <h1>Mina Favoritfilmer</h1>
 
       {/* Kontrollera om det finns några favoriter */}
@@ -52,11 +79,12 @@ const FavoriteScreen = () => {
                   height: "auto",
                   borderRadius: "8px",
                   marginBottom: "10px",
+                  cursor: "pointer", // Gör bilden klickbar
                 }}
               />
               <h3>{movie.title}</h3>
               <button
-                onClick={() => removeFavorite(movie)} // Ta bort filmen från favoriter
+                onClick={() => removeFavorite(movie)} // Ta bort från favoriter
                 style={{
                   border: "none",
                   background: "none",
@@ -68,7 +96,7 @@ const FavoriteScreen = () => {
                   className="fas fa-heart"
                   style={{
                     fontSize: "24px",
-                    color: "red", // Röd om filmen är i favoriter
+                    color: "red",
                     transition: "color 0.3s ease",
                   }}
                 ></i>
