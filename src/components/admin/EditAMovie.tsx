@@ -6,9 +6,8 @@ import { MyContext } from "../../constants/context";
 function EditAMovie() {
   const { movieId } = useParams<{ movieId: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const { handleFetchMovieById, editMovie } = useContext(MyContext);
+  const { handleFetchMovieById, editMovie, error, success, loading } =
+    useContext(MyContext);
   console.log(movieId);
 
   // UseEffect to fetch the movie data when the component loads
@@ -17,6 +16,7 @@ function EditAMovie() {
       if (movieId) {
         try {
           const movieData = await handleFetchMovieById(movieId);
+          console.log(movieData);
           setMovie(movieData);
         } catch (error) {
           console.error("Error fetching movie data:", error);
@@ -26,25 +26,12 @@ function EditAMovie() {
     fetchMovieData();
   }, [handleFetchMovieById, movieId]);
 
-  if (!movie) {
-    return <div>Movie not found, check your ID</div>;
+  if (loading) {
+    return <div>Laddar...</div>;
   }
 
-  // Update movie in the database using fetch API
-  async function updateMovie(movie: Movie) {
-    if (!movieId) return;
-    try {
-      const updatedMovie = {
-        ...movie,
-        isTrending: movie.isTrending !== undefined ? movie.isTrending : false,
-      };
-
-      await editMovie(movieId, updatedMovie);
-      setSuccess(true);
-    } catch (error) {
-      console.error("Error updating movie:", error);
-      setError("Failed to update movie");
-    }
+  if (!movie) {
+    return <div>Movie not found, check your ID</div>;
   }
 
   // Handle form inputs
@@ -69,15 +56,13 @@ function EditAMovie() {
   // Form submission handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (movie) {
-      try {
-        setSuccess(false);
-        setError(null);
-        await updateMovie(movie);
-      } catch (err) {
-        setError(err as string);
-      }
-    }
+    if (!movieId) return;
+    const updatedMovie = {
+      ...movie,
+      isTrending: movie.isTrending !== undefined ? movie.isTrending : false,
+    };
+
+    await editMovie(movieId, updatedMovie);
   };
 
   // Delete movie hadle

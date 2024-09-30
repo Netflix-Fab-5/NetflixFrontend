@@ -93,12 +93,15 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
       try {
         const fetchedMovie = await fetchMovieById(id);
+        setLoading(true); // Start loading
         setMovie(fetchedMovie);
         return fetchedMovie;
       } catch (err) {
         console.log(err);
         setError("Kunde inte hämta filmen.");
         return null;
+      } finally {
+        setLoading(false); // Stop loading after fetch completes
       }
     },
     [],
@@ -163,7 +166,6 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Update movie in the database using fetch API
   const handleEditMovie = async (movieId: string, updatedMovie: Movie) => {
-    setLoading(true); // Start loading state
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -181,8 +183,6 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       console.error("Error updating movie:", err);
       setError("Failed to update movie. Please try again.");
       setSuccess(false); // Mark as unsuccessful
-    } finally {
-      setLoading(false); // End loading state
     }
   };
 
