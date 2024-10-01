@@ -34,21 +34,15 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
 
   const handleFetchGenres = useCallback(async () => {
-    const storedUser = sessionStorage.getItem("user");
-    const user = storedUser ? JSON.parse(storedUser) : null;
-
-    if (!user || !user.uid) return;
-
     try {
-      const fetchedGenres = await fetchGenres(user.uid);
-      setGenres(fetchedGenres || []); // Se till att alltid sätta en tom array om inget hittas
+      const fetchedGenres = await fetchGenres();
+      setGenres(fetchedGenres || []);
     } catch (err) {
       console.log("Kunde inte hämta genrer:", err);
       setError("Misslyckades med att hämta genrer.");
     }
   }, []);
 
-  // Använd handleFetchGenres i useEffect
   useEffect(() => {
     handleFetchGenres(); // Hämta genrer vid montering
   }, [handleFetchGenres]);
@@ -61,7 +55,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     setLoading(true);
     try {
-      const moviesData = await fetchMovies(user.uid); // Skicka användarens UID
+      const moviesData = await fetchMovies(); // Skicka användarens UID
       setMovies(moviesData);
       setFilteredMovies(Object.values(moviesData));
       setError(null);
@@ -96,7 +90,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       if (!user || !user.uid) return null;
 
       try {
-        const fetchedMovie = await fetchMovieById(id, user.uid);
+        const fetchedMovie = await fetchMovieById(id);
         setMovie(fetchedMovie);
         return fetchedMovie;
       } catch (err) {
@@ -126,10 +120,10 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
-    if (!user || !user.uid) return;
+    if (!user) return;
 
     try {
-      await addMovie(newMovie, user.uid);
+      await addMovie(newMovie);
       setSuccess(true);
       setError(null);
     } catch (err: unknown) {

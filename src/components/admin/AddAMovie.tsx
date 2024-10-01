@@ -141,7 +141,6 @@ function AddAMovie() {
               name="thumbnail"
               value={movie.thumbnail}
               onChange={handleInputChange}
-              required
               data-testid="thumbnail-input"
               className="mt-1 p-2 w-2/3 bg-transparent border border-gray-300 rounded"
             />
