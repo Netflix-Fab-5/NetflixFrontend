@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
@@ -17,11 +17,15 @@ const AllMoviesScreen: React.FC = () => {
     filteredMovies,
     loading,
     error,
+    handleFetchMovies,
     addFavorite,
     removeFavorite,
     favorites,
   } = useContext(MyContext);
 
+  useEffect(() => {
+    handleFetchMovies(); // Hämta filmer när sidan laddas
+  }, [handleFetchMovies]);
   return (
     <div style={{ padding: "20px", position: "relative" }}>
       {/* Home button at the top-right corner */}
