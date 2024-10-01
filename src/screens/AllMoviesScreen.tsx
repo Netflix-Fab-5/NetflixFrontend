@@ -1,9 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 import { getRatingDescription } from "../constants/ratingUtils";
 import { FaEdit } from "react-icons/fa";
+import { useAuth } from "../hooks/useAuth";
 //import { useNavigate } from "react-router-dom";
 
 // Function to convert title to a URL-friendly slug
@@ -15,25 +16,20 @@ const createSlug = (title: string) => {
 };
 
 const AllMoviesScreen: React.FC = () => {
+  const { user, loading } = useAuth();
   // Use context to access data
-  const {
-    filteredMovies,
-    loading,
-    error,
-    handleFetchMovies,
-    addFavorite,
-    removeFavorite,
-    favorites,
-  } = useContext(MyContext);
+  const { filteredMovies, error, addFavorite, removeFavorite, favorites } =
+    useContext(MyContext);
 
-  // const handleEdit = (title: string) => {
-  //   //  const slug = createSlug(title);
-  //   //  navigate(`/movies/edit/${slug}`);
-  //   console.log(title);
-  // };
-  useEffect(() => {
-    handleFetchMovies(); // Hämta filmer när sidan laddas
-  }, [handleFetchMovies]);
+  if (loading) {
+    return <div>Laddar...</div>;
+  }
+
+  const handleEdit = (title: string) => {
+    //  const slug = createSlug(title);
+    //  navigate(`/movies/edit/${slug}`);
+    console.log(title);
+  };
   return (
     <div style={{ padding: "20px", position: "relative" }}>
       {/* Home button at the top-right corner */}
@@ -121,13 +117,14 @@ const AllMoviesScreen: React.FC = () => {
                 (e.currentTarget.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)")
               }
             >
-              {/* {admin && ( 
+              {user && user.email === "admin@mail.com" && (
                 <FaEdit
                   size={32}
-                  className="absolute p-1 top-15 text-green-700 bg-white"
+                  className="absolute p-1 top-15 text-green-70"
                   onClick={() => handleEdit(movie.title)}
                 />
-              )} */}
+              )}
+
               {/* Navigate to the movie page with a slugified title */}
               <Link to={`/movies/${createSlug(movie.title)}`}>
                 <img

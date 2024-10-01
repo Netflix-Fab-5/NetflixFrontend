@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -24,10 +25,9 @@ interface MovieCarouselProps {
 }
 
 const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
+  const { user } = useAuth();
   const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
   const navigate = useNavigate();
-
-  const admin: boolean = true; //will change this with admin later
 
   const handleThumbnailClick = (title: string) => {
     const slug = createSlug(title);
@@ -63,15 +63,22 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
 
           return (
             <SwiperSlide key={movie.title}>
-              <div
-                className="carousel-item"
-                onClick={() => handleThumbnailClick(movie.title)}
-              >
-                <img
-                  src={movie.thumbnail}
-                  alt={movie.title}
-                  className="carousel-image"
-                />
+              <div className="carousel-item">
+                <div className="flex flex-col">
+                  {user && user.email === "admin@mail.com" && (
+                    <FaEdit
+                      size={32}
+                      className="absolute p-1 top-15 text-green-700 bg-white"
+                      onClick={() => handleEdit(movie.title)}
+                    />
+                  )}
+                  <img
+                    src={movie.thumbnail}
+                    alt={movie.title}
+                    className="carousel-image"
+                    onClick={() => handleThumbnailClick(movie.title)}
+                  />
+                </div>
                 <h3>{movie.title}</h3>
                 <p>{getRatingDescription(movie.rating, true)}</p>
                 <p>{movie.year}</p>
