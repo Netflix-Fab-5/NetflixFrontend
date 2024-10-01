@@ -10,7 +10,7 @@ vi.mock("../hooks/useAuth", () => ({
   useAuth: () => ({ user: null }), // Mocka att användaren inte är inloggad
 }));
 
-describe("NavBar Component", () => {
+describe("Searchbar render", () => {
   it("should render the search bar", () => {
     // Rendera NavBar-komponenten
     render(
