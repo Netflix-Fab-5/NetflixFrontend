@@ -74,6 +74,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
                   }}
                 >
                   <i
+                    title="favorite"
                     className="fas fa-heart"
                     style={{
                       fontSize: "24px",
