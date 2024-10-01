@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { MyContext } from "../constants/context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 import { getRatingDescription } from "../constants/ratingUtils";
 import EditButton from "../components/admin/EditButton";
 import { useAuth } from "../hooks/useAuth";
+import { fetchMovieByTitle } from "../firebase/firebaseApi";
+import { Movie } from "../constants/types";
 //import { useNavigate } from "react-router-dom";
 
 // Function to convert title to a URL-friendly slug
@@ -20,16 +22,26 @@ const AllMoviesScreen: React.FC = () => {
   // Use context to access data
   const { filteredMovies, error, addFavorite, removeFavorite, favorites } =
     useContext(MyContext);
+  const navigate = useNavigate();
 
   if (loading) {
     return <div>Laddar...</div>;
   }
 
-  const handleEdit = (title: string) => {
-    //  const slug = createSlug(title);
-    //  navigate(`/movies/edit/${slug}`);
-    console.log(title);
+  const handleEdit = async (title: string) => {
+    const movie = await fetchMovieByTitle(title);
+
+    if (movie) {
+      const movieWithId = movie as Movie & { id: string };
+      const movieId = movieWithId.id;
+      console.log("edit button", movieId);
+      // Navigate to edit movie
+      navigate(`/movies/edit/${movieId}`);
+    } else {
+      console.log("Movie not found");
+    }
   };
+
   return (
     <div style={{ padding: "20px", position: "relative" }}>
       {/* Home button at the top-right corner */}

@@ -17,6 +17,26 @@ export const fetchMovieById = async (id: string): Promise<Movie | null> => {
   return movieData ? { ...movieData, id } : null;
 };
 
+export const fetchMovieByTitle = async (
+  title: string,
+): Promise<Movie | null> => {
+  const moviesRef = ref(database, "movies"); // Reference to the "movies" collection
+  const snapshot = await get(moviesRef); // Fetch all movies
+  const moviesData = snapshot.val();
+
+  if (moviesData) {
+    const movieId = Object.keys(moviesData).find(
+      (id) => moviesData[id].title === title,
+    ); // Find the movie by title
+    if (movieId) {
+      const movie = moviesData[movieId]; // Access the movie data
+      return { ...movie, id: movieId } as Movie & { id: string };
+    }
+  }
+
+  return null; // Return null if no movie was found
+};
+
 export const addMovie = async (newMovie: Movie) => {
   const moviesRef = ref(database, "movies"); // Skapa en referens till "movies"
   await push(moviesRef, newMovie); // Lägg till filmen i databasen

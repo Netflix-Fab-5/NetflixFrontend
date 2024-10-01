@@ -10,6 +10,7 @@ import { User } from "firebase/auth";
 import {
   fetchMovies,
   fetchMovieById,
+  fetchMovieByTitle,
   addMovie,
   fetchGenres,
 } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
@@ -102,6 +103,30 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const handleFetchMovieByTitle = useCallback(
+    async (title: string): Promise<Movie | null> => {
+      const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
+      const user = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!user || !user.uid) return null; // Kontrollera att användarens UID finns
+
+      try {
+        const movieData = await fetchMovieByTitle(title); // Fetch movie by title
+        setLoading(true); // Start loading
+        setMovie(movieData);
+        console.log(movieData);
+        return movieData;
+      } catch (err) {
+        console.log(err);
+        setError("No movie found with that title");
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
   // Denna funktion kommer att filtrera filmer baserat på valda genrer
   const filterMoviesByGenre = (selectedGenres: string[]): void => {
     if (selectedGenres.length === 0) {
@@ -172,6 +197,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         handleFetchMovies, // Exponera användarinformation i Context
         addMovie: handleAddMovie,
         handleFetchMovieById,
+        handleFetchMovieByTitle,
         addFavorite,
         removeFavorite,
         filterMoviesByGenre, // Add the missing function to the context value
