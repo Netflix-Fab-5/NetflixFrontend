@@ -3,10 +3,9 @@ import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 import { getRatingDescription } from "../constants/ratingUtils";
-import { FaEdit } from "react-icons/fa";
+import EditButton from "../components/admin/EditButton";
 import { useAuth } from "../hooks/useAuth";
 //import { useNavigate } from "react-router-dom";
-import { getRatingDescription } from "../constants/ratingUtils";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
@@ -119,10 +118,9 @@ const AllMoviesScreen: React.FC = () => {
               }
             >
               {user && user.email === "admin@mail.com" && (
-                <FaEdit
-                  size={32}
-                  className="absolute p-1 top-15 text-green-70"
+                <EditButton
                   onClick={() => handleEdit(movie.title)}
+                  size={22} // Du kan justera storleken om det behövs
                 />
               )}
 

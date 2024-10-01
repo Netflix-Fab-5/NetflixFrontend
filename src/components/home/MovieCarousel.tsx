@@ -10,8 +10,7 @@ import "swiper/css/scrollbar";
 import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 import { getRatingDescription } from "../../constants/ratingUtils";
-import { FaEdit } from "react-icons/fa";
-import { getRatingDescription } from "../../constants/ratingUtils";
+import EditButton from "../admin/EditButton";
 
 const createSlug = (title: string) => {
   return title
@@ -67,10 +66,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
               <div className="carousel-item">
                 <div className="flex flex-col">
                   {user && user.email === "admin@mail.com" && (
-                    <FaEdit
-                      size={32}
-                      className="absolute p-1 top-15 text-green-700 bg-white"
+                    <EditButton
                       onClick={() => handleEdit(movie.title)}
+                      size={22} // Du kan justera storleken om det behövs
                     />
                   )}
                   <img
