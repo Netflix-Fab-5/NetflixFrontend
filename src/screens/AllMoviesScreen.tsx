@@ -7,7 +7,6 @@ import EditButton from "../components/admin/EditButton";
 import { useAuth } from "../hooks/useAuth";
 import { fetchMovieByTitle } from "../firebase/firebaseApi";
 import { Movie } from "../constants/types";
-//import { useNavigate } from "react-router-dom";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
