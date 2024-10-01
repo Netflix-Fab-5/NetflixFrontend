@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
+import { getRatingDescription } from "../constants/ratingUtils";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
