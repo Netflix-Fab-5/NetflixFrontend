@@ -9,6 +9,10 @@ permissions:
   pull-requests: write
 jobs:
   build_and_preview:
+    env:
+      VITE_FIREBASE_API_KEY: ${{secrets.VITE_FIREBASE_API_KEY}}
+      VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID}}
+      VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
