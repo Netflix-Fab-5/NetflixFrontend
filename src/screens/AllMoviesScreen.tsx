@@ -167,6 +167,8 @@ const AllMoviesScreen: React.FC = () => {
           );
         })}
       </div>
+      {loading && <p>Laddar...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };
