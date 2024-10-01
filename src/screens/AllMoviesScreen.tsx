@@ -6,6 +6,7 @@ import { getRatingDescription } from "../constants/ratingUtils";
 import { FaEdit } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
 //import { useNavigate } from "react-router-dom";
+import { getRatingDescription } from "../constants/ratingUtils";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {

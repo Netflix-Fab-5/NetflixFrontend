@@ -11,6 +11,7 @@ import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 import { getRatingDescription } from "../../constants/ratingUtils";
 import { FaEdit } from "react-icons/fa";
+import { getRatingDescription } from "../../constants/ratingUtils";
 
 const createSlug = (title: string) => {
   return title
