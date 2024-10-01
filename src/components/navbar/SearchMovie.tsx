@@ -71,7 +71,7 @@ function SearchMovie() {
         {results.length > 0 &&
           results.map((movie, index) => (
             <li
-              key={movie.id ? movie.id : `${movie.title}-${index}`}
+              key={index}
               className="p-4 hover:bg-gray-100 flex items-center"
               onClick={() => handleSearchClick(movie.title)}
             >
