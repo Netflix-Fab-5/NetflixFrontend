@@ -19,7 +19,9 @@ const GenreFilter: React.FC = () => {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left z-50">
+      {" "}
+      {/* Lägg till z-50 här också */}
       <div>
         <button
           type="button"
@@ -45,7 +47,6 @@ const GenreFilter: React.FC = () => {
           </svg>
         </button>
       </div>
-
       {showDropdown && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"

@@ -1,14 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
-
 import HomeScreen from "./screens/HomeScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import AllMoviesScreen from "./screens/AllMoviesScreen";
 import MovieDetailScreen from "./screens/MovieDetailScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ProtectedLayout from "./components/ProtectedLayout";
- // Anta att du har en admin-sida
-import BookmarkButton from "./components/navbar/BookMarkButton";
 import AddAMovie from "./components/admin/AddAMovie";
 
 function App() {
@@ -24,17 +21,13 @@ function App() {
         user.email === "admin@mail.com" ? (
           // Rendera admin-specifika rutter
           <Route element={<ProtectedLayout />}>
-              <Route path="/" element={<HomeScreen />} />
-            <Route path="/favorites" element={<BookmarkButton />} />
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/favorites" element={<FavoriteScreen />} />
             <Route path="/movies" element={<AllMoviesScreen />} />
-           
+
             <Route path="/movies/:title" element={<MovieDetailScreen />} />
             <Route path="/new" element={<AddAMovie />} />
             <Route path="*" element={<Navigate to="/" />} />
-        
-
-
-
           </Route>
         ) : (
           // Rendera vanliga användarrutter

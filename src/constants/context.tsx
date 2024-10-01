@@ -33,25 +33,19 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [success, setSuccess] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
 
-  // const handleFetchGenres = useCallback(async () => {
-  //   const storedUser = sessionStorage.getItem("user");
-  //   const user = storedUser ? JSON.parse(storedUser) : null;
+  const handleFetchGenres = useCallback(async () => {
+    try {
+      const fetchedGenres = await fetchGenres();
+      setGenres(fetchedGenres || []);
+    } catch (err) {
+      console.log("Kunde inte hämta genrer:", err);
+      setError("Misslyckades med att hämta genrer.");
+    }
+  }, []);
 
-  //   if (!user ) return;
-
-  //   try {
-  //     const fetchedGenres = await fetchGenres();
-  //     setGenres(fetchedGenres || []); // Se till att alltid sätta en tom array om inget hittas
-  //   } catch (err) {
-  //     console.log("Kunde inte hämta genrer:", err);
-  //     setError("Misslyckades med att hämta genrer.");
-  //   }
-  // }, []);
-
-  // // Använd handleFetchGenres i useEffect
-  // useEffect(() => {
-  //   handleFetchGenres(); // Hämta genrer vid montering
-  // }, [handleFetchGenres]);
+  useEffect(() => {
+    handleFetchGenres(); // Hämta genrer vid montering
+  }, [handleFetchGenres]);
 
   const handleFetchMovies = useCallback(async () => {
     const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
@@ -126,7 +120,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
-    if (!user ) return;
+    if (!user) return;
 
     try {
       await addMovie(newMovie);
