@@ -1,65 +1,76 @@
-import { useState } from "react";
-import { loginUser } from "../firebase/firebaseAuth";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { getAuth, EmailAuthProvider } from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import "../styles/firebase-overrides.css";
+import { MyContext } from "../constants/context";
 
 function LoginScreen() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const auth = getAuth();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { error } = useContext(MyContext);
+  console.log(error);
 
-  if (user) {
-    navigate("/");
-  }
+  useEffect(() => {
+    const uiConfig = {
+      signInOptions: [EmailAuthProvider.PROVIDER_ID],
+      signInFlow: "popup",
+      autoUpgradeAnonymousUsers: true,
+      callbacks: {
+        signInSuccessWithAuthResult: () => {
+          navigate("/"); // Navigera efter lyckad inloggning
+          return false;
+        },
+        signInFailure: (error: firebaseui.auth.AuthUIError) => {
+          console.log(error);
+          handleSignInError(error);
+          return Promise.resolve();
+        },
+      },
+    };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null); // Återställ eventuella felmeddelanden
+    const initializeFirebaseUI = () => {
+      const ui =
+        firebaseui.auth.AuthUI.getInstance() ||
+        new firebaseui.auth.AuthUI(auth);
+      ui.start("#firebaseui-auth-container", uiConfig);
+    };
 
-    try {
-      await loginUser({ email, password }); // Logga in användaren med Firebase Auth
-      navigate("/"); // Omdirigera till HomeScreen efter lyckad inloggning
-    } catch (err: unknown) {
-      console.log(err);
-      setError("Inloggningen misslyckades. Kontrollera dina uppgifter.");
-    }
-  };
+    const handleSignInError = (error: firebaseui.auth.AuthUIError) => {
+      console.log(error);
+      let errorMessage = "Ett fel uppstod.";
+      if (error.code === "auth/wrong-password") {
+        errorMessage = "Fel lösenord.";
+      } else if (error.code === "auth/user-not-found") {
+        errorMessage = "Vi kunde inte hitta e-postadressen.";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage = "Fel e-postadress.";
+      } else if (error.code === "auth/network-request-failed") {
+        errorMessage = "Nätverksfel, vänligen försök igen.";
+      }
+      alert(errorMessage);
+    };
+
+    initializeFirebaseUI(); // Starta FirebaseUI
+
+    auth.currentUser
+      ?.getIdToken(true)
+      .then((token) => {
+        console.log("Auth Token:", token);
+      })
+      .catch((error) => {
+        console.error("Error fetching auth token:", error);
+      });
+  }, [auth, navigate]);
 
   return (
-    <div>
-      {error && (
-        <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
-      )}
-
-      <h2>Logga in</h2>
-
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="email">email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password">Lösenord:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit">Logga in</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-stone-900">
+      <div className="firebaseui-container">
+        <h2 className="text-3xl font-bold text-center mb-6 text-green-100">
+          Login
+        </h2>
+        <div id="firebaseui-auth-container"></div>
+      </div>
     </div>
   );
 }

@@ -21,6 +21,7 @@ export type ContextType = {
   favorites: Movie[];
   loading: boolean;
   error: string | null;
+  setError: (error: string | null) => void;
   success: boolean;
   user: User | null; // Lägger till användarens state
   handleFetchMovies: () => Promise<void>;

@@ -50,6 +50,7 @@ const mockContextValue = {
   genres: ["Action", "Drama", "Sci-Fi", "War"],
   loading: false,
   error: null,
+  setError: vi.fn(),
   success: false,
   user: null,
   movie: null,

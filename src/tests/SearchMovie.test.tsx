@@ -46,6 +46,7 @@ const mockContextValue = {
   movies: {},
   loading: false,
   error: null,
+  setError: vi.fn(),
   movie: null,
   favorites: [],
   success: false,
