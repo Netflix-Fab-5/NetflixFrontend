@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { useParams, Link } from "react-router-dom"; // För att få filmens title från URL:en
 import slugify from "slugify";
@@ -7,7 +7,7 @@ import { getRatingDescription } from "../constants/ratingUtils";
 
 function MovieDetails() {
   const { title } = useParams<{ title: string }>();
-  const { movies, loading, error } = useContext(MyContext); // movies istället för enskilt movie
+  const { movies, loading, error, handleFetchMovies } = useContext(MyContext); // movies istället för enskilt movie
 
   const createSlug = (title: string) => {
     return slugify(title, { lower: true, strict: true });
@@ -25,9 +25,15 @@ function MovieDetails() {
 
   const movie = findMovieBySlug(movies, title || ""); // Hitta filmen baserat på title-slug
 
-  if (loading) return <p>Laddar...</p>;
+  useEffect(() => {
+    if (!movie) {
+      handleFetchMovies(); // Hämta filmer om ingen matchande film hittas
+    }
+  }, [movie, handleFetchMovies]);
+
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!movie) return <p>Ingen film hittad</p>;
+  if (!movie) return <p>No movie found</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
