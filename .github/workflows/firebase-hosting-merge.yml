@@ -9,6 +9,11 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_FIREBASE_API_KEY: ${{secrets.VITE_FIREBASE_API_KEY}}
+      VITE_FIREBASE_PROJECT_ID: ${{secrets.VITE_FIREBASE_PROJECT_ID}}
+      VITE_FIREBASE_DATABASE_URL: ${{secrets.VITE_FIREBASE_DATABASE_URL}}
+
     steps:
       - uses: actions/checkout@v4
       - run: npm i && npm run build
