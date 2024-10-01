@@ -138,6 +138,9 @@ const AllMoviesScreen: React.FC = () => {
                 <p className="text-sm text-gray-500" style={{ margin: "0" }}>
                   {movie.genre}
                 </p>
+                <p className="text-sm text-gray-700">
+                  {getRatingDescription(movie.rating, true)}
+                </p>
               </Link>
               {/* Favorite button placed at the bottom center */}
               <div style={{ marginTop: "auto", padding: "10px 0" }}>
