@@ -1,9 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 
-// Funktion för att konvertera titeln till en URL-vänlig slug
+// Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
   return title
     .toLowerCase()
@@ -12,13 +12,15 @@ const createSlug = (title: string) => {
 };
 
 const AllMoviesScreen: React.FC = () => {
-  // Använd context för att få tillgång till data
-  const { filteredMovies, loading, error, handleFetchMovies } =
-    useContext(MyContext);
-
-  useEffect(() => {
-    handleFetchMovies(); // Hämta filmer när sidan laddas
-  }, [handleFetchMovies]);
+  // Use context to access data
+  const {
+    filteredMovies,
+    loading,
+    error,
+    addFavorite,
+    removeFavorite,
+    favorites,
+  } = useContext(MyContext);
 
   return (
     <div style={{ padding: "20px", position: "relative" }}>
@@ -41,7 +43,29 @@ const AllMoviesScreen: React.FC = () => {
         </Link>
       </div>
 
-      <h1>Alla Filmer</h1>
+      {/* Favorites button at the top-right corner */}
+      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
+        <Link to="/favorites" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "red", // Change color as needed
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
+            Favorites
+          </button>
+        </Link>
+      </div>
+
+      <h1 style={{ marginBottom: "20px" }}>Alla Filmer</h1>
+
+      {loading && <p>Laddar...</p>}
+      {error && <p>Error: {error}</p>}
 
       <div className="mb-4">
         <GenreFilter />
@@ -54,36 +78,87 @@ const AllMoviesScreen: React.FC = () => {
           gap: "20px",
         }}
       >
-        {filteredMovies.map((movie, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid #ccc",
-              padding: "15px",
-              borderRadius: "8px",
-              textAlign: "center",
-            }}
-          >
-            {/* Använd Link för att navigera till filmsidan med slugifierad titel */}
-            <Link to={`/movies/${createSlug(movie.title)}`}>
-              <img
-                src={movie.thumbnail}
-                alt={movie.title}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  marginBottom: "10px",
-                }}
-              />
-              <h3 className="text-lg font-bold">{movie.title}</h3>
-              <p className="text-sm text-gray-500">{movie.genre}</p>
-            </Link>
-          </div>
-        ))}
+        {filteredMovies.map((movie, index) => {
+          // Check if the movie is a favorite
+          const isFavorite = favorites.some((fav) => fav.title === movie.title);
+
+          // Function to toggle favorite status
+          const handleFavoriteToggle = () => {
+            if (isFavorite) {
+              removeFavorite(movie);
+            } else {
+              addFavorite(movie);
+            }
+          };
+
+          return (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+                padding: "15px",
+                background: "#fff",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)")
+              }
+            >
+              {/* Navigate to the movie page with a slugified title */}
+              <Link to={`/movies/${createSlug(movie.title)}`}>
+                <img
+                  src={movie.thumbnail}
+                  alt={movie.title}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "8px",
+                    marginBottom: "10px",
+                  }}
+                />
+                <h3
+                  className="text-lg font-bold"
+                  style={{ margin: "10px 0", fontSize: "1.1em" }}
+                >
+                  {movie.title}
+                </h3>
+                <p className="text-sm text-gray-500" style={{ margin: "0" }}>
+                  {movie.genre}
+                </p>
+              </Link>
+              {/* Favorite button placed at the bottom center */}
+              <div style={{ marginTop: "auto", padding: "10px 0" }}>
+                <button
+                  onClick={handleFavoriteToggle}
+                  style={{
+                    border: "none",
+                    background: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <i
+                    className="fas fa-heart"
+                    style={{
+                      fontSize: "24px",
+                      color: isFavorite ? "red" : "lightgrey", // Red if favorite, light grey if not
+                      transition: "color 0.3s ease",
+                    }}
+                  ></i>
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      {loading && <p>Laddar...</p>}
-      {error && <p>Error: {error}</p>}
     </div>
   );
 };
