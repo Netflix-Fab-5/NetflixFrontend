@@ -1,7 +1,6 @@
 import { User } from "firebase/auth"; // Importera User-typen från Firebase
 
 export interface Movie {
-  id: string;
   title: string;
   year: number;
   rating: string;
