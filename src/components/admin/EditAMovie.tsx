@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Movie } from "../../constants/types";
 import { MyContext } from "../../constants/context";
 
@@ -72,7 +72,31 @@ function EditAMovie() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          marginBottom: "40px",
+        }}
+      >
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "green",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
+            Home
+          </button>
+        </Link>
+      </div>
+      <div className="bg-white mt-20 p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Edit the Movie</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
