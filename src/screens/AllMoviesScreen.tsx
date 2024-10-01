@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
+import { getRatingDescription } from "../constants/ratingUtils";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
@@ -67,9 +68,6 @@ const AllMoviesScreen: React.FC = () => {
       </div>
 
       <h1 style={{ marginBottom: "20px" }}>Alla Filmer</h1>
-
-      {loading && <p>Laddar...</p>}
-      {error && <p>Error: {error}</p>}
 
       <div className="mb-4">
         <GenreFilter />
@@ -137,6 +135,9 @@ const AllMoviesScreen: React.FC = () => {
                 <p className="text-sm text-gray-500" style={{ margin: "0" }}>
                   {movie.genre}
                 </p>
+                <p className="text-sm text-gray-700">
+                  {getRatingDescription(movie.rating, true)}
+                </p>
               </Link>
               {/* Favorite button placed at the bottom center */}
               <div style={{ marginTop: "auto", padding: "10px 0" }}>
@@ -163,6 +164,8 @@ const AllMoviesScreen: React.FC = () => {
           );
         })}
       </div>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };

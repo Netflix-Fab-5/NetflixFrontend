@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
+import { getRatingDescription } from "../../constants/ratingUtils";
 
 const createSlug = (title: string) => {
   return title
@@ -62,7 +63,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
                   onClick={() => handleThumbnailClick(movie.title)}
                 />
                 <h3>{movie.title}</h3>
-                <p>{movie.genre}</p>
+                <p>{getRatingDescription(movie.rating, true)}</p>
                 <p>{movie.year}</p>
                 <button
                   onClick={handleFavoriteToggle}

@@ -3,6 +3,7 @@ import { MyContext } from "../constants/context";
 import { useParams, Link } from "react-router-dom"; // För att få filmens title från URL:en
 import slugify from "slugify";
 import { Movie } from "../constants/types";
+import { getRatingDescription } from "../constants/ratingUtils";
 
 function MovieDetails() {
   const { title } = useParams<{ title: string }>();
@@ -51,8 +52,9 @@ function MovieDetails() {
             <p className="mb-2">
               <strong>År:</strong> {movie.year}
             </p>
-            <p className="mb-2">
-              <strong>Betyg:</strong> {movie.rating}
+            <p>
+              <strong>Age limit:</strong>{" "}
+              {getRatingDescription(movie?.rating || "")}
             </p>
             <p className="mb-2">
               <strong>Genre:</strong> {movie.genre}
