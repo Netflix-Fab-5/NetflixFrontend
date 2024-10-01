@@ -69,9 +69,6 @@ const AllMoviesScreen: React.FC = () => {
 
       <h1 style={{ marginBottom: "20px" }}>Alla Filmer</h1>
 
-      {loading && <p>Laddar...</p>}
-      {error && <p>Error: {error}</p>}
-
       <div className="mb-4">
         <GenreFilter />
       </div>
@@ -167,7 +164,7 @@ const AllMoviesScreen: React.FC = () => {
           );
         })}
       </div>
-      {loading && <p>Laddar...</p>}
+      {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
     </div>
   );
