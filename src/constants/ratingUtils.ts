@@ -13,7 +13,7 @@ export const getRatingDescription = (rating: string, short: boolean = false) => 
       case "NC-17":
         return "18+";
       case "Not Rated":
-        return "Not rated";
+        return "No Age Limit";
       default:
         return rating; // Returnera rating som den är om den inte finns i listan
     }
@@ -31,7 +31,7 @@ export const getRatingDescription = (rating: string, short: boolean = false) => 
       case "NC-17":
         return "Adults Only - No one 17 and under admitted.";
       case "Not Rated":
-        return "Not Rated - This film has not been rated.";
+        return "No Age Limit - This film has no age limit.";
       default:
         return rating; // Returnera rating som den är om den inte finns i listan
     }
