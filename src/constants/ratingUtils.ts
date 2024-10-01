@@ -1,4 +1,7 @@
-export const getRatingDescription = (rating: string, short: boolean = false) => {
+export const getRatingDescription = (
+  rating: string,
+  short: boolean = false,
+) => {
   if (short) {
     // Returnera endast åldersgränsen i kort version
     switch (rating) {
