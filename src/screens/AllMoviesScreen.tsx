@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { Link } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
@@ -13,7 +13,12 @@ const createSlug = (title: string) => {
 
 const AllMoviesScreen: React.FC = () => {
   // Använd context för att få tillgång till data
-  const { filteredMovies, loading, error } = useContext(MyContext);
+  const { filteredMovies, loading, error, handleFetchMovies } =
+    useContext(MyContext);
+
+  useEffect(() => {
+    handleFetchMovies(); // Hämta filmer när sidan laddas
+  }, [handleFetchMovies]);
 
   return (
     <div style={{ padding: "20px", position: "relative" }}>
@@ -37,9 +42,6 @@ const AllMoviesScreen: React.FC = () => {
       </div>
 
       <h1>Alla Filmer</h1>
-
-      {loading && <p>Laddar...</p>}
-      {error && <p>Error: {error}</p>}
 
       <div className="mb-4">
         <GenreFilter />
@@ -80,6 +82,8 @@ const AllMoviesScreen: React.FC = () => {
           </div>
         ))}
       </div>
+      {loading && <p>Laddar...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };
