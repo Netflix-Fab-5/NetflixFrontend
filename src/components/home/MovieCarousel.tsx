@@ -11,6 +11,7 @@ import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 import { getRatingDescription } from "../../constants/ratingUtils";
 import EditButton from "../admin/EditButton";
+import { fetchMovieByTitle } from "../../firebase/firebaseApi";
 
 const createSlug = (title: string) => {
   return title
@@ -55,10 +56,18 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
             }
           };
 
-          const handleEdit = (title: string) => {
-            //  const slug = createSlug(title);
-            //  navigate(`/movies/edit/${slug}`);
-            console.log(title);
+          const handleEdit = async (title: string) => {
+            const movie = await fetchMovieByTitle(title);
+
+            if (movie) {
+              const movieWithId = movie as Movie & { id: string };
+              const movieId = movieWithId.id;
+              console.log("edit button", movieId);
+              // Navigate to edit movie
+              navigate(`/movies/edit/${movieId}`);
+            } else {
+              console.log("Movie not found");
+            }
           };
 
           return (
