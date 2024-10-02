@@ -53,7 +53,7 @@ function AddAMovie() {
   };
 
   return (
-    <div className="flex justify-center text-green-600 items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center text-green-600 items-center min-h-screen bg-black">
       <div
         style={{
           position: "absolute",
