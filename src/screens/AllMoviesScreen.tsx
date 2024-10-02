@@ -13,6 +13,7 @@ const createSlug = (title: string) => {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
+    .replace(/--+/g, "-") // Ersätt flera bindestreck med ett
     .replace(/[^\w-]+/g, "");
 };
 
