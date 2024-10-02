@@ -1,13 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../constants/context"; // Import Movie interface
 import { Movie } from "../../constants/types";
 import { Link } from "react-router-dom";
 
 function AddAMovie() {
   const { error, success, addMovie } = useContext(MyContext)!;
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  // Using Movie from context
-  const [movie, setMovie] = useState<Movie>({
+  // Initial state of movie
+  const initialMovie: Movie = {
     title: "",
     year: 2000,
     rating: "",
@@ -16,7 +17,9 @@ function AddAMovie() {
     synopsis: "",
     thumbnail: "",
     isTrending: false,
-  });
+  };
+
+  const [movie, setMovie] = useState<Movie>(initialMovie);
 
   // Handle for input change
   const handleInputChange = (
@@ -50,7 +53,21 @@ function AddAMovie() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     addMovie(movie); // Add new movie in firesbase
+    setMovie(initialMovie); // Reset form with initial state
   };
+
+  // Hide success msg after 15 sec
+  useEffect(() => {
+    if (success) {
+      setShowSuccess(true);
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 15000);
+
+      // Cleanup the timeout when success changes
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   return (
     <div className="flex justify-center text-green-600 items-center min-h-screen bg-black">
@@ -189,7 +206,7 @@ function AddAMovie() {
             Add A New Movie
           </button>
         </form>
-        {success && (
+        {showSuccess && (
           <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
             Movie added successfully
           </div>
