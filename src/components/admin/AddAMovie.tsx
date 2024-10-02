@@ -73,9 +73,7 @@ function AddAMovie() {
     <div className="flex justify-center text-green-600 items-center min-h-screen bg-black text-xl">
       <div className="absolute top-5 right-5 mb-10">
         <Link to="/" className="no-underline">
-          <button className="py-2 px-4 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700">
-            Home
-          </button>
+          <button className="button">Home</button>
         </Link>
       </div>
 
