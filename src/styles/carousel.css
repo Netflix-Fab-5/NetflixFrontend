@@ -5,36 +5,58 @@
   overflow: hidden;
 }
 
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-
-.carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
 .carousel-item {
-  min-width: 200px; /* Minskar storleken på korten med 20% */
+  position: relative; /* Viktigt för att placera barn-element */
+  min-width: 200px; /* Minskar storleken på korten */
   margin: 1px;
   flex-shrink: 0;
   text-align: center;
   border: none; /* Ingen kantlinje för renare utseende */
-  padding: 15px; /* Padding runt kortet */
+  padding: 0; /* Ta bort padding för att maximera utrymmet för bilden */
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Djupare skugga för bättre kontrast */
   height: 450px; /* Sätter en fast höjd för alla kort */
   display: flex;
   flex-direction: column;
   justify-content: center; /* Centrerar innehållet vertikalt */
-  position: relative; /* Gör så att vi kan använda absolute position för texten */
   overflow: hidden; /* Döljer överflödig text */
 }
 
-/* Mörkare effekt och textvisning vid hover */
+.carousel-image {
+  width: 100%; /* Behåller full bredd inom item */
+  height: 100%; /* Sätt höjden till 100% för att fylla kortets höjd */
+  object-fit: cover; /* Se till att bilder inte förvrängs och fyller hela utrymmet */
+  border-radius: 10px;
+  margin: 0; /* Ta bort marginaler för att säkerställa att bilden fyller hela kortet */
+  transition: filter 0.3s ease; /* Övergång för filter-effekten */
+  border: 2px rgba(0, 255, 13, 0.144) solid;
+}
+
+.button-container {
+  display: flex; /* Använd flexbox för att ordna knapparna */
+  justify-content: space-between; /* Se till att knapparna är på varsin sida */
+  position: absolute; /* Positionera den över bilden */
+  top: 10px; /* Justera avståndet från toppen av bilden */
+  left: 10px; /* Lämna lite utrymme från vänster */
+  right: 10px; /* Lämna lite utrymme från höger */
+  z-index: 100; /* Se till att knapparna ligger ovanpå */
+}
+
+/* Visa hjärtat endast vid hover */
+.carousel-item:hover .heart-icon-container {
+  display: block; /* Visa ikonen vid hover */
+}
+
+.edit-button {
+  z-index: 100; /* Se till att den ligger ovanpå */
+}
+
+.heart-icon-container {
+  z-index: 100; /* Justera så att den hamnar på önskad plats */
+  display: none; /* Döljer hjärtikonen som standard */
+}
+
+/* Hover-effekt för att visa textinformation */
 .carousel-item:hover::after {
   content: "";
   position: absolute;
@@ -42,28 +64,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Mörk överlagring */
+  background-color: rgba(0, 0, 0, 0.75); /* Mörk överlagring */
   z-index: 1; /* Sätter överlagringen framför bilden */
 }
 
 .carousel-item:hover h3,
 .carousel-item:hover p {
   opacity: 1; /* Visar texten vid hover */
-}
-
-.carousel-image {
-  width: 100%; /* Behåller full bredd inom item */
-  height: 100%; /* Sätt höjden till 100% för att fylla kortets höjd */
-  object-fit: cover; /* Ser till att bilder inte förvrängs */
-  border-radius: 10px;
-  margin: 0; /* Ta bort marginaler för att säkerställa att bilden fyller hela kortet */
-  transition: filter 0.3s ease; /* Övergång för filter-effekten */
-  border: 2px rgba(0, 255, 13, 0.144) solid;
-  position: relative;
-}
-
-.carousel-item:hover .carousel-image {
-  filter: brightness(0.5); /* Gör bilden mörkare vid hover */
 }
 
 .carousel-item h3,
@@ -75,7 +82,7 @@
   position: absolute; /* Gör så att texten kan placeras ovanpå bilden */
   left: 15%; /* Flytta texten närmare vänster kant */
   right: 15%; /* Flytta texten närmare höger kant */
-  z-index: 2; /* Ser till att texten ligger ovanpå överlagringen */
+  z-index: 2; /* Se till att texten ligger ovanpå överlagringen */
   text-align: center; /* Centrera texten */
   font-weight: 900;
   font-size: large;
@@ -94,74 +101,6 @@
 .carousel-item p:nth-of-type(2) {
   top: 65%; /* Placera den andra p närmare den första */
   margin-top: 5px; /* Justera avståndet mellan de två p-taggarna */
-}
-
-/* Justera för att centrera texten på mitten av varje rad */
-.carousel-item h3 {
-  display: block; /* Gör h3-block för att ta upp hela bredden */
-  text-align: center; /* Centrera texten */
-}
-
-.carousel-item p {
-  display: block; /* Gör p-block för att ta upp hela bredden */
-  text-align: center; /* Centrera texten */
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(
-    40,
-    167,
-    69,
-    0.9
-  ); /* Primär grön färg med lite transparens */
-  color: white;
-  border: none;
-  padding: 15px;
-  cursor: pointer;
-  border-radius: 50%; /* Rundare knappar */
-  font-size: 18px; /* Större fontstorlek för knapparna */
-  z-index: 1; /* Sätter knapparna framför karusellen */
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease; /* Lägg till transition för bakgrundsfärg och transform */
-}
-
-.left-btn {
-  left: 10px; /* Justera avstånd till vänster kant */
-}
-
-.right-btn {
-  right: 10px; /* Justera avstånd till höger kant */
-}
-
-.carousel-btn:hover {
-  background-color: rgba(40, 167, 69, 1); /* Mörkare grön vid hover */
-  transform: scale(1.1); /* Liten zoom-effekt vid hover */
-}
-
-@media (max-width: 768px) {
-  .carousel-item {
-    min-width: 160px; /* Minska bredden på korten ännu mer för mindre skärmar */
-    height: 350px; /* Anpassar höjden för mindre skärmar */
-  }
-
-  .carousel-image {
-    height: 220px; /* Anpassa bildhöjden för mindre skärmar */
-  }
-
-  .carousel-btn {
-    padding: 10px; /* Mindre knappar för små skärmar */
-    font-size: 16px;
-  }
-
-  .left-btn,
-  .right-btn {
-    left: 5px;
-    right: 5px;
-  }
 }
 
 .swiper-button-next,
@@ -183,21 +122,4 @@
 
 .swiper-button-prev {
   left: -10px; /* Flytta knappen utanför bilden till vänster */
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  color: #01d613; /* Ändra färgen vid hover */
-}
-
-.heart-icon-container {
-  display: none; /* Döljer ikonen som standard */
-  position: absolute; /* Gör att vi kan placera den över kortet */
-  top: 30px; /* Justera avståndet från toppen */
-  right: 30px; /* Justera avståndet från höger kant */
-  z-index: 100; /* Justera så att den hamnar på önskad plats */
-}
-
-.carousel-item:hover .heart-icon-container {
-  display: block; /* Visa ikonen vid hover */
 }

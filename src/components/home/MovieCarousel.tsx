@@ -48,7 +48,8 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
         {movies.map((movie) => {
           const isFavorite = favorites.some((fav) => fav.title === movie.title);
 
-          const handleFavoriteToggle = () => {
+          const handleFavoriteToggle = (event: React.MouseEvent) => {
+            event.stopPropagation(); // Stoppa händelse från att bubbla upp
             if (isFavorite) {
               removeFavorite(movie);
             } else {
@@ -58,12 +59,10 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
 
           const handleEdit = async (title: string) => {
             const movie = await fetchMovieByTitle(title);
-
             if (movie) {
               const movieWithId = movie as Movie & { id: string };
               const movieId = movieWithId.id;
               console.log("edit button", movieId);
-              // Navigate to edit movie
               navigate(`/movies/edit/${movieId}`);
             } else {
               console.log("Movie not found");
@@ -72,37 +71,26 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
 
           return (
             <SwiperSlide key={movie.title}>
-              <div className="carousel-item">
-                <div className="flex flex-col">
+              <div
+                className="carousel-item cursor-pointer"
+                onClick={() => handleThumbnailClick(movie.title)}
+              >
+                <img
+                  src={movie.thumbnail}
+                  alt={movie.title}
+                  className="carousel-image"
+                />
+                <div className="button-container">
                   {user && user.email === "admin@mail.com" && (
                     <EditButton
-                      onClick={() => handleEdit(movie.title)}
-                      size={22} // Du kan justera storleken om det behövs
+                      onClick={(event) => {
+                        event.stopPropagation(); // Stoppa händelse från att bubbla upp
+                        handleEdit(movie.title);
+                      }}
+                      size={22}
                     />
                   )}
-                  <img
-                    src={movie.thumbnail}
-                    alt={movie.title}
-                    className="carousel-image"
-                    onClick={() => handleThumbnailClick(movie.title)}
-                  />
-                </div>
-                <h3>{movie.title}</h3>
-                <p>{getRatingDescription(movie.rating, true)}</p>
-                <p>{movie.year}</p>
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation(); // Förhindra att klicket bubbla upp till carousel-item
-                    handleFavoriteToggle(); // Anropa funktionen för att lägga till eller ta bort favorit
-                  }}
-                  style={{
-                    border: "none",
-                    background: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <div className="heart-icon-container">
+                  <div className="heart-icon-container cursor-pointer">
                     <i
                       title="favorite"
                       className="fas fa-heart"
@@ -111,9 +99,13 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
                         color: isFavorite ? "red" : "lightgrey",
                         transition: "color 0.3s ease",
                       }}
+                      onClick={handleFavoriteToggle} // Lägger till klickhändelse för hjärtat
                     ></i>
                   </div>
-                </button>
+                </div>
+                <h3>{movie.title}</h3>
+                <p>{getRatingDescription(movie.rating, true)}</p>
+                <p>{movie.year}</p>
               </div>
             </SwiperSlide>
           );
