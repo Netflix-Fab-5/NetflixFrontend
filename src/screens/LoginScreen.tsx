@@ -50,10 +50,10 @@ function LoginScreen() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-stone-900">
+    <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="w-full max-w-xs">
         <h2 className="text-3xl font-bold text-center mb-6 text-green-100">
-          Logga in
+          LOG IN
         </h2>
         <LoginForm
           email={email}

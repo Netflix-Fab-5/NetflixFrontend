@@ -23,11 +23,11 @@
 
 a {
   font-weight: 500;
-  color: #9be6b8; /* Ljusgrön färg för länkar */
+  color: #218838; /* Ljusgrön färg för länkar */
   text-decoration: inherit;
 }
 a:hover {
-  color: #76d7c4; /* Mörkare grön vid hover */
+  color: #218838; /* Mörkare grön vid hover */
 }
 
 body {

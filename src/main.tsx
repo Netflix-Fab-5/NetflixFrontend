@@ -6,6 +6,7 @@ import "./styles/index.css";
 import "./styles/carousel.css";
 import "./styles/headerAnimation.css";
 import "./styles/navbar.css";
+import "./styles/loginForm.css";
 import { BrowserRouter } from "react-router-dom";
 import { MyContextProvider } from "./constants/context";
 
