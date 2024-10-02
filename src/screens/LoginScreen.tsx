@@ -26,8 +26,10 @@ function LoginScreen() {
         email,
         password,
       );
+
       setUser(userCredential.user);
       navigate("/");
+      console.log("handle logiiiin");
     } catch (error: unknown) {
       if (typeof error === "object" && error !== null && "code" in error) {
         handleSignInError(error as FirebaseAuthError, setError);

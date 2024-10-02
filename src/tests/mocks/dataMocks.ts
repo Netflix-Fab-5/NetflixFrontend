@@ -1,4 +1,3 @@
-import { Mock } from "vitest";
 import { User } from "firebase/auth";
 import { vi } from "vitest";
 
@@ -81,82 +80,82 @@ export const mockUser: User = {
   providerId: "firebase",
 };
 
-// useAuth-hook, represents what useAuth should return when a user is logged in
-export const mockUseAuth: { user: User | null; loading: boolean } = {
-  user: mockUser,
-  loading: false,
-};
+// // useAuth-hook, represents what useAuth should return when a user is logged in
+// export const mockUseAuth: { user: User | null; loading: boolean } = {
+//   user: mockUser,
+//   loading: false,
+// };
 
-// SessionStorage
-export const mockSessionStorage = () => {
-  vi.spyOn(window.sessionStorage, "getItem").mockImplementation(
-    (key: string) => {
-      if (key === "user") {
-        return JSON.stringify(mockUser); // Mock that a user is stored in sessionStorage
-      }
-      return null;
-    },
-  );
+// // SessionStorage
+// export const mockSessionStorage = () => {
+//   vi.spyOn(window.sessionStorage, "getItem").mockImplementation(
+//     (key: string) => {
+//       if (key === "user") {
+//         return JSON.stringify(mockUser); // Mock that a user is stored in sessionStorage
+//       }
+//       return null;
+//     },
+//   );
 
-  vi.spyOn(window.sessionStorage, "setItem").mockImplementation(() => {
-    // Mock the behavior of saving items in sessionStorage
-  });
+//   vi.spyOn(window.sessionStorage, "setItem").mockImplementation(() => {
+//     // Mock the behavior of saving items in sessionStorage
+//   });
 
-  vi.spyOn(window.sessionStorage, "removeItem").mockImplementation(() => {
-    // Mock the behavior of removing items from sessionStorage
-  });
-};
+//   vi.spyOn(window.sessionStorage, "removeItem").mockImplementation(() => {
+//     // Mock the behavior of removing items from sessionStorage
+//   });
+// };
 
-// Firebase auth
-export const mockFirebaseAuth = () => {
-  vi.mock("firebase/auth", () => ({
-    getAuth: vi.fn().mockReturnValue({
-      currentUser: mockUser,
-      signInWithEmailAndPassword: vi.fn().mockResolvedValue({ user: mockUser }),
-      signOut: vi.fn().mockResolvedValue(undefined),
-    }),
-    signInWithEmailAndPassword: vi.fn(),
-    signOut: vi.fn(),
-  }));
-};
+// // Firebase auth
+// export const mockFirebaseAuth = () => {
+//   vi.mock("firebase/auth", () => ({
+//     getAuth: vi.fn().mockReturnValue({
+//       currentUser: mockUser,
+//       signInWithEmailAndPassword: vi.fn().mockResolvedValue({ user: mockUser }),
+//       signOut: vi.fn().mockResolvedValue(undefined),
+//     }),
+//     signInWithEmailAndPassword: vi.fn(),
+//     signOut: vi.fn(),
+//   }));
+// };
 
-// Firebase database (movies, genres)
-export const mockFirebaseDatabase = (
-  mockGet: Mock,
-  mockPush: Mock,
-  mockRef: Mock,
-) => {
-  vi.mock("firebase/database", () => ({
-    getDatabase: vi.fn(),
-    ref: vi.fn(),
-    get: vi.fn(),
-    push: vi.fn(),
-  }));
+// // Firebase database (movies, genres)
+// export const mockFirebaseDatabase = (
+//   mockGet: Mock,
+//   mockPush: Mock,
+//   mockRef: Mock,
+// ) => {
+//   vi.mock("firebase/database", () => ({
+//     getDatabase: vi.fn(),
+//     ref: vi.fn(),
+//     get: vi.fn(),
+//     push: vi.fn(),
+//   }));
 
-  // Mock fetchMovies
-  mockGet.mockResolvedValueOnce({
-    val: () => mockMovies,
-  });
+//   // Mock fetchMovies
+//   mockGet.mockResolvedValueOnce({
+//     val: () => mockMovies,
+//   });
 
-  // Mock fetchGenres
-  mockGet.mockResolvedValueOnce({
-    val: () => ({
-      movie1: { genre: "Drama,Action" },
-      movie2: { genre: "Action,Crime" },
-    }),
-  });
+//   // Mock fetchGenres
+//   mockGet.mockResolvedValueOnce({
+//     val: () => ({
+//       movie1: { genre: "Drama,Action" },
+//       movie2: { genre: "Action,Crime" },
+//     }),
+//   });
 
-  // Mock addMovie
-  mockPush.mockImplementation(() => {
-    return Promise.resolve();
-  });
+//   // Mock addMovie
+//   mockPush.mockImplementation(() => {
+//     return Promise.resolve();
+//   });
 
-  // Mock fetchMovieById
-  mockRef.mockReturnValue({ val: vi.fn() });
-  mockGet.mockResolvedValueOnce({
-    val: () => mockMovies.movie1,
-  });
-};
+//   // Mock fetchMovieById
+//   mockRef.mockReturnValue({ val: vi.fn() });
+//   mockGet.mockResolvedValueOnce({
+//     val: () => mockMovies.movie1,
+//   });
+// };
 
 // Example of mock context value
 export const mockContextValue = {
@@ -177,6 +176,7 @@ export const mockContextValue = {
   handleFetchMovieById: vi.fn(),
   handleFetchMovieByTitle: vi.fn(),
   addMovie: vi.fn(),
+  deleteMovie: vi.fn(),
   editMovie: vi.fn(),
   filterMoviesByGenre: vi.fn(),
 };

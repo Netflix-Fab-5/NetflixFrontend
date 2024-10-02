@@ -1,67 +1,107 @@
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { BrowserRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
-import LoginScreen from "../screens/LoginScreen";
+import { MemoryRouter } from "react-router-dom";
 import { MyContext } from "../constants/context";
-import { mockContextValue, mockUseAuth } from "./mocks/dataMocks";
+import LoginScreen from "../screens/LoginScreen";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useAuth } from "../hooks/useAuth";
 
-// Mocka useNavigate från react-router-dom
-const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+// Mocka firebase/auth
+vi.mock("firebase/auth", () => ({
+  getAuth: vi.fn(() => ({
+    currentUser: null,
+  })),
+  signInWithEmailAndPassword: vi.fn(),
+}));
+
+// Mocka useAuth-hooken
+vi.mock("../hooks/useAuth", () => ({
+  useAuth: vi.fn(),
+}));
+
+// Partiell mockning av react-router-dom för att behålla MemoryRouter
+vi.mock("react-router-dom", async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
-    useNavigate: () => mockNavigate, // Mocka useNavigate
+    useNavigate: () => mockNavigate,
   };
 });
 
-// Mocka useAuth hooken för att returnera en användare och loading status
-vi.mock("../hooks/useAuth", () => ({
-  useAuth: () => ({
-    user: null, // Ingen användare inloggad
-    loading: false, // Inte i laddningstillstånd
-  }),
-}));
+// Mocka navigate-funktionen
+const mockNavigate = vi.fn();
 
 describe("LoginScreen Component", () => {
+  const mockSetUser = vi.fn();
+  const mockSetError = vi.fn();
+
   beforeEach(() => {
-    vi.resetAllMocks();
+    (useAuth as vi.Mock).mockReturnValue({ user: null, loading: false });
+    vi.clearAllMocks(); // Rensa tidigare anrop
   });
 
-  it("should render the login form", () => {
+  it("ska logga in framgångsrikt och navigera till startsidan", async () => {
+    const email = "admin@mail.com";
+    const password = "supersecret";
+
+    // Ställ in returvärde för signInWithEmailAndPassword
+    (signInWithEmailAndPassword as vi.Mock).mockResolvedValue({
+      user: {
+        uid: "test-uid",
+        email: "admin@mail.com",
+      },
+    });
+
+    // MockContext value för att hantera TypeScript-fel
+    const mockContextValue = {
+      movies: [],
+      movie: null,
+      genres: [],
+      addFavorite: vi.fn(),
+      removeFavorite: vi.fn(),
+      filteredMovies: [],
+      favorites: [],
+      loading: false,
+      error: null,
+      success: true,
+      user: null, // User är null vid inloggning
+      setUser: mockSetUser,
+      setError: mockSetError,
+      handleFetchMovies: vi.fn(),
+      handleFetchMovieById: vi.fn(),
+      handleFetchMovieByTitle: vi.fn(),
+      addMovie: vi.fn(),
+      deleteMovie: vi.fn(),
+      editMovie: vi.fn(),
+      filterMoviesByGenre: vi.fn(),
+    };
+
     render(
-      <BrowserRouter>
-        <MyContext.Provider value={{ ...mockContextValue, user: null }}>
+      <MemoryRouter>
+        <MyContext.Provider value={mockContextValue}>
           <LoginScreen />
         </MyContext.Provider>
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
 
-    // Kontrollera att inloggningsrutan renderas korrekt
-    expect(screen.getByLabelText("Email")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Login/i })).toBeInTheDocument();
-  });
+    // Fyll i e-post och lösenord
+    fireEvent.change(screen.getByLabelText(/Email/i), {
+      target: { value: email },
+    });
+    fireEvent.change(screen.getByLabelText(/Password/i), {
+      target: { value: password },
+    });
 
-  it("should update email input when user types", async () => {
-    const user = userEvent.setup();
+    // Skicka in formuläret
+    fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
-    render(
-      <BrowserRouter>
-        <MyContext.Provider value={{ ...mockContextValue, user: null }}>
-          <LoginScreen />
-        </MyContext.Provider>
-      </BrowserRouter>,
-    );
-
-    const emailInput = screen.getByLabelText("Email");
-
-    // Simulera inmatning i e-postfältet
-    await user.type(emailInput, "testuser@mail.com");
-
-    // Kontrollera att e-postfältet uppdateras korrekt
-    expect(emailInput).toHaveValue("testuser@mail.com");
+    // Vänta på att navigeringen sker
+    await waitFor(() => {
+      expect(mockSetUser).toHaveBeenCalledWith({
+        uid: "test-uid",
+        email: "admin@mail.com",
+      });
+      expect(mockNavigate).toHaveBeenCalledWith("/");
+    });
   });
 });
