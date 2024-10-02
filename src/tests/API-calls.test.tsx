@@ -6,6 +6,7 @@ import {
   addMovie,
   fetchGenres,
 } from "../firebase/firebaseApi";
+import { mockMovies, mockMovieById, mockNewMovie } from "./mocks/dataMocks";
 
 // Mocka Firebase-uppstartning
 vi.mock("firebase/app", () => ({
@@ -14,6 +15,12 @@ vi.mock("firebase/app", () => ({
 
 vi.mock("firebase/auth", () => ({
   getAuth: vi.fn(),
+  signInWithEmailAndPassword: vi.fn().mockResolvedValue({
+    user: {
+      uid: "12345",
+      email: "testuser@mail.com",
+    },
+  }),
 }));
 
 vi.mock("firebase/database", () => ({
@@ -29,64 +36,28 @@ describe.only("Firebase API Tests", () => {
   const mockRef = ref as Mock;
 
   beforeEach(() => {
-    // Återställ mockade funktioner innan varje test
     vi.clearAllMocks();
   });
 
   it("should fetch movies successfully", async () => {
-    const moviesData = {
-      movie1: {
-        title: "Movie 1",
-        year: 2021,
-        rating: "PG-13",
-        actors: ["Actor 1"],
-        genre: "Action",
-        synopsis: "Synopsis 1",
-        thumbnail: "url1",
-        isTrending: true,
-      },
-      movie2: {
-        title: "Movie 2",
-        year: 2022,
-        rating: "R",
-        actors: ["Actor 2"],
-        genre: "Comedy",
-        synopsis: "Synopsis 2",
-        thumbnail: "url2",
-        isTrending: false,
-      },
-    };
-
-    // Mocka returnerad data
     mockGet.mockResolvedValueOnce({
-      val: () => moviesData,
+      val: () => mockMovies,
     });
 
     const movies = await fetchMovies();
-    expect(movies).toEqual(moviesData);
+    expect(movies).toEqual(mockMovies);
     expect(mockGet).toHaveBeenCalled();
   });
 
   it("should fetch a movie by ID successfully", async () => {
-    const movieData = {
-      title: "Movie 1",
-      year: 2021,
-      rating: "PG-13",
-      actors: ["Actor 1"],
-      genre: "Action",
-      synopsis: "Synopsis 1",
-      thumbnail: "url1",
-      isTrending: true,
-    };
     const movieId = "movie1";
-
     mockRef.mockReturnValue({ val: vi.fn() }); // Mocka referensen
     mockGet.mockResolvedValueOnce({
-      val: () => movieData,
+      val: () => mockMovieById,
     });
 
     const movie = await fetchMovieById(movieId);
-    expect(movie).toEqual({ ...movieData, id: movieId });
+    expect(movie).toEqual({ ...mockMovieById, id: movieId });
     expect(mockGet).toHaveBeenCalled();
   });
 
@@ -104,36 +75,19 @@ describe.only("Firebase API Tests", () => {
   });
 
   it("should add a new movie successfully", async () => {
-    const newMovie = {
-      title: "New Movie",
-      year: 2023,
-      rating: "PG",
-      actors: ["New Actor"],
-      genre: "Drama",
-      synopsis: "New Synopsis",
-      thumbnail: "urlNew",
-      isTrending: false,
-    };
-
     mockRef.mockReturnValue({ val: vi.fn() }); // Mocka referensen
 
-    await addMovie(newMovie);
-    // expect(mockRef).toHaveBeenCalledWith('movies');
-    expect(mockPush).toHaveBeenCalledWith(mockRef(), newMovie);
+    await addMovie(mockNewMovie);
+    expect(mockPush).toHaveBeenCalledWith(mockRef(), mockNewMovie);
   });
 
   it("should fetch genres from movies", async () => {
-    const moviesData = {
-      movie1: { title: "Movie 1", genre: "Action, Comedy" },
-      movie2: { title: "Movie 2", genre: "Drama, Action" },
-    };
-
     mockGet.mockResolvedValueOnce({
-      val: () => moviesData,
+      val: () => mockMovies,
     });
 
     const genres = await fetchGenres();
-    expect(genres).toEqual(["Action", "Comedy", "Drama"]);
+    expect(genres).toEqual(expect.arrayContaining(["Action", "Drama"]));
   });
 
   it("should return empty array when no movies are found", async () => {

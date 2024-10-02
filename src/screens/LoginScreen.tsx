@@ -7,6 +7,8 @@ import {
 } from "firebase/auth";
 import { MyContext } from "../constants/context";
 import LoginForm from "../components/LoginForm"; // Importera din formkomponent
+import { useAuth } from "../hooks/useAuth";
+import { handleSignInError } from "../helpers/authHelpers";
 
 function LoginScreen() {
   const auth = getAuth();
@@ -15,19 +17,7 @@ function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignInError = (error: FirebaseAuthError) => {
-    let errorMessage = "Ett fel uppstod.";
-    if (error.code === "auth/wrong-password") {
-      errorMessage = "Fel lösenord.";
-    } else if (error.code === "auth/user-not-found") {
-      errorMessage = "Vi kunde inte hitta e-postadressen.";
-    } else if (error.code === "auth/invalid-email") {
-      errorMessage = "Fel e-postadress.";
-    } else if (error.code === "auth/network-request-failed") {
-      errorMessage = "Nätverksfel, vänligen försök igen.";
-    }
-    setError(errorMessage);
-  };
+  const { user, loading } = useAuth();
 
   const handleLogin = async () => {
     try {
@@ -36,17 +26,28 @@ function LoginScreen() {
         email,
         password,
       );
+
       setUser(userCredential.user);
       navigate("/");
+      console.log("handle logiiiin");
     } catch (error: unknown) {
-      // Type guard to ensure the error is a Firebase AuthError
       if (typeof error === "object" && error !== null && "code" in error) {
-        handleSignInError(error as FirebaseAuthError);
+        handleSignInError(error as FirebaseAuthError, setError);
       } else {
-        setError("Ett oväntat fel inträffade.");
+        setError("An unexpected error occurred.");
       }
     }
   };
+
+  if (loading) {
+    return <p>Laddar användardata...</p>;
+  }
+
+  // Om användaren redan är inloggad, navigera direkt
+  if (user) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-stone-900">
