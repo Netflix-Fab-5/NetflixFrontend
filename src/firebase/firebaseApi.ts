@@ -1,4 +1,4 @@
-import { ref, get, push, set } from "firebase/database"; // Modulära importer
+import { ref, get, push, set, remove } from "firebase/database"; // Modulära importer
 import { database } from "./firebase"; // Importerar den redan initierade databasen från firebase.ts
 import { Movie } from "../constants/types";
 
@@ -49,6 +49,13 @@ export const editMovie = async (movieId: string, updatedMovie: Movie) => {
 
   return updatedMovie; // Return the updated movie for confirmation
 };
+
+// Delete a movie 
+export const deleteMovie = async (movieId: string) => {
+  const movieRef = ref(database, `movies/${movieId}`); // Reference to the specific movie to delete
+  await remove(movieRef); // Remove the movie from firebase
+};
+
 // Hämtar alla kategorier (genrer) från Firebase
 export const fetchGenres = async (): Promise<string[]> => {
   const moviesRef = ref(database, "movies"); // Referens till "movies"-noden i databasen

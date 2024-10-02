@@ -52,8 +52,8 @@ function AddAMovie() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 text-red-600 rounded-lg shadow-md w-full max-w-lg">
+    <div className="flex justify-center text-green-600 items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl  font-bold mb-6 text-center">Add a Movie</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
@@ -153,13 +153,13 @@ function AddAMovie() {
               checked={movie.isTrending}
               data-testid="trending-input"
               onChange={handleTrendingChange}
-              className="mt-1 w-2/3"
+              className="mt-1"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
+            className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-800"
           >
             Add A New Movie
           </button>

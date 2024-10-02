@@ -14,6 +14,7 @@ import {
   addMovie,
   editMovie,
   fetchGenres,
+  deleteMovie,
 } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
 import { onAuthStateChanged } from "../firebase/firebaseAuth"; // Importera auth-logik
 import { Movie, ContextType } from "./types";
@@ -186,6 +187,28 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Delete a movie
+  const handleDeleteMovie = async (movieId: string) => {
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) {
+      setError("User not authenticated."); // User authentication error
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await deleteMovie(movieId);
+      setSuccess(true);
+      setError(null); // Clear any previous errors
+    } catch (err: unknown) {
+      console.error("Error deleting movie:", err);
+      setError("Failed to delete movie. Please try again.");
+      setSuccess(false);
+    }
+  };
+
   // Lägg till en film i favoriter
   const addFavorite = (movie: Movie) => {
     setFavorites((prev) => {
@@ -225,6 +248,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         handleFetchMovieById,
         handleFetchMovieByTitle,
         editMovie: handleEditMovie,
+        deleteMovie: handleDeleteMovie,
         addFavorite,
         removeFavorite,
         filterMoviesByGenre, // Add the missing function to the context value

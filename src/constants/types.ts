@@ -28,6 +28,7 @@ export type ContextType = {
   handleFetchMovieByTitle: (title: string) => Promise<Movie | null>;
   addMovie: (movie: Movie) => Promise<void>;
   editMovie: (movieId: string, movie: Movie) => Promise<void>;
+  deleteMovie: (movieId: string) => Promise<void>;
   addFavorite: (movie: Movie) => void; // Funktion för att lägga till favoriter
   removeFavorite: (movie: Movie) => void; // Funktion för att ta bort favoriter
   filterMoviesByGenre: (genres: string[]) => void;
