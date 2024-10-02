@@ -9,7 +9,7 @@ const MoviesButton = () => {
       }}
       aria-label="Gå till alla filmer"
     >
-      <button className="">Movies</button>
+      <button className="button">Movies</button>
     </Link>
   );
 };

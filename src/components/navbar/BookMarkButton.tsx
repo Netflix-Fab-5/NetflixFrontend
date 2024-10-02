@@ -9,7 +9,11 @@ const BookmarkButton = () => {
       }}
       aria-label="Gå till favoritfilmer"
     >
-      <button>Favorites</button>
+      <button className="button">
+        {" "}
+        {/* Använd den gemensamma CSS-klassen */}
+        Favorites
+      </button>
     </Link>
   );
 };
