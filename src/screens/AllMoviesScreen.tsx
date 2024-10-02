@@ -74,7 +74,9 @@ const AllMoviesScreen: React.FC = () => {
         </Link>
       </div>
 
-      <h1 style={{ marginBottom: "20px" }}>All movies</h1>
+      <h1 style={{ marginBottom: "20px" }} className="sm:mt-12 md:mt-16">
+        All movies
+      </h1>
 
       <div className="mb-4">
         <GenreFilter />
