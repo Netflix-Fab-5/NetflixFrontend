@@ -10,7 +10,9 @@ import { User } from "firebase/auth";
 import {
   fetchMovies,
   fetchMovieById,
+  fetchMovieByTitle,
   addMovie,
+  editMovie,
   fetchGenres,
 } from "../firebase/firebaseApi"; // Importera dina Firebase API-anrop
 import { onAuthStateChanged } from "../firebase/firebaseAuth"; // Importera auth-logik
@@ -91,12 +93,39 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
       try {
         const fetchedMovie = await fetchMovieById(id);
+        setLoading(true); // Start loading
         setMovie(fetchedMovie);
         return fetchedMovie;
       } catch (err) {
         console.log(err);
         setError("Kunde inte hämta filmen.");
         return null;
+      } finally {
+        setLoading(false); // Stop loading after fetch completes
+      }
+    },
+    [],
+  );
+
+  const handleFetchMovieByTitle = useCallback(
+    async (title: string): Promise<Movie | null> => {
+      const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
+      const user = storedUser ? JSON.parse(storedUser) : null;
+
+      if (!user || !user.uid) return null; // Kontrollera att användarens UID finns
+
+      try {
+        const movieData = await fetchMovieByTitle(title); // Fetch movie by title
+        setLoading(true); // Start loading
+        setMovie(movieData);
+        console.log(movieData);
+        return movieData;
+      } catch (err) {
+        console.log(err);
+        setError("No movie found with that title");
+        return null;
+      } finally {
+        setLoading(false);
       }
     },
     [],
@@ -132,6 +161,28 @@ function MyContextProvider({ children }: { children: ReactNode }) {
       setSuccess(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Update movie in the database using fetch API
+  const handleEditMovie = async (movieId: string, updatedMovie: Movie) => {
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!user || !user.uid) {
+      setError("User not authenticated."); // User authentication error
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await editMovie(movieId, updatedMovie);
+      setSuccess(true);
+      setError(null); // Clear any previous errors
+    } catch (err: unknown) {
+      console.error("Error updating movie:", err);
+      setError("Failed to update movie. Please try again.");
+      setSuccess(false); // Mark as unsuccessful
     }
   };
 
@@ -172,6 +223,8 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         handleFetchMovies, // Exponera användarinformation i Context
         addMovie: handleAddMovie,
         handleFetchMovieById,
+        handleFetchMovieByTitle,
+        editMovie: handleEditMovie,
         addFavorite,
         removeFavorite,
         filterMoviesByGenre, // Add the missing function to the context value

@@ -57,7 +57,9 @@ const mockContextValue = {
   favorites: [],
   handleFetchMovies: vi.fn(),
   addMovie: vi.fn(),
+  editMovie: vi.fn(),
   handleFetchMovieById: vi.fn(),
+  handleFetchMovieByTitle: vi.fn(),
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
   filterMoviesByGenre: vi.fn(), // Mockar funktionen för filtrering
@@ -80,11 +82,12 @@ describe("GenreFilter Component", () => {
       </BrowserRouter>,
     );
 
-    // Kontrollera att alla filmer visas initialt
-    expect(screen.getByText("Inception")).toBeInTheDocument();
-    expect(screen.getByText("The Godfather")).toBeInTheDocument();
-    expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-
+    await waitFor(() => {
+      // Kontrollera att alla filmer visas initialt
+      expect(screen.getByText("Inception")).toBeInTheDocument();
+      expect(screen.getByText("The Godfather")).toBeInTheDocument();
+      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
+    });
     // Öppna dropdown-menyn
     const dropdownButton = screen.getAllByText("Categories");
     await user.click(dropdownButton[0]);
@@ -111,11 +114,12 @@ describe("GenreFilter Component", () => {
       </BrowserRouter>,
     );
 
-    // Se till att alla filmer visas initialt
-    expect(screen.getByText("Inception")).toBeInTheDocument();
-    expect(screen.getByText("The Godfather")).toBeInTheDocument();
-    expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-
+    await waitFor(() => {
+      // Se till att alla filmer visas initialt
+      expect(screen.getByText("Inception")).toBeInTheDocument();
+      expect(screen.getByText("The Godfather")).toBeInTheDocument();
+      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
+    });
     // Öppna dropdown-menyn
     const dropdownButton = screen.getAllByText("Categories");
     await user.click(dropdownButton[0]);

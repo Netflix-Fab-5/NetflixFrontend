@@ -1,8 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MyContext } from "../constants/context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
 import { getRatingDescription } from "../constants/ratingUtils";
+import EditButton from "../components/admin/EditButton";
+import { useAuth } from "../hooks/useAuth";
+import { fetchMovieByTitle } from "../firebase/firebaseApi";
+import { Movie } from "../constants/types";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
@@ -13,20 +17,30 @@ const createSlug = (title: string) => {
 };
 
 const AllMoviesScreen: React.FC = () => {
+  const { user, loading } = useAuth();
   // Use context to access data
-  const {
-    filteredMovies,
-    loading,
-    error,
-    handleFetchMovies,
-    addFavorite,
-    removeFavorite,
-    favorites,
-  } = useContext(MyContext);
+  const { filteredMovies, error, addFavorite, removeFavorite, favorites } =
+    useContext(MyContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    handleFetchMovies(); // Hämta filmer när sidan laddas
-  }, [handleFetchMovies]);
+  if (loading) {
+    return <div>Laddar...</div>;
+  }
+
+  const handleEdit = async (title: string) => {
+    const movie = await fetchMovieByTitle(title);
+
+    if (movie) {
+      const movieWithId = movie as Movie & { id: string };
+      const movieId = movieWithId.id;
+      console.log("edit button", movieId);
+      // Navigate to edit movie
+      navigate(`/movies/edit/${movieId}`);
+    } else {
+      console.log("Movie not found");
+    }
+  };
+
   return (
     <div style={{ padding: "20px", position: "relative" }}>
       {/* Home button at the top-right corner */}
@@ -114,6 +128,13 @@ const AllMoviesScreen: React.FC = () => {
                 (e.currentTarget.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)")
               }
             >
+              {user && user.email === "admin@mail.com" && (
+                <EditButton
+                  onClick={() => handleEdit(movie.title)}
+                  size={22} // Du kan justera storleken om det behövs
+                />
+              )}
+
               {/* Navigate to the movie page with a slugified title */}
               <Link to={`/movies/${createSlug(movie.title)}`}>
                 <img

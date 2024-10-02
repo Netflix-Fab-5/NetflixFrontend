@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -9,6 +10,8 @@ import "swiper/css/scrollbar";
 import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 import { getRatingDescription } from "../../constants/ratingUtils";
+import EditButton from "../admin/EditButton";
+import { fetchMovieByTitle } from "../../firebase/firebaseApi";
 
 const createSlug = (title: string) => {
   return title
@@ -23,6 +26,7 @@ interface MovieCarouselProps {
 }
 
 const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
+  const { user } = useAuth();
   const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
   const navigate = useNavigate();
 
@@ -52,17 +56,37 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
             }
           };
 
+          const handleEdit = async (title: string) => {
+            const movie = await fetchMovieByTitle(title);
+
+            if (movie) {
+              const movieWithId = movie as Movie & { id: string };
+              const movieId = movieWithId.id;
+              console.log("edit button", movieId);
+              // Navigate to edit movie
+              navigate(`/movies/edit/${movieId}`);
+            } else {
+              console.log("Movie not found");
+            }
+          };
+
           return (
             <SwiperSlide key={movie.title}>
-              <div
-                className="carousel-item"
-                onClick={() => handleThumbnailClick(movie.title)}
-              >
-                <img
-                  src={movie.thumbnail}
-                  alt={movie.title}
-                  className="carousel-image"
-                />
+              <div className="carousel-item">
+                <div className="flex flex-col">
+                  {user && user.email === "admin@mail.com" && (
+                    <EditButton
+                      onClick={() => handleEdit(movie.title)}
+                      size={22} // Du kan justera storleken om det behövs
+                    />
+                  )}
+                  <img
+                    src={movie.thumbnail}
+                    alt={movie.title}
+                    className="carousel-image"
+                    onClick={() => handleThumbnailClick(movie.title)}
+                  />
+                </div>
                 <h3>{movie.title}</h3>
                 <p>{getRatingDescription(movie.rating, true)}</p>
                 <p>{movie.year}</p>
