@@ -1,75 +1,70 @@
-import { useEffect, useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, EmailAuthProvider } from "firebase/auth";
-import * as firebaseui from "firebaseui";
-import "../styles/firebase-overrides.css";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  AuthError as FirebaseAuthError,
+} from "firebase/auth";
 import { MyContext } from "../constants/context";
+import LoginForm from "../components/LoginForm"; // Importera din formkomponent
 
 function LoginScreen() {
   const auth = getAuth();
   const navigate = useNavigate();
-  const { error } = useContext(MyContext);
-  console.log(error);
+  const { setUser, error, setError } = useContext(MyContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    const uiConfig = {
-      signInOptions: [EmailAuthProvider.PROVIDER_ID],
-      signInFlow: "popup",
-      autoUpgradeAnonymousUsers: true,
-      callbacks: {
-        signInSuccessWithAuthResult: () => {
-          navigate("/"); // Navigera efter lyckad inloggning
-          return false;
-        },
-        signInFailure: (error: firebaseui.auth.AuthUIError) => {
-          console.log(error);
-          handleSignInError(error);
-          return Promise.resolve();
-        },
-      },
-    };
+  const handleSignInError = (error: FirebaseAuthError) => {
+    let errorMessage = "Ett fel uppstod.";
+    if (error.code === "auth/wrong-password") {
+      errorMessage = "Fel lösenord.";
+    } else if (error.code === "auth/user-not-found") {
+      errorMessage = "Vi kunde inte hitta e-postadressen.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Fel e-postadress.";
+    } else if (error.code === "auth/network-request-failed") {
+      errorMessage = "Nätverksfel, vänligen försök igen.";
+    }
+    setError(errorMessage);
+  };
 
-    const initializeFirebaseUI = () => {
-      const ui =
-        firebaseui.auth.AuthUI.getInstance() ||
-        new firebaseui.auth.AuthUI(auth);
-      ui.start("#firebaseui-auth-container", uiConfig);
-    };
-
-    const handleSignInError = (error: firebaseui.auth.AuthUIError) => {
-      console.log(error);
-      let errorMessage = "Ett fel uppstod.";
-      if (error.code === "auth/wrong-password") {
-        errorMessage = "Fel lösenord.";
-      } else if (error.code === "auth/user-not-found") {
-        errorMessage = "Vi kunde inte hitta e-postadressen.";
-      } else if (error.code === "auth/invalid-email") {
-        errorMessage = "Fel e-postadress.";
-      } else if (error.code === "auth/network-request-failed") {
-        errorMessage = "Nätverksfel, vänligen försök igen.";
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      setUser(userCredential.user);
+      navigate("/");
+    } catch (error: unknown) {
+      // Type guard to ensure the error is a Firebase AuthError
+      if (typeof error === "object" && error !== null && "code" in error) {
+        handleSignInError(error as FirebaseAuthError);
+      } else {
+        setError("Ett oväntat fel inträffade.");
       }
-      alert(errorMessage);
-    };
-
-    initializeFirebaseUI(); // Starta FirebaseUI
-
-    auth.currentUser
-      ?.getIdToken(true)
-      .then((token) => {
-        console.log("Auth Token:", token);
-      })
-      .catch((error) => {
-        console.error("Error fetching auth token:", error);
-      });
-  }, [auth, navigate]);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-stone-900">
-      <div className="firebaseui-container">
+      <div className="w-full max-w-xs">
         <h2 className="text-3xl font-bold text-center mb-6 text-green-100">
-          Login
+          Logga in
         </h2>
-        <div id="firebaseui-auth-container"></div>
+        <LoginForm
+          email={email}
+          password={password}
+          onEmailChange={(e) => setEmail(e.target.value)}
+          onPasswordChange={(e) => setPassword(e.target.value)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+          error={error}
+        />
       </div>
     </div>
   );
