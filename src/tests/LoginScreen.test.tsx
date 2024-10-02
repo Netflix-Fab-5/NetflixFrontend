@@ -1,80 +1,89 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
+import { ContextType } from "../constants/types";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 import { MyContext } from "../constants/context";
 import LoginScreen from "../screens/LoginScreen";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useAuth } from "../hooks/useAuth";
 
 // Mocka firebase/auth
-vi.mock("firebase/auth", () => ({
-  getAuth: vi.fn(() => ({
-    currentUser: null,
-  })),
-  signInWithEmailAndPassword: vi.fn(),
-}));
+vi.mock("firebase/auth", () => {
+  const actualAuth =
+    vi.importActual<typeof import("firebase/auth")>("firebase/auth");
+  return {
+    ...actualAuth,
+    getAuth: vi.fn(() => ({
+      currentUser: null,
+    })),
+    signInWithEmailAndPassword: vi.fn(),
+  };
+});
 
 // Mocka useAuth-hooken
 vi.mock("../hooks/useAuth", () => ({
   useAuth: vi.fn(),
 }));
 
-// Partiell mockning av react-router-dom för att behålla MemoryRouter
-vi.mock("react-router-dom", async (importOriginal) => {
-  const actual = await importOriginal();
+// Mocka useNavigate från react-router-dom
+vi.mock("react-router-dom", async () => {
+  const actual =
+    await vi.importActual<typeof import("react-router-dom")>(
+      "react-router-dom",
+    );
   return {
     ...actual,
-    useNavigate: () => mockNavigate,
+    useNavigate: vi.fn(),
   };
 });
-
-// Mocka navigate-funktionen
-const mockNavigate = vi.fn();
 
 describe("LoginScreen Component", () => {
   const mockSetUser = vi.fn();
   const mockSetError = vi.fn();
+  const mockNavigate = vi.fn();
+
+  // Skapa mockContextValue med alla obligatoriska egenskaper
+  const mockContextValue: ContextType = {
+    movies: {},
+    movie: null,
+    genres: [],
+    filteredMovies: [],
+    favorites: [],
+    loading: false,
+    error: null,
+    success: false,
+    user: null,
+    setUser: mockSetUser,
+    setError: mockSetError,
+    addFavorite: vi.fn(),
+    removeFavorite: vi.fn(),
+    handleFetchMovies: vi.fn(),
+    handleFetchMovieById: vi.fn(),
+    handleFetchMovieByTitle: vi.fn(),
+    addMovie: vi.fn(),
+    deleteMovie: vi.fn(),
+    editMovie: vi.fn(),
+    filterMoviesByGenre: vi.fn(),
+  };
 
   beforeEach(() => {
-    (useAuth as vi.Mock).mockReturnValue({ user: null, loading: false });
-    vi.clearAllMocks(); // Rensa tidigare anrop
+    (useAuth as Mock).mockReturnValue({ user: null, loading: false });
+    (useNavigate as Mock).mockReturnValue(mockNavigate);
+    vi.clearAllMocks();
   });
 
   it("ska logga in framgångsrikt och navigera till startsidan", async () => {
     const email = "admin@mail.com";
     const password = "supersecret";
 
-    // Ställ in returvärde för signInWithEmailAndPassword
-    (signInWithEmailAndPassword as vi.Mock).mockResolvedValue({
+    // Mocka signInWithEmailAndPassword
+    (signInWithEmailAndPassword as Mock).mockResolvedValue({
       user: {
         uid: "test-uid",
         email: "admin@mail.com",
       },
     });
-
-    // MockContext value för att hantera TypeScript-fel
-    const mockContextValue = {
-      movies: [],
-      movie: null,
-      genres: [],
-      addFavorite: vi.fn(),
-      removeFavorite: vi.fn(),
-      filteredMovies: [],
-      favorites: [],
-      loading: false,
-      error: null,
-      success: true,
-      user: null, // User är null vid inloggning
-      setUser: mockSetUser,
-      setError: mockSetError,
-      handleFetchMovies: vi.fn(),
-      handleFetchMovieById: vi.fn(),
-      handleFetchMovieByTitle: vi.fn(),
-      addMovie: vi.fn(),
-      deleteMovie: vi.fn(),
-      editMovie: vi.fn(),
-      filterMoviesByGenre: vi.fn(),
-    };
 
     render(
       <MemoryRouter>
@@ -84,18 +93,11 @@ describe("LoginScreen Component", () => {
       </MemoryRouter>,
     );
 
-    // Fyll i e-post och lösenord
-    fireEvent.change(screen.getByLabelText(/Email/i), {
-      target: { value: email },
-    });
-    fireEvent.change(screen.getByLabelText(/Password/i), {
-      target: { value: password },
-    });
+    await userEvent.type(screen.getByLabelText(/Email/i), email);
+    await userEvent.type(screen.getByLabelText(/Password/i), password);
 
-    // Skicka in formuläret
-    fireEvent.click(screen.getByRole("button", { name: /Login/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Login/i }));
 
-    // Vänta på att navigeringen sker
     await waitFor(() => {
       expect(mockSetUser).toHaveBeenCalledWith({
         uid: "test-uid",
