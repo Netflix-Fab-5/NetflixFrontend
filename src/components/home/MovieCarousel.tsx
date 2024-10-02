@@ -37,7 +37,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
 
   return (
     <div className="carousel-container">
-      <h2>{title}</h2>
+      <h2 style={{ display: "none" }}>{title}</h2>
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={50}
