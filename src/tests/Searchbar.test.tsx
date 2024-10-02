@@ -25,6 +25,7 @@ describe("Searchbar render", () => {
             favorites: [],
             success: false,
             user: null,
+            setUser: vi.fn(),
             filteredMovies: [],
             genres: [],
             filterMoviesByGenre: vi.fn(),

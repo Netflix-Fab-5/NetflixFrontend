@@ -45,6 +45,7 @@ const mockContextValue = {
   filterMoviesByGenre: vi.fn(),
   filteredMovies: [],
   user: null,
+  setUser: vi.fn(),
 };
 
 // Mock sessionStorage

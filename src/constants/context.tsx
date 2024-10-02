@@ -220,6 +220,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         setError,
         success,
         user,
+        setUser,
         handleFetchMovies, // Exponera användarinformation i Context
         addMovie: handleAddMovie,
         handleFetchMovieById,

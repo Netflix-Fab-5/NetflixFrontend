@@ -146,6 +146,7 @@ describe("MovieCarousel Component", () => {
     setError: mockSetError,
     success: true,
     user: null,
+    setUser: vi.fn(),
     handleFetchMovies: mockHandleFetchMovies,
     handleFetchMovieById: mockHandleFetchMovieById,
     handleFetchMovieByTitle: vi.fn(),
