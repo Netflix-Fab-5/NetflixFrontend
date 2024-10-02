@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import MovieDetails from "../screens/MovieDetailScreen";
 import { MyContext } from "../constants/context";
 import "@testing-library/jest-dom";
@@ -41,9 +41,9 @@ const mockContextValue = {
   handleFetchMovies: vi.fn(),
   handleFetchMovieById: vi.fn(),
   handleFetchMovieByTitle: vi.fn(),
-  addMovie: vi.fn(), // Mocka funktionen för att lägga till film
-  editMovie: vi.fn(), // Mocka funktionen för att redigera film
-  deleteMovie: vi.fn(), // Mocka funktionen för att ta bort film
+  addMovie: vi.fn(),
+  editMovie: vi.fn(),
+  deleteMovie: vi.fn(),
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
   filterMoviesByGenre: vi.fn(),
@@ -55,29 +55,25 @@ describe("MovieDetails Component", () => {
     vi.clearAllMocks();
   });
 
-  // it.only("should render movie details correctly", async () => {
-  //   const movieSlug = createSlug(mockMovies["1"].title); // Använd den nya sluggen
-  //   render(
-  //     <MemoryRouter initialEntries={[`/movies/${movieSlug}`]}>
-  //       <MyContext.Provider value={mockContextValue}>
-  //         <MovieDetails />
-  //       </MyContext.Provider>
-  //     </MemoryRouter>,
-  //   );
+  it("should render movie details correctly", async () => {
+    const movieSlug = createSlug(mockMovies["1"].title);
 
-  //     expect(await screen.findByText("No movie found")).toBeInTheDocument();
-  //     expect(screen.getByText("1966")).toBeInTheDocument();
-  //     expect(
-  //       screen.getByText(
-  //         /A bounty hunting scam joins two men in an uneasy alliance/i,
-  //       ),
-  //     ).toBeInTheDocument();
-  //     expect(screen.getByText(/Western/i)).toBeInTheDocument();
-  //     expect(
-  //       screen.getByText(/Clint Eastwood, Lee Van Cleef, Eli Wallach/i),
-  //     ).toBeInTheDocument();
-  //   });
-  // });
+    render(
+      <MemoryRouter initialEntries={[`/movies/${movieSlug}`]}>
+        <MyContext.Provider value={mockContextValue}>
+          <Routes>
+            <Route path="/movies/:title" element={<MovieDetails />} />
+          </Routes>
+        </MyContext.Provider>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText("Simple Movie")).toBeInTheDocument();
+    expect(screen.getByText("2020")).toBeInTheDocument();
+    expect(screen.getByText("A simple movie for testing.")).toBeInTheDocument();
+    expect(screen.getByText("Comedy")).toBeInTheDocument();
+    expect(screen.getByText("Actor One")).toBeInTheDocument();
+  });
 
   it("should show loading state", () => {
     render(
