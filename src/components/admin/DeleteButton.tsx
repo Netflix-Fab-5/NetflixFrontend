@@ -25,7 +25,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
   };
 
   return (
-    <button onClick={handleDelete} className="delete-button">
+    <button onClick={handleDelete} className="delete-button bg-green-600">
       Delete
     </button>
   );
