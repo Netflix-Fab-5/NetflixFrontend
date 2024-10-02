@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import BookmarkButton from "./BookMarkButton";
 import MoviesButton from "./AllMoviesButton";
@@ -27,17 +27,10 @@ function NavBar() {
         <BookmarkButton />
         <MoviesButton />
         <SearchMovie />
-        {!user && (
-          <Link to="/register">
-            <button>Register</button>
-          </Link>
-        )}
 
         {/* Visa logga ut-knappen om användaren är inloggad */}
         {user && <button onClick={handleLogout}>Logga ut</button>}
       </div>
-
-      <div>{/* Eventuella andra element */}</div>
     </>
   );
 }

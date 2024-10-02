@@ -22,7 +22,7 @@ const Recommended = () => {
       (movie) => !movie.isTrending,
     );
     setRecommendedMovies(filteredMovies);
-  }, [movies]); // Denna körs när movies uppdateras
+  }, [movies]);
 
   // Slumpa fram 8 filmer endast när komponenten laddas första gången
   useEffect(() => {
@@ -30,13 +30,44 @@ const Recommended = () => {
       const randomMovies = getRandomMovies(recommendedMovies, 8);
       setRandomRecommendedMovies(randomMovies);
     }
-  }, [recommendedMovies]); // Denna körs när recommendedMovies uppdateras
+  }, [recommendedMovies]);
 
   return (
-    <MovieCarousel
-      movies={randomRecommendedMovies}
-      title="Recommended Movies"
-    />
+    <div style={{ marginBottom: "2rem" }}>
+      {" "}
+      {/* Marginal under sektionen */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "1rem",
+          paddingLeft: "190px",
+        }}
+      >
+        {" "}
+        {/* Flex container för titel och ikon */}
+        <i
+          className="fas fa-star"
+          style={{
+            color: "gold", // Ikonfärg
+            fontSize: "24px", // Ikonstorlek
+          }}
+        ></i>
+        <h2
+          style={{
+            fontSize: "24px", // Titeln storlek
+            fontWeight: "bold", // Fet stil
+            marginLeft: "10px", // Avstånd mellan ikon och titel
+          }}
+        >
+          Recommended Movies
+        </h2>
+      </div>
+      <MovieCarousel
+        movies={randomRecommendedMovies}
+        title={"Recommended movies"}
+      />
+    </div>
   );
 };
 

@@ -22,7 +22,7 @@ const createSlug = (title: string) => {
 
 interface MovieCarouselProps {
   movies: Movie[];
-  title: string;
+  title?: string;
 }
 
 const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
