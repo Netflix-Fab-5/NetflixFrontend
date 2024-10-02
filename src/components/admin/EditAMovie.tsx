@@ -69,33 +69,16 @@ function EditAMovie() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black">
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          marginBottom: "40px",
-        }}
-      >
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "green",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
+    <div className="flex justify-center items-center min-h-screen bg-black text-xl">
+      <div className="absolute top-5 right-5 mb-10 ">
+        <Link to="/" className="no-underline">
+          <button className="py-2 px-4 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700">
             Home
           </button>
         </Link>
       </div>
       <div className="bg-white mt-20 p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Edit the Movie</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">Edit the Movie</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
             <label className="block text-gray-700 w-1/3">Title:</label>
