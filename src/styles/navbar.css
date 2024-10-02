@@ -1,17 +1,17 @@
-/* navbar.css */
-
 .button-container {
   display: flex;
+  justify-content: flex-end; /* Flytta alla knappar längst till höger */
   align-items: center;
-  position: fixed; /* Fixa positionen så att knapparna stannar högst upp */
-  left: 95rem; /* Justera för att placera dem i det högra hörnet */
-  top: 1rem; /* Justera för att placera dem i det övre hörnet */
-  z-index: 1000; /* Se till att div:en ligger ovanför andra element */
+  position: fixed; /* Fixerar knapparna så de alltid är synliga */
+  right: 1rem; /* Avstånd från höger sida */
+  top: 1rem; /* Avstånd från toppen */
+  z-index: 1000; /* Se till att de ligger ovanför andra element */
 }
 
 .header-container {
-  margin-top: 3rem; /* Justera för att ge utrymme för knapparna */
+  margin-top: 4rem; /* Ger utrymme under knapparna */
   text-align: center;
+  width: 100%; /* Se till att headern är centrerad och tar hela bredden */
 }
 
 /* Knappar */
@@ -24,13 +24,11 @@
   transition:
     color 0.3s ease,
     transform 0.3s ease;
-  border: none;
-  background: none; /* Ingen bakgrund */
+  font-size: large;
 }
 
 .button:hover {
   color: #01d613; /* Ljusare grön färg */
   transform: scale(1.1); /* Gör texten lite större */
-  border: none;
-  background: none; /* Ingen bakgrund */
+  background-color: transparent; /* Ingen bakgrundsfärg */
 }
