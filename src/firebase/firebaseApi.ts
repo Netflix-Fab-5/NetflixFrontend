@@ -50,7 +50,7 @@ export const editMovie = async (movieId: string, updatedMovie: Movie) => {
   return updatedMovie; // Return the updated movie for confirmation
 };
 
-// Delete a movie 
+// Delete a movie
 export const deleteMovie = async (movieId: string) => {
   const movieRef = ref(database, `movies/${movieId}`); // Reference to the specific movie to delete
   await remove(movieRef); // Remove the movie from firebase
