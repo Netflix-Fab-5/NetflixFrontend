@@ -42,7 +42,6 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
         pagination={{ clickable: true }}
       >
         {movies.map((movie) => {
-          // Kontrollera om filmen är i favoriter
           const isFavorite = favorites.some((fav) => fav.title === movie.title);
 
           const handleFavoriteToggle = () => {
@@ -55,18 +54,23 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
 
           return (
             <SwiperSlide key={movie.title}>
-              <div className="carousel-item">
+              <div
+                className="carousel-item"
+                onClick={() => handleThumbnailClick(movie.title)}
+              >
                 <img
                   src={movie.thumbnail}
                   alt={movie.title}
                   className="carousel-image"
-                  onClick={() => handleThumbnailClick(movie.title)}
                 />
                 <h3>{movie.title}</h3>
                 <p>{getRatingDescription(movie.rating, true)}</p>
                 <p>{movie.year}</p>
                 <button
-                  onClick={handleFavoriteToggle}
+                  onClick={(event) => {
+                    event.stopPropagation(); // Förhindra att klicket bubbla upp till carousel-item
+                    handleFavoriteToggle(); // Anropa funktionen för att lägga till eller ta bort favorit
+                  }}
                   style={{
                     border: "none",
                     background: "none",
@@ -74,15 +78,17 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
                     cursor: "pointer",
                   }}
                 >
-                  <i
-                    title="favorite"
-                    className="fas fa-heart"
-                    style={{
-                      fontSize: "24px",
-                      color: isFavorite ? "red" : "lightgrey", // Genomskinligt röd om inte favoriterad
-                      transition: "color 0.3s ease",
-                    }}
-                  ></i>
+                  <div className="heart-icon-container">
+                    <i
+                      title="favorite"
+                      className="fas fa-heart"
+                      style={{
+                        fontSize: "24px",
+                        color: isFavorite ? "red" : "lightgrey",
+                        transition: "color 0.3s ease",
+                      }}
+                    ></i>
+                  </div>
                 </button>
               </div>
             </SwiperSlide>
