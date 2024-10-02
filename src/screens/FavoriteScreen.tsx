@@ -29,20 +29,9 @@ const FavoriteScreen = () => {
     <div style={{ padding: "20px", position: "relative", minHeight: "100vh" }}>
       {/* Home button in the top-right corner */}
       <button
+        className="button"
         onClick={handleHomeClick}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#4CAF50", // Grön bakgrund
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontSize: "16px",
-          zIndex: 1000, // Ensure it stays above other content
-        }}
+        style={{ float: "right" }}
       >
         Home
       </button>
@@ -55,6 +44,7 @@ const FavoriteScreen = () => {
       ) : (
         <div
           style={{
+            marginTop: "50px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
             gap: "20px",

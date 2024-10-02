@@ -1,0 +1,95 @@
+/* allMoviesScreen.css */
+
+.container {
+  padding: 20px;
+  position: relative;
+}
+
+/* Buttons in the top-right and top-left corner */
+.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.top-left {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.button {
+  text-decoration: none;
+}
+
+.heading {
+  margin-bottom: 20px;
+}
+
+/* Grid layout for movies */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Movie card */
+.movie-card {
+  border: 2px rgba(0, 255, 13, 0.144) solid;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background: #000000;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.movie-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.movie-title {
+  margin: 10px 0;
+  font-size: 1.1em;
+}
+
+.movie-genre,
+.movie-rating {
+  margin: 0;
+}
+
+/* Hjärtikon-container som ska vara synlig */
+.heart-icon-container2 {
+  display: block; /* Se till att ikonen alltid visas */
+  z-index: 100; /* Se till att ikonen hamnar framför andra element */
+  text-align: center; /* Centrera ikonen i sitt utrymme */
+  margin-top: auto; /* Flytta ikonen längst ner i kortet */
+  padding: 10px 0;
+}
+
+.heart-icon-container2 i {
+  font-size: 24px; /* Storleken på ikonen */
+  color: lightgrey; /* Standardfärg på hjärtat */
+  transition: color 0.3s ease; /* Smidig övergång för färgändring */
+}
+
+/* Ändra färg på hjärtat när det är favoritmarkerat */
+.heart-icon-container2 i.favorite {
+  color: red; /* Röd färg när det är en favorit */
+}
+
+/* Lägg till hover-effekt för att visa hjärtikon på alla kort */
+.movie-card:hover .heart-icon-container2 i {
+  color: red; /* Om du vill ändra färg vid hover */
+}
