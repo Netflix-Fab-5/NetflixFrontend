@@ -5,7 +5,7 @@ import { ContextType } from "../constants/types";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import { MyContext } from "../constants/context";
 import LoginScreen from "../screens/LoginScreen";
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../hooks/useAuth";
 
 // Mocka firebase/auth

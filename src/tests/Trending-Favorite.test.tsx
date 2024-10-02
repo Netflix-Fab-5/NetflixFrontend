@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MyContext } from "../constants/context.tsx";
-import Trending from "../components/home/Trending.tsx";
+import { MyContext } from "../constants/context";
+import Trending from "../components/home/Trending";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
