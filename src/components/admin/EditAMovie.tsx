@@ -69,7 +69,7 @@ function EditAMovie() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-black">
       <div
         style={{
           position: "absolute",
@@ -205,7 +205,7 @@ function EditAMovie() {
           </div>
         </form>
         {success && (
-          <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
+          <div className="mt-4 p-4 bg-green-100 text-white-700 rounded">
             {displayMessage}
           </div>
         )}
