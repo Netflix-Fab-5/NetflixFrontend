@@ -30,6 +30,7 @@ describe("Searchbar render", () => {
             genres: [],
             filterMoviesByGenre: vi.fn(),
             handleFetchMovies: vi.fn(),
+            deleteMovie: vi.fn(),
             handleFetchMovieById: vi.fn(),
             handleFetchMovieByTitle: vi.fn(),
             addMovie: vi.fn(),
