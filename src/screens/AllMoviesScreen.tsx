@@ -60,22 +60,25 @@ const AllMoviesScreen: React.FC = () => {
             Home
           </button>
         </Link>
-        <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "green",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-              marginLeft: "10px",
-            }}
-          >
-            Add A New Movie
-          </button>
-        </Link>
+        {/* display for only admin*/}
+        {user && user.email === "admin@mail.com" && (
+          <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
+            <button
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "green",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px",
+                marginLeft: "10px",
+              }}
+            >
+              Add A New Movie
+            </button>
+          </Link>
+        )}
       </div>
 
       {/* Favorites button at the top-right corner */}
