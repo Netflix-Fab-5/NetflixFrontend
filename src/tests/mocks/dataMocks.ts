@@ -1,10 +1,8 @@
-// dataMocks.ts
-
 import { Mock } from "vitest";
 import { User } from "firebase/auth";
 import { vi } from "vitest";
 
-// Mocked movie data
+// All movies
 export const mockMovies = {
   movie1: {
     id: "1",
@@ -41,10 +39,25 @@ export const mockMovies = {
   },
 };
 
-// Mocked genres data
+// Movie by ID
+export const mockMovieById = mockMovies.movie1;
+
+// Genres
 export const mockGenres = ["Drama", "Action", "Crime", "Comedy"];
 
-// Mocked user session data
+//Add a new Movie
+export const mockNewMovie = {
+  title: "New Movie",
+  year: 2023,
+  rating: "PG",
+  actors: ["New Actor"],
+  genre: "Drama",
+  synopsis: "New Synopsis",
+  thumbnail: "urlNew",
+  isTrending: false,
+};
+
+// User data
 export const mockUser: User = {
   uid: "12345",
   email: "testuser@mail.com",
@@ -68,7 +81,13 @@ export const mockUser: User = {
   providerId: "firebase",
 };
 
-// Mock sessionStorage
+// useAuth-hook, represents what useAuth should return when a user is logged in
+export const mockUseAuth: { user: User | null; loading: boolean } = {
+  user: mockUser,
+  loading: false,
+};
+
+// SessionStorage
 export const mockSessionStorage = () => {
   vi.spyOn(window.sessionStorage, "getItem").mockImplementation(
     (key: string) => {
@@ -88,7 +107,7 @@ export const mockSessionStorage = () => {
   });
 };
 
-// Mock Firebase auth
+// Firebase auth
 export const mockFirebaseAuth = () => {
   vi.mock("firebase/auth", () => ({
     getAuth: vi.fn().mockReturnValue({
@@ -101,7 +120,7 @@ export const mockFirebaseAuth = () => {
   }));
 };
 
-// Mock Firebase database (movies, genres)
+// Firebase database (movies, genres)
 export const mockFirebaseDatabase = (
   mockGet: Mock,
   mockPush: Mock,
@@ -142,9 +161,11 @@ export const mockFirebaseDatabase = (
 // Example of mock context value
 export const mockContextValue = {
   movies: mockMovies,
+  movie: null,
   genres: mockGenres,
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
+  filteredMovies: [],
   favorites: [],
   loading: false,
   error: null,
