@@ -18,9 +18,10 @@ function MovieDetails() {
     movies: Record<string, Movie>,
     slug: string,
   ): Movie | undefined => {
-    return Object.values(movies).find(
-      (movie) => createSlug(movie.title) === slug,
-    );
+    return Object.values(movies).find((movie) => {
+      const movieSlug = createSlug(movie.title);
+      return movieSlug === slug;
+    });
   };
 
   const movie = findMovieBySlug(movies, title || ""); // Hitta filmen baserat på title-slug
