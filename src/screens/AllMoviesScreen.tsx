@@ -60,6 +60,7 @@ const AllMoviesScreen: React.FC = () => {
             Home
           </button>
         </Link>
+        {/* display for only admin*/}
         {user && user.email === "admin@mail.com" && (
           <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
             <button
