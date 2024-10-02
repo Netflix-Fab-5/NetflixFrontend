@@ -74,7 +74,10 @@ const AllMoviesScreen: React.FC = () => {
         </Link>
       </div>
 
-      <h1 style={{ marginBottom: "20px" }} className="sm:mt-12 md:mt-16">
+      <h1
+        style={{ marginBottom: "20px" }}
+        className="max-650:mt-16 sm:mt-16 lg:mt-16 md:mt-16"
+      >
         All movies
       </h1>
 
