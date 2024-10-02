@@ -200,6 +200,9 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     try {
       await deleteMovie(movieId);
+      const updatedMoviesData = await fetchMovies(); // Fetch updated movie list
+      setMovies(updatedMoviesData);
+      setFilteredMovies(Object.values(updatedMoviesData)); // Update filtered movies if necessary
       setSuccess(true);
       setError(null); // Clear any previous errors
     } catch (err: unknown) {
