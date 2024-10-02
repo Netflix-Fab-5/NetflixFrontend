@@ -49,7 +49,7 @@ const AllMoviesScreen: React.FC = () => {
           <button
             style={{
               padding: "10px 20px",
-              backgroundColor: "red",
+              backgroundColor: "green",
               color: "white",
               border: "none",
               borderRadius: "5px",
@@ -60,6 +60,22 @@ const AllMoviesScreen: React.FC = () => {
             Home
           </button>
         </Link>
+        <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "green",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "16px",
+              marginLeft: "10px",
+            }}
+          >
+            Add A New Movie
+          </button>
+        </Link>
       </div>
 
       {/* Favorites button at the top-right corner */}
@@ -68,7 +84,7 @@ const AllMoviesScreen: React.FC = () => {
           <button
             style={{
               padding: "10px 20px",
-              backgroundColor: "red", // Change color as needed
+              backgroundColor: "green", // Change color as needed
               color: "white",
               border: "none",
               borderRadius: "5px",
