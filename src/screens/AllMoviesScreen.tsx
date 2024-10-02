@@ -7,19 +7,19 @@ import EditButton from "../components/admin/EditButton";
 import { useAuth } from "../hooks/useAuth";
 import { fetchMovieByTitle } from "../firebase/firebaseApi";
 import { Movie } from "../constants/types";
+import "../styles/allmoviesscreen.css";
 
 // Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
-    .replace(/--+/g, "-") // Ersätt flera bindestreck med ett
+    .replace(/--+/g, "-") // Replace multiple hyphens with one
     .replace(/[^\w-]+/g, "");
 };
 
 const AllMoviesScreen: React.FC = () => {
   const { user, loading } = useAuth();
-  // Use context to access data
   const {
     filteredMovies,
     error,
@@ -27,25 +27,27 @@ const AllMoviesScreen: React.FC = () => {
     removeFavorite,
     handleFetchMovies,
     favorites,
+    isMobile,
+    //setIsMobile,
   } = useContext(MyContext);
   const navigate = useNavigate();
+  
+  // const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    handleFetchMovies(); // Hämta filmer när sidan laddas
+    handleFetchMovies(); // Fetch movies on page load
+    // Detect screen size
+    // const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    // window.addEventListener("resize", handleResize);
+    // handleResize(); // Run on initial render
+    // return () => window.removeEventListener("resize", handleResize);
   }, [handleFetchMovies]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   const handleEdit = async (title: string) => {
     const movie = await fetchMovieByTitle(title);
-
     if (movie) {
       const movieWithId = movie as Movie & { id: string };
       const movieId = movieWithId.id;
-      console.log("edit button", movieId);
-      // Navigate to edit movie
       navigate(`/movies/edit/${movieId}`);
     } else {
       console.log("Movie not found");
@@ -54,27 +56,61 @@ const AllMoviesScreen: React.FC = () => {
 
   return (
     <div style={{ padding: "20px", position: "relative" }}>
-      {/* Home button at the top-right corner */}
-      <div style={{ position: "absolute", top: "20px", right: "20px" }}>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <button className="button">Home</button>
-        </Link>
-        {/* display for only admin*/}
-        {user && user.email === "admin@mail.com" && (
-          <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
-            <button className="button">Add A New Movie</button>
+      {/* Button Layout for Larger Screens */}
+      {!isMobile && (
+        <>
+          <div style={{ position: "absolute", top: "20px", left: "20px" }}>
+            <Link to="/favorites" style={{ textDecoration: "none" }}>
+              <button className="button">Favorites</button>
+            </Link>
+          </div>
+
+          <div style={{ position: "absolute", top: "20px", right: "20px" }}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <button className="button">Home</button>
+            </Link>
+            {user && user.email === "admin@mail.com" && (
+              <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
+                <button className="button" style={{ marginLeft: "10px" }}>
+                  Add A New Movie
+                </button>
+              </Link>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Tab Navigation for Mobile Devices */}
+      {isMobile && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "0",
+            left: "0",
+            width: "100%",
+            backgroundColor: "black",
+            boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.2)",
+            display: "flex",
+            justifyContent: "space-around",
+            padding: "10px 0",
+            zIndex: 1000,
+          }}
+        >
+          <Link to="/favorites" style={{ textDecoration: "none" }}>
+            <button className="button">Favorites</button>
           </Link>
-        )}
-      </div>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <button className="button">Home</button>
+          </Link>
+          {user && user.email === "admin@mail.com" && (
+            <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
+              <button className="button">Add</button>
+            </Link>
+          )}
+        </div>
+      )}
 
-      {/* Favorites button at the top-right corner */}
-      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
-        <Link to="/favorites" style={{ textDecoration: "none" }}>
-          <button className="button">Favorites</button>
-        </Link>
-      </div>
-
-      <h1 style={{ marginBottom: "20px" }}>All movies</h1>
+      <h1 style={{ marginBottom: "20px" }}>All Movies</h1>
 
       <div className="mb-4">
         <GenreFilter />
@@ -88,10 +124,7 @@ const AllMoviesScreen: React.FC = () => {
         }}
       >
         {filteredMovies.map((movie, index) => {
-          // Check if the movie is a favorite
           const isFavorite = favorites.some((fav) => fav.title === movie.title);
-
-          // Function to toggle favorite status
           const handleFavoriteToggle = () => {
             if (isFavorite) {
               removeFavorite(movie);
@@ -124,11 +157,10 @@ const AllMoviesScreen: React.FC = () => {
               {user && user.email === "admin@mail.com" && (
                 <EditButton
                   onClick={() => handleEdit(movie.title)}
-                  size={22} // Du kan justera storleken om det behövs
+                  size={22} // Adjust the size if necessary
                 />
               )}
 
-              {/* Navigate to the movie page with a slugified title */}
               <Link to={`/movies/${createSlug(movie.title)}`}>
                 <img
                   src={movie.thumbnail}
@@ -153,7 +185,7 @@ const AllMoviesScreen: React.FC = () => {
                   {getRatingDescription(movie.rating, true)}
                 </p>
               </Link>
-              {/* Favorite button placed at the bottom center */}
+
               <div style={{ marginTop: "auto", padding: "10px 0" }}>
                 <button
                   onClick={handleFavoriteToggle}
@@ -168,7 +200,7 @@ const AllMoviesScreen: React.FC = () => {
                     className="fas fa-heart"
                     style={{
                       fontSize: "24px",
-                      color: isFavorite ? "red" : "lightgrey", // Red if favorite, light grey if not
+                      color: isFavorite ? "red" : "lightgrey",
                       transition: "color 0.3s ease",
                     }}
                   ></i>
@@ -178,6 +210,7 @@ const AllMoviesScreen: React.FC = () => {
           );
         })}
       </div>
+
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
     </div>

@@ -1,0 +1,138 @@
+/* General Button Styles */
+.button {
+  padding: 12px 24px;
+  background-color: #4caf50; /* A professional green */
+  color: #fff; /* Clean white text */
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, box-shadow 0.3s ease; /* Smooth transition */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Hover Effects */
+.button:hover {
+  background-color: #3e8e41; /* Darker shade on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+/* Button for Tabs (mobile or tab bar usage) */
+.tab-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 10px;
+  background-color: #4caf50; /* Professional and consistent color */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease; /* Smooth color and scale transition */
+}
+
+/* Hover Effect for Tab Buttons */
+.tab-button:hover {
+  background-color: #3e8e41;
+  transform: scale(1.05); /* Slightly enlarge on hover for feedback */
+}
+
+/* Icon Button (if you're using image or icons instead of text) */
+.icon-button {
+  display: inline-block;
+  background: url('dist/assets/home-5-44.png') no-repeat center;
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect for Icon Buttons */
+.icon-button:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Layout for Tabs */
+@media (max-width: 768px) {
+  /* Place the tab buttons in a horizontal row for tablet and smaller devices */
+  .tab-container {
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .tab-button {
+    flex: 1;
+    margin: 0 5px;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .tab-button:hover {
+    transform: scale(1.02); /* Slight hover effect for smaller screens */
+  }
+}
+
+/* Professional Typography */
+h1 {
+  font-size: 2em;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1em;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Responsive Grid for Movie Items */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.grid-item {
+  background: #9c9595;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  text-align: center;
+  padding: 15px;
+}
+
+.grid-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+/* Button in Grid */
+.grid-item .button {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+/* Movie Thumbnails */
+.grid-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+

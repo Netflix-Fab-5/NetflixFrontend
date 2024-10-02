@@ -28,7 +28,7 @@ interface MovieCarouselProps {
 
 const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
   const { user } = useAuth();
-  const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
+  const { addFavorite, removeFavorite, favorites, isMobile } = useContext(MyContext);
   const navigate = useNavigate();
 
   const handleThumbnailClick = (title: string) => {
@@ -40,12 +40,13 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
     <div className="carousel-container">
       <h2 style={{ display: "none" }}>{title}</h2>
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={5}
-        navigation
-        pagination={{ clickable: true }}
-      >
+  modules={[Navigation, Pagination, Scrollbar, A11y]}
+  slidesPerView={isMobile ? 2 : 5}
+  spaceBetween={50}
+  navigation
+  pagination={{ clickable: true }}
+>
+
         {movies.map((movie) => {
           const isFavorite = favorites.some((fav) => fav.title === movie.title);
 

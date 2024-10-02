@@ -35,6 +35,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const handleFetchGenres = useCallback(async () => {
     try {
@@ -233,6 +234,15 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     // Lyssna på förändringar i favorites och hantera eventuell logik här om nödvändigt
   }, [favorites]);
 
+  
+
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Run on initial render
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <MyContext.Provider
       value={{
@@ -255,7 +265,8 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         deleteMovie: handleDeleteMovie,
         addFavorite,
         removeFavorite,
-        filterMoviesByGenre, // Add the missing function to the context value
+        filterMoviesByGenre,
+        isMobile, setIsMobile // Add the missing function to the context value
       }}
     >
       {children}

@@ -123,3 +123,50 @@
 .swiper-button-prev {
   left: -10px; /* Flytta knappen utanför bilden till vänster */
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .carousel-container {
+    width: 100%; /* Full width for smaller screens */
+  }
+
+  .carousel-item {
+    min-width: 150px; /* Smaller card size */
+    height: 300px; /* Smaller height for cards */
+  }
+
+  .carousel-item h3 {
+    font-size: 16px; /* Smaller font size for h3 */
+  }
+
+  .carousel-item p {
+    font-size: 14px; /* Smaller font size for p */
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 40px; /* Smaller button size */
+    height: 40px; /* Smaller button size */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-item {
+    min-width: 120px; /* Even smaller card size */
+    height: 250px; /* Even smaller height for cards */
+  }
+
+  .carousel-item h3 {
+    font-size: 14px; /* Even smaller font size for h3 */
+  }
+
+  .carousel-item p {
+    font-size: 12px; /* Even smaller font size for p */
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 30px; /* Even smaller button size */
+    height: 30px; /* Even smaller button size */
+  }
+}

@@ -33,4 +33,6 @@ export type ContextType = {
   addFavorite: (movie: Movie) => void; // Funktion för att lägga till favoriter
   removeFavorite: (movie: Movie) => void; // Funktion för att ta bort favoriter
   filterMoviesByGenre: (genres: string[]) => void;
+  isMobile: boolean; // Lägger till en boolean för att kontrollera om det är en mobilskärm
+  setIsMobile: (isMobile: boolean) => void; // Funktion för att uppdatera isMobile
 };
