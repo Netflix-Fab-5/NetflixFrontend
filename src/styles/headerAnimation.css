@@ -9,7 +9,7 @@
   align-items: center;
   background-color: black;
   padding: 100px;
-  height: 35vh; /* Liten storlek som standard */
+  height: 25vh; /* Liten storlek som standard */
   text-align: center;
   transition: height 1s ease-in-out;
 }

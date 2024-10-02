@@ -29,7 +29,6 @@ function HomeScreen() {
       {/* inside header we should have login/register/bookmark/searchbar/movies link to category */}
       <Trending />
       <Recommended />
-      HOMESCREEN
     </div>
   );
 }
