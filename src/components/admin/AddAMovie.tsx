@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "../../constants/context"; // Import Movie interface
 import { Movie } from "../../constants/types";
+import { Link } from "react-router-dom";
 
 function AddAMovie() {
   const { error, success, addMovie } = useContext(MyContext)!;
@@ -53,6 +54,30 @@ function AddAMovie() {
 
   return (
     <div className="flex justify-center text-green-600 items-center min-h-screen bg-gray-100">
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          marginBottom: "40px",
+        }}
+      >
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "green",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
+            Home
+          </button>
+        </Link>
+      </div>
       <div className="bg-white p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl  font-bold mb-6 text-center">Add a Movie</h2>
         <form onSubmit={handleSubmit}>
