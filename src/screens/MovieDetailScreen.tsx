@@ -18,9 +18,11 @@ function MovieDetails() {
     movies: Record<string, Movie>,
     slug: string,
   ): Movie | undefined => {
-    return Object.values(movies).find(
-      (movie) => createSlug(movie.title) === slug,
-    );
+    const foundMovie = Object.values(movies).find((movie) => {
+      const movieSlug = createSlug(movie.title);
+      return movieSlug === slug;
+    });
+    return foundMovie;
   };
 
   const movie = findMovieBySlug(movies, title || ""); // Hitta filmen baserat på title-slug
@@ -41,7 +43,7 @@ function MovieDetails() {
         to="/movies"
         className="text-blue-500 hover:underline mb-4 inline-block"
       >
-        Tillbaka till filmer
+        Back to movies
       </Link>
       {movie ? (
         <div className="bg-white rounded-lg shadow-md p-6 flex">
@@ -56,7 +58,7 @@ function MovieDetails() {
               <strong>Synopsis:</strong> {movie.synopsis}
             </p>
             <p className="mb-2">
-              <strong>År:</strong> {movie.year}
+              <strong>Year:</strong> {movie.year}
             </p>
             <p>
               <strong>Age limit:</strong>{" "}
@@ -66,12 +68,12 @@ function MovieDetails() {
               <strong>Genre:</strong> {movie.genre}
             </p>
             <p className="mb-2">
-              <strong>Skådespelare:</strong> {movie.actors.join(", ")}
+              <strong>Actors:</strong> {movie.actors.join(", ")}
             </p>
           </div>
         </div>
       ) : (
-        <p>Ingen film hittad</p>
+        <p>No movie found</p>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MyContext } from "../constants/context";
 import { Link, useNavigate } from "react-router-dom";
 import GenreFilter from "../components/home/GenreFilter";
@@ -13,18 +13,29 @@ const createSlug = (title: string) => {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
+    .replace(/--+/g, "-") // Ersätt flera bindestreck med ett
     .replace(/[^\w-]+/g, "");
 };
 
 const AllMoviesScreen: React.FC = () => {
   const { user, loading } = useAuth();
   // Use context to access data
-  const { filteredMovies, error, addFavorite, removeFavorite, favorites } =
-    useContext(MyContext);
+  const {
+    filteredMovies,
+    error,
+    addFavorite,
+    removeFavorite,
+    handleFetchMovies,
+    favorites,
+  } = useContext(MyContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    handleFetchMovies(); // Hämta filmer när sidan laddas
+  }, [handleFetchMovies]);
+
   if (loading) {
-    return <div>Laddar...</div>;
+    return <div>Loading...</div>;
   }
 
   const handleEdit = async (title: string) => {
@@ -100,7 +111,7 @@ const AllMoviesScreen: React.FC = () => {
         </Link>
       </div>
 
-      <h1 style={{ marginBottom: "20px" }}>Alla Filmer</h1>
+      <h1 style={{ marginBottom: "20px" }}>All movies</h1>
 
       <div className="mb-4">
         <GenreFilter />
