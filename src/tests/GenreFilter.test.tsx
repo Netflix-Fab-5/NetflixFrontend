@@ -59,8 +59,10 @@ const mockContextValue = {
   handleFetchMovies: vi.fn(),
   addMovie: vi.fn(),
   editMovie: vi.fn(),
+  deleteMovie: vi.fn(),
   handleFetchMovieById: vi.fn(),
   handleFetchMovieByTitle: vi.fn(),
+  handleDeleteMovie: vi.fn(),
   addFavorite: vi.fn(),
   removeFavorite: vi.fn(),
   filterMoviesByGenre: vi.fn(), // Mockar funktionen för filtrering

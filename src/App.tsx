@@ -25,6 +25,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
             <Route path="/favorites" element={<FavoriteScreen />} />
             <Route path="/movies" element={<AllMoviesScreen />} />
+            <Route path="/movies/add-new-movie" element={<AddAMovie />} />
 
             <Route path="/movies/:title" element={<MovieDetailScreen />} />
             <Route path="/movies/edit/:movieId" element={<EditAMovie />} />

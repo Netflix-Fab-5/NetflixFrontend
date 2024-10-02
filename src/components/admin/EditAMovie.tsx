@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Movie } from "../../constants/types";
 import { MyContext } from "../../constants/context";
+import DeleteButton from "./DeleteButton";
 
 function EditAMovie() {
   const { movieId } = useParams<{ movieId: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [displayMessage, setDisplayMessage] = useState<string | null>(null);
   const { handleFetchMovieById, editMovie, error, success, loading } =
     useContext(MyContext);
   console.log(movieId);
@@ -63,11 +65,7 @@ function EditAMovie() {
     };
 
     await editMovie(movieId, updatedMovie);
-  };
-
-  // Delete movie hadle
-  const handleDelete = () => {
-    console.log("call your delete route here");
+    setDisplayMessage("Movie updated successfully");
   };
 
   return (
@@ -200,17 +198,15 @@ function EditAMovie() {
             >
               Update Movie
             </button>
-            <button
-              onClick={handleDelete}
-              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 sm:w-auto"
-            >
-              Delete Movie
-            </button>
+            <DeleteButton
+              setDisplayMessage={setDisplayMessage}
+              movieId={movieId}
+            />
           </div>
         </form>
         {success && (
           <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
-            Movie updated successfully
+            {displayMessage}
           </div>
         )}
         {error && (
