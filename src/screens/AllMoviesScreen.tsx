@@ -57,37 +57,12 @@ const AllMoviesScreen: React.FC = () => {
       {/* Home button at the top-right corner */}
       <div style={{ position: "absolute", top: "20px", right: "20px" }}>
         <Link to="/" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "green",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Home
-          </button>
+          <button className="button">Home</button>
         </Link>
         {/* display for only admin*/}
         {user && user.email === "admin@mail.com" && (
           <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
-            <button
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "green",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontSize: "16px",
-                marginLeft: "10px",
-              }}
-            >
-              Add A New Movie
-            </button>
+            <button className="button">Add A New Movie</button>
           </Link>
         )}
       </div>
@@ -95,19 +70,7 @@ const AllMoviesScreen: React.FC = () => {
       {/* Favorites button at the top-right corner */}
       <div style={{ position: "absolute", top: "20px", left: "20px" }}>
         <Link to="/favorites" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "green", // Change color as needed
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Favorites
-          </button>
+          <button className="button">Favorites</button>
         </Link>
       </div>
 

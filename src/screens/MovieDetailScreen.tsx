@@ -43,7 +43,7 @@ function MovieDetails() {
         to="/movies"
         className="text-blue-500 hover:underline mb-4 inline-block"
       >
-        Back to movies
+        <button className="button">Back to movies</button>
       </Link>
       {movie ? (
         <div className="bg-white rounded-lg shadow-md p-6 flex">
