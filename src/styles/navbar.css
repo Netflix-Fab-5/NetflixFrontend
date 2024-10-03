@@ -4,8 +4,9 @@
   align-items: center;
   position: fixed; /* Fixerar knapparna så de alltid är synliga */
   right: 1rem; /* Avstånd från höger sida */
-  top: 1rem; /* Avstånd från toppen */
+  top: 0px; /* Avstånd från toppen */
   z-index: 1000; /* Se till att de ligger ovanför andra element */
+  background-color: black;
 }
 
 .header-container {

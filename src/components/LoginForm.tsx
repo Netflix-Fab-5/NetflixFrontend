@@ -47,7 +47,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         </div>
 
         <button type="submit" className="btn-submit">
-          Sign in
+          Login
         </button>
 
         {error && <p className="error-message">{error}</p>}
