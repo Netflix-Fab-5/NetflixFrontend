@@ -8,6 +8,10 @@ on:
 jobs:
   lint-and-prettier:
     runs-on: ubuntu-latest
+    env:
+      VITE_FIREBASE_API_KEY: ${{secrets.VITE_FIREBASE_API_KEY}}
+      VITE_FIREBASE_PROJECT_ID: ${{secrets.VITE_FIREBASE_PROJECT_ID}}
+      VITE_FIREBASE_DATABASE_URL: ${{secrets.VITE_FIREBASE_DATABASE_URL}}
 
     steps:
       - name: Checkout code

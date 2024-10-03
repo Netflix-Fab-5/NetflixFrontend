@@ -14,5 +14,6 @@ export function handleSignInError(
   } else if (error.code === "auth/network-request-failed") {
     errorMessage = "Network error, please try again";
   }
+  console.log(errorMessage);
   setError(errorMessage);
 }

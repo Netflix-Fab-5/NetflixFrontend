@@ -6,7 +6,7 @@ interface LoginFormProps {
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  error?: string | null;
+  error: string | null;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
