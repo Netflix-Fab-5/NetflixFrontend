@@ -1,12 +1,14 @@
 // mockFirebase.ts
 import { vi } from "vitest";
 
-export const mockSignInWithEmailAndPassword = vi.fn().mockResolvedValue({
-  user: {
-    uid: "12345",
-    email: "testuser@mail.com",
-  },
-});
+export function mockSignInWithEmailAndPassword() {
+  return {
+    user: {
+      uid: "12345",
+      email: "testuser@mail.com",
+    },
+  };
+}
 
 // Mocka Firebase-auth
 vi.mock("firebase/auth", () => ({

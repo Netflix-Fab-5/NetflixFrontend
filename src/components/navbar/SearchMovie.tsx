@@ -5,12 +5,12 @@ import { MyContext } from "../../constants/context";
 import { Movie } from "../../constants/types";
 
 // Funktion för att omvandla titeln till en URL-vänlig sträng (slug)
-const createSlug = (title: string) => {
+function createSlug(title: string) {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "");
-};
+}
 
 function SearchMovie() {
   const { movies, loading, error } = useContext(MyContext); // Använd context för att hämta filmer, loading och error
@@ -30,7 +30,7 @@ function SearchMovie() {
     }
   }, [query]);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setQuery(value);
 
@@ -42,12 +42,12 @@ function SearchMovie() {
     } else {
       setResults([]); // Nollställ resultat om query är tomt
     }
-  };
+  }
 
-  const handleSearchClick = (title: string) => {
+  function handleSearchClick(title: string) {
     const slug = createSlug(title); // Konvertera titeln till en slug
     navigate(`/movies/${slug}`); // Navigera till /movies/slug
-  };
+  }
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;

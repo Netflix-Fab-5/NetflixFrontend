@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { MyContext } from "../../constants/context";
 import { Link, useNavigate } from "react-router-dom";
 import GenreFilter from "../../components/home/GenreFilter";
@@ -8,15 +8,15 @@ import { useAuth } from "../../hooks/useAuth";
 import { fetchMovieByTitle } from "../../firebase/firebaseApi";
 import { Movie } from "../../constants/types";
 
-const createSlug = (title: string) => {
+function createSlug(title: string) {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/--+/g, "-")
     .replace(/[^\w-]+/g, "");
-};
+}
 
-const AllMoviesScreen: React.FC = () => {
+function AllMoviesScreen() {
   const { user, loading } = useAuth();
   const {
     filteredMovies,
@@ -28,15 +28,18 @@ const AllMoviesScreen: React.FC = () => {
   } = useContext(MyContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    handleFetchMovies();
-  }, [handleFetchMovies]);
+  useEffect(
+    function () {
+      handleFetchMovies();
+    },
+    [handleFetchMovies],
+  );
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  const handleEdit = async (title: string) => {
+  async function handleEdit(title: string) {
     const movie = await fetchMovieByTitle(title);
     if (movie) {
       const movieWithId = movie as Movie & { id: string };
@@ -45,7 +48,15 @@ const AllMoviesScreen: React.FC = () => {
     } else {
       console.log("Movie not found");
     }
-  };
+  }
+
+  function handleFavoriteToggle(movie: Movie, isFavorite: boolean) {
+    if (isFavorite) {
+      removeFavorite(movie);
+    } else {
+      addFavorite(movie);
+    }
+  }
 
   return (
     <div className="container">
@@ -75,21 +86,20 @@ const AllMoviesScreen: React.FC = () => {
       </div>
 
       <div className="movie-grid">
-        {filteredMovies.map((movie, index) => {
-          const isFavorite = favorites.some((fav) => fav.title === movie.title);
-
-          const handleFavoriteToggle = () => {
-            if (isFavorite) {
-              removeFavorite(movie);
-            } else {
-              addFavorite(movie);
-            }
-          };
+        {filteredMovies.map(function (movie, index) {
+          const isFavorite = favorites.some(function (fav) {
+            return fav.title === movie.title;
+          });
 
           return (
             <div key={index} className="movie-card">
               {user && user.email === "admin@mail.com" && (
-                <EditButton onClick={() => handleEdit(movie.title)} size={22} />
+                <EditButton
+                  onClick={function () {
+                    handleEdit(movie.title);
+                  }}
+                  size={22}
+                />
               )}
               <Link to={`/movies/${createSlug(movie.title)}`}>
                 <img src={movie.thumbnail} alt={movie.title} />
@@ -110,7 +120,9 @@ const AllMoviesScreen: React.FC = () => {
                     color: isFavorite ? "red" : "lightgrey",
                     transition: "color 0.3s ease",
                   }}
-                  onClick={handleFavoriteToggle} // Lägger till klickhändelse för hjärtat
+                  onClick={function () {
+                    handleFavoriteToggle(movie, isFavorite);
+                  }}
                 ></i>
               </div>
             </div>
@@ -121,6 +133,6 @@ const AllMoviesScreen: React.FC = () => {
       {error && <p>Error: {error}</p>}
     </div>
   );
-};
+}
 
 export default AllMoviesScreen;

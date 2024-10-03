@@ -4,6 +4,7 @@ import Trending from "../../components/home/Trending";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
 // Mock movie data
 const mockMovies = {
@@ -99,7 +100,7 @@ describe("Trending Component", () => {
     expect(storedMovies).toBe(JSON.stringify([mockMovies.movie1]));
 
     // Simulate clicking the bookmark button again to remove from favorites
-    fireEvent.click(bookmarkButton);
+    userEvent.click(bookmarkButton);
 
     // Remove movie from sessionStorage
     sessionStorage.setItem("movies", JSON.stringify([])); // Simulate removal

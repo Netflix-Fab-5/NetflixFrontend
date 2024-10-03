@@ -2,28 +2,29 @@ import { useContext } from "react";
 import { MyContext } from "../../constants/context";
 import { useNavigate } from "react-router-dom";
 
-const FavoriteScreen = () => {
+function FavoriteScreen() {
   const { favorites, removeFavorite } = useContext(MyContext);
   const navigate = useNavigate();
 
   // Funktion för att konvertera titeln till en slug
-  const createSlug = (title: string) => {
+  function createSlug(title: string) {
     return title
       .toLowerCase()
       .replace(/ /g, "-")
+      .replace(/--+/g, "-")
       .replace(/[^\w-]+/g, "");
-  };
+  }
 
   // Navigera till filmsidan
-  const handleThumbnailClick = (title: string) => {
+  function handleThumbnailClick(title: string) {
     const slug = createSlug(title);
     navigate(`/movies/${slug}`);
-  };
+  }
 
   // Navigera tillbaka till startsidan
-  const handleHomeClick = () => {
+  function handleHomeClick() {
     navigate("/"); // Navigera till startsidan
-  };
+  }
 
   return (
     <div style={{ padding: "20px", position: "relative", minHeight: "100vh" }}>
@@ -97,6 +98,6 @@ const FavoriteScreen = () => {
       )}
     </div>
   );
-};
+}
 
 export default FavoriteScreen;
