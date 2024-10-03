@@ -19,7 +19,7 @@ function LoginScreen() {
 
   const { user, loading } = useAuth();
 
-  const handleLogin = async () => {
+  async function handleLogin() {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -36,7 +36,7 @@ function LoginScreen() {
         setError("An unexpected error occurred.");
       }
     }
-  };
+  }
 
   if (loading) {
     return <p>Loading...</p>;

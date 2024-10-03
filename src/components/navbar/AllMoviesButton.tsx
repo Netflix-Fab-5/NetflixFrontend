@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const MoviesButton = () => {
+function MoviesButton() {
   return (
     <Link
       to="/movies" // Länkar till sidan med alla filmer
@@ -12,6 +12,6 @@ const MoviesButton = () => {
       <button className="button">Movies</button>
     </Link>
   );
-};
+}
 
 export default MoviesButton;

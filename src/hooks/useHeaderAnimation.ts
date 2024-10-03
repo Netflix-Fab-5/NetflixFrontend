@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export const useHeaderEffect = (): {
+export function useHeaderEffect(): {
   isExpanded: boolean;
   noAnimation: boolean;
-} => {
+} {
   const [isExpanded, setIsExpanded] = useState<boolean>(() => {
     const hasRunEffect = localStorage.getItem("netflixEffectRun");
     return !hasRunEffect; // Om flaggan inte finns, börja i expanderat läge
@@ -43,4 +43,4 @@ export const useHeaderEffect = (): {
   }, []);
 
   return { isExpanded, noAnimation };
-};
+}

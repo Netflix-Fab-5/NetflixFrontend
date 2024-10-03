@@ -36,7 +36,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   const [success, setSuccess] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null); // Hanterar inloggad användare
 
-  const handleFetchGenres = useCallback(async () => {
+  const handleFetchGenres = useCallback(async function () {
     try {
       const fetchedGenres = await fetchGenres();
       setGenres(fetchedGenres || []);
@@ -46,7 +46,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const handleFetchMovies = useCallback(async () => {
+  const handleFetchMovies = useCallback(async function () {
     const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -54,7 +54,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
     setLoading(true);
     try {
-      const moviesData = await fetchMovies(); // Skicka användarens UID
+      const moviesData = await fetchMovies(); // Hämta filmer
       setMovies(moviesData);
       setFilteredMovies(Object.values(moviesData));
       setError(null);
@@ -68,11 +68,11 @@ function MyContextProvider({ children }: { children: ReactNode }) {
 
   // Lyssna på autentiseringsstatus från Firebase och uppdatera user-state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged((firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(async function (firebaseUser) {
       if (firebaseUser) {
         setUser(firebaseUser); // Sätter användaren om någon är inloggad
         sessionStorage.setItem("user", JSON.stringify(firebaseUser));
-        handleFetchGenres(); // Spara användarinfo i sessionStorage
+        await handleFetchGenres(); // Hämta genrer efter inloggning
       } else {
         setUser(null); // Sätter user till null om ingen är inloggad
         sessionStorage.removeItem("user"); // Ta bort användarinfo från sessionStorage
@@ -82,55 +82,53 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }, [handleFetchGenres]);
 
   // Funktion för att hämta en specifik film
-  const handleFetchMovieById = useCallback(
-    async (id: string): Promise<Movie | null> => {
-      const storedUser = sessionStorage.getItem("user");
-      const user = storedUser ? JSON.parse(storedUser) : null;
+  const handleFetchMovieById = useCallback(async function (
+    id: string,
+  ): Promise<Movie | null> {
+    const storedUser = sessionStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
 
-      if (!user || !user.uid) return null;
+    if (!user || !user.uid) return null;
 
-      try {
-        const fetchedMovie = await fetchMovieById(id);
-        setLoading(true); // Start loading
-        setMovie(fetchedMovie);
-        return fetchedMovie;
-      } catch (err) {
-        console.log(err);
-        setError("Kunde inte hämta filmen.");
-        return null;
-      } finally {
-        setLoading(false); // Stop loading after fetch completes
-      }
-    },
-    [],
-  );
+    setLoading(true); // Start loading
+    try {
+      const fetchedMovie = await fetchMovieById(id);
+      setMovie(fetchedMovie);
+      return fetchedMovie;
+    } catch (err) {
+      console.log(err);
+      setError("Kunde inte hämta filmen.");
+      return null;
+    } finally {
+      setLoading(false); // Stop loading after fetch completes
+    }
+  }, []);
 
-  const handleFetchMovieByTitle = useCallback(
-    async (title: string): Promise<Movie | null> => {
-      const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
-      const user = storedUser ? JSON.parse(storedUser) : null;
+  const handleFetchMovieByTitle = useCallback(async function (
+    title: string,
+  ): Promise<Movie | null> {
+    const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
+    const user = storedUser ? JSON.parse(storedUser) : null;
 
-      if (!user || !user.uid) return null; // Kontrollera att användarens UID finns
+    if (!user || !user.uid) return null; // Kontrollera att användarens UID finns
 
-      try {
-        const movieData = await fetchMovieByTitle(title); // Fetch movie by title
-        setLoading(true); // Start loading
-        setMovie(movieData);
-        console.log(movieData);
-        return movieData;
-      } catch (err) {
-        console.log(err);
-        setError("No movie found with that title");
-        return null;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
-  );
+    setLoading(true); // Start loading
+    try {
+      const movieData = await fetchMovieByTitle(title); // Fetch movie by title
+      setMovie(movieData);
+      console.log(movieData);
+      return movieData;
+    } catch (err) {
+      console.log(err);
+      setError("No movie found with that title");
+      return null;
+    } finally {
+      setLoading(false); // Stop loading after fetch completes
+    }
+  }, []);
 
   // Denna funktion kommer att filtrera filmer baserat på valda genrer
-  const filterMoviesByGenre = (selectedGenres: string[]): void => {
+  const filterMoviesByGenre = function (selectedGenres: string[]): void {
     if (selectedGenres.length === 0) {
       // Om inga genrer är valda, visa alla filmer
       setFilteredMovies(Object.values(movies));
@@ -143,7 +141,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   };
 
   // Lägg till en ny film
-  const handleAddMovie = async (newMovie: Movie) => {
+  const handleAddMovie = async function (newMovie: Movie) {
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -163,7 +161,10 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   };
 
   // Update movie in the database using fetch API
-  const handleEditMovie = async (movieId: string, updatedMovie: Movie) => {
+  const handleEditMovie = async function (
+    movieId: string,
+    updatedMovie: Movie,
+  ) {
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -185,7 +186,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   };
 
   // Delete a movie
-  const handleDeleteMovie = async (movieId: string) => {
+  const handleDeleteMovie = async function (movieId: string) {
     const storedUser = sessionStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -210,21 +211,21 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   };
 
   // Lägg till en film i favoriter
-  const addFavorite = (movie: Movie) => {
+  function addFavorite(movie: Movie) {
     setFavorites((prev) => {
       const updatedFavorites = [...prev, movie];
       sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Spara till sessionStorage
       return updatedFavorites;
     });
-  };
+  }
 
-  const removeFavorite = (movie: Movie) => {
+  function removeFavorite(movie: Movie) {
     setFavorites((prev) => {
       const updatedFavorites = prev.filter((fav) => fav.title !== movie.title);
       sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Spara till sessionStorage
       return updatedFavorites;
     });
-  };
+  }
 
   useEffect(() => {
     // Lyssna på förändringar i favorites och hantera eventuell logik här om nödvändigt

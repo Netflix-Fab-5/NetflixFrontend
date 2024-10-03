@@ -1,7 +1,4 @@
-export const getRatingDescription = (
-  rating: string,
-  short: boolean = false,
-) => {
+export function getRatingDescription(rating: string, short: boolean = false) {
   if (short) {
     // Returnera endast åldersgränsen i kort version
     switch (rating) {
@@ -39,4 +36,4 @@ export const getRatingDescription = (
         return rating; // Returnera rating som den är om den inte finns i listan
     }
   }
-};
+}
