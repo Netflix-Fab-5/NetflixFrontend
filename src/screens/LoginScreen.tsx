@@ -39,7 +39,7 @@ function LoginScreen() {
   };
 
   if (loading) {
-    return <p>Laddar användardata...</p>;
+    return <p>Loading...</p>;
   }
 
   // Om användaren redan är inloggad, navigera direkt
