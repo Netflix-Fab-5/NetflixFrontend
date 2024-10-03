@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { MyContext } from "../constants/context";
-import AddMovie from "../components/admin/AddAMovie";
+import { MyContext } from "../../constants/context";
+import AddMovie from "./AddAMovie";
 import { User } from "firebase/auth";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";

@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
-import { MyContext } from "../constants/context";
+import { MyContext } from "../../constants/context";
 import { Link, useNavigate } from "react-router-dom";
-import GenreFilter from "../components/home/GenreFilter";
-import { getRatingDescription } from "../constants/ratingUtils";
-import EditButton from "../components/admin/EditButton";
-import { useAuth } from "../hooks/useAuth";
-import { fetchMovieByTitle } from "../firebase/firebaseApi";
-import { Movie } from "../constants/types";
+import GenreFilter from "../../components/home/GenreFilter";
+import { getRatingDescription } from "../../constants/ratingUtils";
+import EditButton from "../../components/admin/EditButton";
+import { useAuth } from "../../hooks/useAuth";
+import { fetchMovieByTitle } from "../../firebase/firebaseApi";
+import { Movie } from "../../constants/types";
 
 const createSlug = (title: string) => {
   return title

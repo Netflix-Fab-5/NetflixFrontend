@@ -3,9 +3,9 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
-import GenreFilter from "../components/home/GenreFilter"; // Importera genrefilter
-import AllMoviesScreen from "../screens/AllMoviesScreen"; // Importera din AllMoviesScreen
-import { MyContext } from "../constants/context"; // Mocka din context
+import GenreFilter from "./GenreFilter"; // Importera genrefilter
+import AllMoviesScreen from "../../screens/Movies/AllMoviesScreen"; // Importera din AllMoviesScreen
+import { MyContext } from "../../constants/context"; // Mocka din context
 
 // Mock-filmer och kontextvärden
 const mockMovies = {

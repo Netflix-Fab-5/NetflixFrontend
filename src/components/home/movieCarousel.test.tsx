@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MovieCarousel from "../components/home/MovieCarousel";
-import { MyContext } from "../constants/context";
+import MovieCarousel from "./MovieCarousel";
+import { MyContext } from "../../constants/context";
 import { vi, expect, describe, beforeEach, it } from "vitest";
-import { Movie } from "../constants/types";
+import { Movie } from "../../constants/types";
 import "@testing-library/jest-dom";
 
 // Mocka användarnavigationen

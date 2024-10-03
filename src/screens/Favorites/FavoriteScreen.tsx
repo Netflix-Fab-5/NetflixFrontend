@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MyContext } from "../constants/context";
+import { MyContext } from "../../constants/context";
 import { useNavigate } from "react-router-dom";
 
 const FavoriteScreen = () => {

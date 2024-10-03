@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import MovieDetails from "../screens/MovieDetailScreen";
-import { MyContext } from "../constants/context";
+import MovieDetails from "./MovieDetailScreen";
+import { MyContext } from "../../constants/context";
 import "@testing-library/jest-dom";
 
 const createSlug = (title: string) => {

@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
-import HomeScreen from "./screens/HomeScreen";
-import FavoriteScreen from "./screens/FavoriteScreen";
-import AllMoviesScreen from "./screens/AllMoviesScreen";
-import MovieDetailScreen from "./screens/MovieDetailScreen";
-import LoginScreen from "./screens/LoginScreen";
-import ProtectedLayout from "./components/ProtectedLayout";
+import HomeScreen from "./screens/Home/HomeScreen";
+import FavoriteScreen from "./screens/Favorites/FavoriteScreen";
+import AllMoviesScreen from "./screens/Movies/AllMoviesScreen";
+import MovieDetailScreen from "./screens/Movies/MovieDetailScreen";
+import LoginScreen from "./screens/Auth/LoginScreen";
+import ProtectedLayout from "./components/common/ProtectedLayout";
 import AddAMovie from "./components/admin/AddAMovie";
 import EditAMovie from "./components/admin/EditAMovie";
 

@@ -3,8 +3,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
-import SearchMovie from "../components/navbar/SearchMovie";
-import { MyContext } from "../constants/context";
+import SearchMovie from "./SearchMovie";
+import { MyContext } from "../../constants/context";
 
 // Mocka Fuse.js för att returnera förväntade resultat
 vi.mock("fuse.js", () => {

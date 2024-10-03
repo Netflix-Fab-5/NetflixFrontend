@@ -1,9 +1,9 @@
-import Trending from "../components/home/Trending";
-import Recommended from "../components/home/Recommended";
-import NavBar from "../components/navbar/NavBar";
+import Trending from "../../components/home/Trending";
+import Recommended from "../../components/home/Recommended";
+import NavBar from "@/components/common/NavBar";
 import { useEffect, useContext } from "react";
-import { MyContext } from "../constants/context";
-import { useAuth } from "../hooks/useAuth";
+import { MyContext } from "../../constants/context";
+import { useAuth } from "../../hooks/useAuth";
 
 function HomeScreen() {
   const { handleFetchMovies, loading, error } = useContext(MyContext);
