@@ -71,13 +71,13 @@ function AddAMovie() {
 
   return (
     <div className="flex justify-center text-green-600 items-center min-h-screen bg-black text-xl">
-      <div className="absolute top-5 right-5 mb-10">
+      <div className="absolute top-5 right-5 mb-10 ">
         <Link to="/" className="no-underline">
           <button className="button">Home</button>
         </Link>
       </div>
 
-      <div className="bg-white p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
+      <div className="bg-white p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg max-650:m-4 max-650:mt-16 sm:mt-16 lg:mt-16 md:mt-16">
         <h2 className="text-3xl  font-bold mb-6 text-center">Add a Movie</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
