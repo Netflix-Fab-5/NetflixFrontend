@@ -29,7 +29,7 @@ function NavBar() {
         {/* Logga ut-knappen om användaren är inloggad */}
         {user && (
           <button onClick={handleLogout} className="button">
-            Logga ut
+            Logout
           </button>
         )}
       </div>

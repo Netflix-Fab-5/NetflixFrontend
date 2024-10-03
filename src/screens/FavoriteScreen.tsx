@@ -36,11 +36,11 @@ const FavoriteScreen = () => {
         Home
       </button>
 
-      <h1>Mina Favoritfilmer</h1>
+      <h1>My favorite movies</h1>
 
       {/* Kontrollera om det finns några favoriter */}
       {favorites.length === 0 ? (
-        <p>Du har inga favoritfilmer ännu.</p>
+        <p className="text-white mt-60">You dont have any favorites yet.</p>
       ) : (
         <div
           style={{

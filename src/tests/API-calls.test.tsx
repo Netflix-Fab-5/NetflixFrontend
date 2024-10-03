@@ -30,7 +30,7 @@ vi.mock("firebase/database", () => ({
   push: vi.fn(),
 }));
 
-describe.only("Firebase API Tests", () => {
+describe("Firebase API Tests", () => {
   const mockGet = get as Mock;
   const mockPush = push as Mock;
   const mockRef = ref as Mock;

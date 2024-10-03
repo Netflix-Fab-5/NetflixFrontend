@@ -13,7 +13,7 @@ function App() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Laddar...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
