@@ -54,7 +54,7 @@ function SearchMovie() {
 
   return (
     <div className="relative p-4">
-      <form className="mb-4">
+      <form className="mb-4 text-black">
         <input
           type="text"
           placeholder="Search Movie Name from here"
@@ -81,7 +81,7 @@ function SearchMovie() {
                 className="w-8 h-12 object-cover rounded-md mr-4"
               />
               <div>
-                <h3 className="text-lg font-semibold text-left">
+                <h3 className="text-lg font-semibold text-left text-black">
                   {movie.title}
                 </h3>
                 <p className="text-sm text-gray-500 text-left">
