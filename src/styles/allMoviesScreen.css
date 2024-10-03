@@ -2,7 +2,12 @@
 
 .container {
   padding: 20px;
-  position: relative;
+  display: flex;
+  flex-direction: column; /* Gör så att innehållet ordnas vertikalt */
+  align-items: center; /* Centrerar horisontellt */
+  justify-content: center; /* Centrerar vertikalt */
+  min-height: 100vh; /* Se till att containern fyller hela höjden */
+  margin: auto;
 }
 
 /* Buttons in the top-right and top-left corner */
@@ -31,6 +36,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+  justify-content: center;
 }
 
 /* Movie card */

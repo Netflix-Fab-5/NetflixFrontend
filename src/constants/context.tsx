@@ -46,10 +46,6 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    handleFetchGenres(); // Hämta genrer vid montering
-  }, [handleFetchGenres]);
-
   const handleFetchMovies = useCallback(async () => {
     const storedUser = sessionStorage.getItem("user"); // Hämta användaren från sessionStorage
     const user = storedUser ? JSON.parse(storedUser) : null;
@@ -75,14 +71,15 @@ function MyContextProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser); // Sätter användaren om någon är inloggad
-        sessionStorage.setItem("user", JSON.stringify(firebaseUser)); // Spara användarinfo i sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(firebaseUser));
+        handleFetchGenres(); // Spara användarinfo i sessionStorage
       } else {
         setUser(null); // Sätter user till null om ingen är inloggad
         sessionStorage.removeItem("user"); // Ta bort användarinfo från sessionStorage
       }
     });
     return () => unsubscribe(); // Rensa lyssnaren när komponenten avmonteras
-  }, []);
+  }, [handleFetchGenres]);
 
   // Funktion för att hämta en specifik film
   const handleFetchMovieById = useCallback(
