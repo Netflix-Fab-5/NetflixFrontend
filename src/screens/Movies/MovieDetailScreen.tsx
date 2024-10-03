@@ -9,21 +9,21 @@ function MovieDetails() {
   const { title } = useParams<{ title: string }>();
   const { movies, loading, error, handleFetchMovies } = useContext(MyContext); // movies istället för enskilt movie
 
-  const createSlug = (title: string) => {
+  function createSlug(title: string) {
     return slugify(title, { lower: true, strict: true });
-  };
+  }
 
   // Funktion för att avslugifiera och hitta rätt film
-  const findMovieBySlug = (
+  function findMovieBySlug(
     movies: Record<string, Movie>,
     slug: string,
-  ): Movie | undefined => {
+  ): Movie | undefined {
     const foundMovie = Object.values(movies).find((movie) => {
       const movieSlug = createSlug(movie.title);
       return movieSlug === slug;
     });
     return foundMovie;
-  };
+  }
 
   const movie = findMovieBySlug(movies, title || ""); // Hitta filmen baserat på title-slug
 

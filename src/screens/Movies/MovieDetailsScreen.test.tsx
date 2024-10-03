@@ -13,7 +13,6 @@ function createSlug(title: string) {
     .replace(/[^\w-]+/g, "");
 }
 
-
 const mockMovies = {
   "1": {
     id: "1",
