@@ -5,10 +5,10 @@ import { ContextType } from "../constants/types";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import { MyContext, MyContextProvider } from "../constants/context";
 import LoginScreen from "../screens/LoginScreen";
-import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../hooks/useAuth";
 import "@testing-library/jest-dom";
+import { FirebaseError } from "firebase/app";
 
 // Mocka firebase/auth
 vi.mock("firebase/auth", () => {
