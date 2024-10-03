@@ -1,4 +1,4 @@
-import { useHeaderEffect } from "../../hooks/headerAnimationScript";
+import { useHeaderEffect } from "../../hooks/useHeaderAnimation";
 
 function Head() {
   const { isExpanded, noAnimation } = useHeaderEffect();

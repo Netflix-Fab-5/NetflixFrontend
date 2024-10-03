@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-import BookmarkButton from "./BookMarkButton";
-import MoviesButton from "./AllMoviesButton";
-import SearchMovie from "./SearchMovie";
+import BookmarkButton from "../../components/navbar/BookMarkButton";
+import MoviesButton from "../../components/navbar/AllMoviesButton";
+import SearchMovie from "../../components/navbar/SearchMovie";
 import { logoutUser } from "../../firebase/firebaseAuth"; // Importera logoutUser-funktionen
 import { useAuth } from "../../hooks/useAuth";
 

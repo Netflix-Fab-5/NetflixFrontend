@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import { MyContext } from "../constants/context";
+import { MyContext } from "../../constants/context";
 import { useParams, Link } from "react-router-dom"; // För att få filmens title från URL:en
 import slugify from "slugify";
-import { Movie } from "../constants/types";
-import { getRatingDescription } from "../constants/ratingUtils";
+import { Movie } from "../../constants/types";
+import { getRatingDescription } from "../../constants/ratingUtils";
 
 function MovieDetails() {
   const { title } = useParams<{ title: string }>();

@@ -5,10 +5,10 @@ import {
   signInWithEmailAndPassword,
   AuthError as FirebaseAuthError,
 } from "firebase/auth";
-import { MyContext } from "../constants/context";
-import LoginForm from "../components/LoginForm"; // Importera din formkomponent
-import { useAuth } from "../hooks/useAuth";
-import { handleSignInError } from "../helpers/authHelpers";
+import { MyContext } from "../../constants/context";
+import LoginForm from "../../components/auth/LoginForm"; // Importera din formkomponent
+import { useAuth } from "../../hooks/useAuth";
+import { handleSignInError } from "../../helpers/authHelpers";
 
 function LoginScreen() {
   const auth = getAuth();

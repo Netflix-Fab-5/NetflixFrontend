@@ -5,8 +5,12 @@ import {
   fetchMovieById,
   addMovie,
   fetchGenres,
-} from "../firebase/firebaseApi";
-import { mockMovies, mockMovieById, mockNewMovie } from "./mocks/dataMocks";
+} from "./firebaseApi";
+import {
+  mockMovies,
+  mockMovieById,
+  mockNewMovie,
+} from "../tests/mocks/dataMocks";
 
 // Mocka Firebase-uppstartning
 vi.mock("firebase/app", () => ({
