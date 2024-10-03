@@ -28,4 +28,4 @@ jobs:
         run: npm run lint
 
       - name: Run Tests
-        run: npm run test -- --watch=false # Kör testerna utan att fastna i "watch"-läget
+        run: npm run test -- --watch=false
