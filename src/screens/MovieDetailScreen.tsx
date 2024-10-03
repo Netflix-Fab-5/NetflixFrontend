@@ -40,7 +40,7 @@ function MovieDetails() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">
-        <button className="button">Back to movies</button>
+        <button className="button">Back to home</button>
       </Link>
       {movie ? (
         <div className="bg-white rounded-lg shadow-md p-6 flex">
