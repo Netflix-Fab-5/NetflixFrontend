@@ -8,18 +8,16 @@ import { useAuth } from "../hooks/useAuth";
 import { fetchMovieByTitle } from "../firebase/firebaseApi";
 import { Movie } from "../constants/types";
 
-// Function to convert title to a URL-friendly slug
 const createSlug = (title: string) => {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
-    .replace(/--+/g, "-") // Ersätt flera bindestreck med ett
+    .replace(/--+/g, "-")
     .replace(/[^\w-]+/g, "");
 };
 
 const AllMoviesScreen: React.FC = () => {
   const { user, loading } = useAuth();
-  // Use context to access data
   const {
     filteredMovies,
     error,
@@ -31,7 +29,7 @@ const AllMoviesScreen: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleFetchMovies(); // Hämta filmer när sidan laddas
+    handleFetchMovies();
   }, [handleFetchMovies]);
 
   if (loading) {
@@ -40,12 +38,9 @@ const AllMoviesScreen: React.FC = () => {
 
   const handleEdit = async (title: string) => {
     const movie = await fetchMovieByTitle(title);
-
     if (movie) {
       const movieWithId = movie as Movie & { id: string };
       const movieId = movieWithId.id;
-      console.log("edit button", movieId);
-      // Navigate to edit movie
       navigate(`/movies/edit/${movieId}`);
     } else {
       console.log("Movie not found");
@@ -53,31 +48,25 @@ const AllMoviesScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px", position: "relative" }}>
-      {/* Home button at the top-right corner */}
-      <div style={{ position: "absolute", top: "20px", right: "20px" }}>
-        <Link to="/" style={{ textDecoration: "none" }}>
+    <div className="container">
+      <div className="top-right">
+        <Link to="/" className="button">
           <button className="button">Home</button>
         </Link>
-        {/* display for only admin*/}
         {user && user.email === "admin@mail.com" && (
-          <Link to="/movies/add-new-movie" style={{ textDecoration: "none" }}>
+          <Link to="/movies/add-new-movie" className="button">
             <button className="button">Add A New Movie</button>
           </Link>
         )}
       </div>
 
-      {/* Favorites button at the top-right corner */}
-      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
-        <Link to="/favorites" style={{ textDecoration: "none" }}>
+      <div className="top-left">
+        <Link to="/favorites" className="button">
           <button className="button">Favorites</button>
         </Link>
       </div>
 
-      <h1
-        style={{ marginBottom: "20px" }}
-        className="max-650:mt-16 sm:mt-16 lg:mt-16 md:mt-16"
-      >
+      <h1 className="heading max-650:mt-16 sm:mt-16 lg:mt-16 md:mt-16">
         All movies
       </h1>
 
@@ -85,18 +74,10 @@ const AllMoviesScreen: React.FC = () => {
         <GenreFilter />
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "20px",
-        }}
-      >
+      <div className="movie-grid">
         {filteredMovies.map((movie, index) => {
-          // Check if the movie is a favorite
           const isFavorite = favorites.some((fav) => fav.title === movie.title);
 
-          // Function to toggle favorite status
           const handleFavoriteToggle = () => {
             if (isFavorite) {
               removeFavorite(movie);
@@ -106,78 +87,31 @@ const AllMoviesScreen: React.FC = () => {
           };
 
           return (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                padding: "15px",
-                background: "#fff",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)")
-              }
-            >
+            <div key={index} className="movie-card">
               {user && user.email === "admin@mail.com" && (
-                <EditButton
-                  onClick={() => handleEdit(movie.title)}
-                  size={22} // Du kan justera storleken om det behövs
-                />
+                <EditButton onClick={() => handleEdit(movie.title)} size={22} />
               )}
-
-              {/* Navigate to the movie page with a slugified title */}
               <Link to={`/movies/${createSlug(movie.title)}`}>
-                <img
-                  src={movie.thumbnail}
-                  alt={movie.title}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "8px",
-                    marginBottom: "10px",
-                  }}
-                />
-                <h3
-                  className="text-lg font-bold"
-                  style={{ margin: "10px 0", fontSize: "1.1em" }}
-                >
-                  {movie.title}
-                </h3>
-                <p className="text-sm text-gray-500" style={{ margin: "0" }}>
+                <img src={movie.thumbnail} alt={movie.title} />
+                <h3 className="movie-title text-lg font-bold">{movie.title}</h3>
+                <p className="movie-genre text-sm text-gray-500">
                   {movie.genre}
                 </p>
-                <p className="text-sm text-gray-700">
+                <p className="movie-rating text-sm text-gray-700">
                   {getRatingDescription(movie.rating, true)}
                 </p>
               </Link>
-              {/* Favorite button placed at the bottom center */}
-              <div style={{ marginTop: "auto", padding: "10px 0" }}>
-                <button
-                  onClick={handleFavoriteToggle}
+              <div className="heart-icon-container2 cursor-pointer">
+                <i
+                  title="favorite"
+                  className="fas fa-heart"
                   style={{
-                    border: "none",
-                    background: "none",
-                    padding: 0,
-                    cursor: "pointer",
+                    fontSize: "24px",
+                    color: isFavorite ? "red" : "lightgrey",
+                    transition: "color 0.3s ease",
                   }}
-                >
-                  <i
-                    className="fas fa-heart"
-                    style={{
-                      fontSize: "24px",
-                      color: isFavorite ? "red" : "lightgrey", // Red if favorite, light grey if not
-                      transition: "color 0.3s ease",
-                    }}
-                  ></i>
-                </button>
+                  onClick={handleFavoriteToggle} // Lägger till klickhändelse för hjärtat
+                ></i>
               </div>
             </div>
           );
