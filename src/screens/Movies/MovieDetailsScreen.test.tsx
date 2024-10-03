@@ -5,13 +5,14 @@ import MovieDetails from "./MovieDetailScreen";
 import { MyContext } from "../../constants/context";
 import "@testing-library/jest-dom";
 
-const createSlug = (title: string) => {
+function createSlug(title: string) {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/--+/g, "-")
     .replace(/[^\w-]+/g, "");
-};
+}
+
 
 const mockMovies = {
   "1": {
