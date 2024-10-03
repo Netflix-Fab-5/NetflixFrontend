@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { MyContext } from "../../constants/context";
 
 const GenreFilter: React.FC = () => {
-  const { genres, filterMoviesByGenre } = useContext(MyContext); // Använder dynamiska genrer från context
+  const { genres, filterMoviesByGenre } = useContext(MyContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
@@ -19,9 +19,7 @@ const GenreFilter: React.FC = () => {
   };
 
   return (
-    <div className="relative inline-block text-left z-5000">
-      {" "}
-      {/* Lägg till z-50 här också */}
+    <div className="relative inline-block text-left z-50">
       <div>
         <button
           type="button"
@@ -49,7 +47,7 @@ const GenreFilter: React.FC = () => {
       </div>
       {showDropdown && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-5000"
+          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
