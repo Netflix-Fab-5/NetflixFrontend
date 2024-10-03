@@ -22,7 +22,10 @@ jobs:
         run: npm install
 
       - name: Run Prettier
-        run: npm run format # Förutsatt att du har ett script som heter "format" i package.json
+        run: npm run format
 
       - name: Run ESLint
-        run: npm run lint # Kör lint
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test -- --watch=false
