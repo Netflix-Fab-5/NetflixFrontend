@@ -75,7 +75,7 @@ function EditAMovie() {
           <button className="button">Home</button>
         </Link>
       </div>
-      <div className="bg-white mt-20 p-8 text-green-600 rounded-lg shadow-md w-full max-w-lg">
+      <div className="bg-white mt-20 p-8 text-green-600  rounded-lg shadow-md w-full max-w-lg max-650:m-4 max-650:mt-16 sm:mt-16 lg:mt-16 md:mt-16">
         <h2 className="text-3xl font-bold mb-6 text-center">Edit the Movie</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
@@ -175,7 +175,7 @@ function EditAMovie() {
           <div className="flex flex-col space-y-4 sm:flex-row justify-center items-center sm:space-y-0 sm:space-x-4">
             <button
               type="submit"
-              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 sm:w-auto"
+              className="max-650:w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
             >
               Update Movie
             </button>
