@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth"; // Använder useAuth-hooken för att hämta autentiseringsstatus
+import { useAuth } from "../../hooks/useAuth"; // Använder useAuth-hooken för att hämta autentiseringsstatus
 
 function ProtectedLayout() {
   const { user, loading } = useAuth(); // Hämtar användaren och laddningsstatus från useAuth
