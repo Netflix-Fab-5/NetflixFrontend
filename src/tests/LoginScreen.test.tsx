@@ -3,10 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
 import { ContextType } from "../constants/types";
 import { MemoryRouter, useNavigate } from "react-router-dom";
-import { MyContext } from "../constants/context";
+import { MyContext, MyContextProvider } from "../constants/context";
 import LoginScreen from "../screens/LoginScreen";
+import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../hooks/useAuth";
+import "@testing-library/jest-dom";
 
 // Mocka firebase/auth
 vi.mock("firebase/auth", () => {
@@ -18,6 +20,9 @@ vi.mock("firebase/auth", () => {
       currentUser: null,
     })),
     signInWithEmailAndPassword: vi.fn(),
+    onAuthStateChanged: vi.fn(() => {
+      return vi.fn(); // This is the unsubscribe function that will be returned
+    }),
   };
 });
 
@@ -40,8 +45,12 @@ vi.mock("react-router-dom", async () => {
 
 describe("LoginScreen Component", () => {
   const mockSetUser = vi.fn();
-  const mockSetError = vi.fn();
   const mockNavigate = vi.fn();
+
+  let errorState = null; // För att hålla reda på error-tillståndet i testet
+  const mockSetError = vi.fn((error) => {
+    errorState = error; // Uppdatera error-tillståndet
+  });
 
   // Skapa mockContextValue med alla obligatoriska egenskaper
   const mockContextValue: ContextType = {
@@ -51,7 +60,7 @@ describe("LoginScreen Component", () => {
     filteredMovies: [],
     favorites: [],
     loading: false,
-    error: null,
+    error: errorState,
     success: false,
     user: null,
     setUser: mockSetUser,
@@ -70,6 +79,7 @@ describe("LoginScreen Component", () => {
   beforeEach(() => {
     (useAuth as Mock).mockReturnValue({ user: null, loading: false });
     (useNavigate as Mock).mockReturnValue(mockNavigate);
+    errorState = null; // Återställ error-tillståndet mellan testerna
     vi.clearAllMocks();
   });
 
@@ -104,6 +114,34 @@ describe("LoginScreen Component", () => {
         email: "admin@mail.com",
       });
       expect(mockNavigate).toHaveBeenCalledWith("/");
+    });
+  });
+
+  it("ska misslyckas att logga in med ogiltiga uppgifter och visa felmeddelande", async () => {
+    const email = "fel@mail.com";
+    const password = "felLösenord";
+    const errorMessage = "Wrong password";
+
+    (signInWithEmailAndPassword as Mock).mockRejectedValue(
+      new FirebaseError("auth/wrong-password", errorMessage),
+    );
+
+    render(
+      <MemoryRouter>
+        <MyContextProvider>
+          <LoginScreen />
+        </MyContextProvider>
+      </MemoryRouter>,
+    );
+
+    await userEvent.type(screen.getByLabelText(/Email/i), email);
+    await userEvent.type(screen.getByLabelText(/Password/i), password);
+
+    await userEvent.click(screen.getByRole("button", { name: /Login/i }));
+
+    // Kontrollera om felmeddelandet visas på skärmen
+    await waitFor(() => {
+      expect(screen.getByText(/Wrong password/i)).toBeInTheDocument();
     });
   });
 });
