@@ -17,7 +17,7 @@ const EditButton: React.FC<EditButtonProps> = ({ onClick, size = 22 }) => {
         position: "relative",
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         transition: "transform 0.2s ease, background-color 0.3s ease",
-        zIndex: 1000,
+        zIndex: 10,
       }}
       data-testid="edit-button"
       onClick={onClick} // Anropa den medskickade onClick-funktionen
