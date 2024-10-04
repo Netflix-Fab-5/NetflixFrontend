@@ -14,7 +14,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 }) => {
   const { deleteMovie } = useContext(MyContext);
   const navigate = useNavigate();
-  const handleDelete = async (e: React.FormEvent) => {
+  async function handleDelete(e: React.FormEvent) {
     e.preventDefault();
     if (!movieId) return; // First check if id is not undefined then delete the movie
 
@@ -22,7 +22,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
     setDisplayMessage("Movie deleted successfully");
     setDisplayMessage("Delete action cancelled");
     navigate("/movies");
-  };
+  }
 
   return (
     <button

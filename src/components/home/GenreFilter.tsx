@@ -1,22 +1,24 @@
 import React, { useState, useContext } from "react";
 import { MyContext } from "../../constants/context";
 
-const GenreFilter: React.FC = () => {
+function GenreFilter() {
   const { genres, filterMoviesByGenre } = useContext(MyContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   // Hantera genre-val
-  const handleGenreSelect = (genre: string) => {
+  function handleGenreSelect(genre: string) {
     let updatedGenres;
     if (selectedGenres.includes(genre)) {
-      updatedGenres = selectedGenres.filter((g) => g !== genre);
+      updatedGenres = selectedGenres.filter(function (g) {
+        return g !== genre;
+      });
     } else {
       updatedGenres = [...selectedGenres, genre];
     }
     setSelectedGenres(updatedGenres);
     filterMoviesByGenre(updatedGenres); // Filtrera filmer baserat på valda genrer
-  };
+  }
 
   return (
     <div className="relative inline-block text-left z-50">
@@ -27,7 +29,9 @@ const GenreFilter: React.FC = () => {
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
-          onClick={() => setShowDropdown(!showDropdown)}
+          onClick={function () {
+            setShowDropdown(!showDropdown);
+          }}
         >
           Categories
           <svg
@@ -53,37 +57,41 @@ const GenreFilter: React.FC = () => {
           aria-labelledby="options-menu"
         >
           <div className="py-1 max-h-40 overflow-y-auto" role="none">
-            {genres.map((genre) => (
-              <div
-                key={genre}
-                className="cursor-pointer flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => handleGenreSelect(genre)}
-              >
-                {selectedGenres.includes(genre) && (
-                  <svg
-                    className="h-4 w-4 text-blue-500 mr-2"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                )}
-                {genre}
-              </div>
-            ))}
+            {genres.map(function (genre) {
+              return (
+                <div
+                  key={genre}
+                  className="cursor-pointer flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={function () {
+                    handleGenreSelect(genre);
+                  }}
+                >
+                  {selectedGenres.includes(genre) && (
+                    <svg
+                      className="h-4 w-4 text-blue-500 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
+                  {genre}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
     </div>
   );
-};
+}
 
 export default GenreFilter;

@@ -5,14 +5,16 @@ function Head() {
   const { isExpanded, noAnimation } = useHeaderEffect();
   const [noScroll, setNoScroll] = useState(true); // State för att styra scroll
 
-  useEffect(() => {
+  useEffect(function () {
     // Ställ in no-scroll under de första 5 sekunderna
-    const timer = setTimeout(() => {
+    const timer = setTimeout(function () {
       setNoScroll(false);
     }, 5000);
 
     // Rensa timer när komponenten avmonteras
-    return () => clearTimeout(timer);
+    return function () {
+      clearTimeout(timer);
+    };
   }, []);
 
   // Lägg till eller ta bort no-scroll klassen baserat på noScroll state

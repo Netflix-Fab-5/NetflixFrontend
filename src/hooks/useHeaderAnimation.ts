@@ -13,7 +13,7 @@ export function useHeaderEffect(): {
     return localStorage.getItem("netflixEffectRun") !== null;
   });
 
-  useEffect(() => {
+  useEffect(function () {
     const hasRunEffect = localStorage.getItem("netflixEffectRun");
 
     if (!hasRunEffect) {
@@ -21,14 +21,14 @@ export function useHeaderEffect(): {
       document.body.classList.add("no-scroll");
 
       // Efter 5 sekunder, ta bort klassen för att tillåta scrollning och lägg till shrink
-      const timer = setTimeout(() => {
+      const timer = setTimeout(function () {
         document.body.classList.remove("no-scroll");
 
         // Efter timeout, förminska headern
         setIsExpanded(false);
 
         // Låt animationen slutföras (1 sekund) innan vi inaktiverar animationer
-        setTimeout(() => {
+        setTimeout(function () {
           // Spara i LocalStorage att effekten har körts
           localStorage.setItem("netflixEffectRun", "true");
 
@@ -38,7 +38,9 @@ export function useHeaderEffect(): {
       }, 5000); // 5000 ms = 5 sekunder
 
       // Rensa timer om komponenten unmountas innan timern går ut
-      return () => clearTimeout(timer);
+      return function () {
+        clearTimeout(timer);
+      };
     }
   }, []);
 

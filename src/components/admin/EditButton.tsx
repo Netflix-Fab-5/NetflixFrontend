@@ -7,7 +7,7 @@ interface EditButtonProps {
   className?: string;
 }
 
-const EditButton: React.FC<EditButtonProps> = ({ onClick, size = 22 }) => {
+function EditButton({ onClick, size = 22 }: EditButtonProps) {
   return (
     <div
       className="flex items-center justify-center rounded-full bg-white shadow-lg cursor-pointer"
@@ -33,6 +33,6 @@ const EditButton: React.FC<EditButtonProps> = ({ onClick, size = 22 }) => {
       <FaEdit size={size} className="text-green-800 p-1" />
     </div>
   );
-};
+}
 
 export default EditButton;

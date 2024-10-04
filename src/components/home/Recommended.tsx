@@ -4,12 +4,12 @@ import MovieCarousel from "./MovieCarousel";
 import { Movie } from "../../constants/types";
 
 // Funktion för att slumpa fram ett antal filmer från en lista
-const getRandomMovies = (movies: Movie[], count: number) => {
+function getRandomMovies(movies: Movie[], count: number) {
   const shuffled = [...movies].sort(() => 0.5 - Math.random()); // Blanda filmerna
   return shuffled.slice(0, count); // Returnera det angivna antalet filmer
-};
+}
 
-const Recommended = () => {
+function Recommended() {
   const { movies } = useContext(MyContext);
   const [randomRecommendedMovies, setRandomRecommendedMovies] = useState<
     Movie[]
@@ -17,20 +17,28 @@ const Recommended = () => {
   const [recommendedMovies, setRecommendedMovies] = useState<Movie[]>([]);
 
   // Filtrera fram de rekommenderade filmerna (exempelvis de som inte trendar)
-  useEffect(() => {
-    const filteredMovies = Object.values(movies || {}).filter(
-      (movie) => !movie.isTrending,
-    );
-    setRecommendedMovies(filteredMovies);
-  }, [movies]);
+  useEffect(
+    function () {
+      const filteredMovies = Object.values(movies || {}).filter(
+        function (movie) {
+          return !movie.isTrending;
+        },
+      );
+      setRecommendedMovies(filteredMovies);
+    },
+    [movies],
+  );
 
   // Slumpa fram 8 filmer endast när komponenten laddas första gången
-  useEffect(() => {
-    if (recommendedMovies.length > 0) {
-      const randomMovies = getRandomMovies(recommendedMovies, 8);
-      setRandomRecommendedMovies(randomMovies);
-    }
-  }, [recommendedMovies]);
+  useEffect(
+    function () {
+      if (recommendedMovies.length > 0) {
+        const randomMovies = getRandomMovies(recommendedMovies, 8);
+        setRandomRecommendedMovies(randomMovies);
+      }
+    },
+    [recommendedMovies],
+  );
 
   return (
     <div className="mb-8">
@@ -58,6 +66,6 @@ const Recommended = () => {
       />
     </div>
   );
-};
+}
 
 export default Recommended;

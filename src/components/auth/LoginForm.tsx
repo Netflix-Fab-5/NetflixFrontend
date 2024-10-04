@@ -9,14 +9,14 @@ interface LoginFormProps {
   error: string | null;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({
+function LoginForm({
   email,
   password,
   onEmailChange,
   onPasswordChange,
   onSubmit,
   error,
-}) => {
+}: LoginFormProps) {
   return (
     <div className="max-w-[400px] mx-auto p-5 bg-black rounded-lg shadow-md">
       <form className="flex flex-col" onSubmit={onSubmit}>
@@ -77,6 +77,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
       </form>
     </div>
   );
-};
+}
 
 export default LoginForm;

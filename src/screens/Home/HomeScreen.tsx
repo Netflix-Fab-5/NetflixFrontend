@@ -9,11 +9,14 @@ function HomeScreen() {
   const { handleFetchMovies, loading, error } = useContext(MyContext);
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (user) {
-      handleFetchMovies(); // Hämta filmer när användaren är inloggad
-    }
-  }, [user, handleFetchMovies]); // Körs när user ändras (dvs. när användaren loggar in)
+  useEffect(
+    function () {
+      if (user) {
+        handleFetchMovies(); // Hämta filmer när användaren är inloggad
+      }
+    },
+    [user, handleFetchMovies],
+  ); // Körs när user ändras (dvs. när användaren loggar in)
 
   if (loading) {
     return <p>Loading movies...</p>;

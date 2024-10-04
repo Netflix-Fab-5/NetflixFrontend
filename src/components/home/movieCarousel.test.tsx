@@ -7,11 +7,13 @@ import { Movie } from "../../constants/types";
 import "@testing-library/jest-dom";
 
 // Mocka användarnavigationen
-vi.mock("react-router-dom", () => ({
-  useNavigate: () => vi.fn(),
-}));
+vi.mock("react-router-dom", function () {
+  return {
+    useNavigate: () => vi.fn(),
+  };
+});
 
-describe("MovieCarousel Component", () => {
+describe("MovieCarousel Component", function () {
   const mockAddFavorite = vi.fn();
   const mockRemoveFavorite = vi.fn();
   const mockSetError = vi.fn();
@@ -159,11 +161,11 @@ describe("MovieCarousel Component", () => {
     filterMoviesByGenre: mockFilterMoviesByGenre,
   };
 
-  beforeEach(() => {
+  beforeEach(function () {
     vi.clearAllMocks();
   });
 
-  it("should render correctly", () => {
+  it("should render correctly", function () {
     render(
       <MyContext.Provider value={mockContextValue}>
         <MovieCarousel movies={mockMovies} title="Test Carousel" />
@@ -172,7 +174,7 @@ describe("MovieCarousel Component", () => {
     expect(screen.getByText("Test Carousel")).toBeInTheDocument();
   });
 
-  it("should navigate to previous page when clicking previous button", async () => {
+  it("should navigate to previous page when clicking previous button", async function () {
     render(
       <MyContext.Provider value={mockContextValue}>
         <MovieCarousel movies={mockMovies} title="Test Carousel" />

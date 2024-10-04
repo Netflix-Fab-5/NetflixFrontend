@@ -28,9 +28,12 @@ function AllMoviesScreen() {
   } = useContext(MyContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    handleFetchMovies();
-  }, [handleFetchMovies]);
+  useEffect(
+    function () {
+      handleFetchMovies();
+    },
+    [handleFetchMovies],
+  );
 
   if (loading) {
     return <div>Loading...</div>;

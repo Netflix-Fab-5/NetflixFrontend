@@ -81,12 +81,12 @@ const mockContextValue = {
   filterMoviesByGenre: vi.fn(),
 };
 
-describe("EditAMovie Component", () => {
-  beforeEach(() => {
+describe("EditAMovie Component", function () {
+  beforeEach(function () {
     vi.clearAllMocks();
   });
 
-  it("should render the edit movie form", async () => {
+  it("should render the edit movie form", async function () {
     mockContextValue.handleFetchMovieById = vi
       .fn()
       .mockResolvedValue(mockMovie["1"]);
@@ -105,7 +105,7 @@ describe("EditAMovie Component", () => {
     expect(await screen.findByText("Edit the Movie")).toBeInTheDocument();
   });
 
-  it("should update a movie", async () => {
+  it("should update a movie", async function () {
     mockContextValue.handleFetchMovieById = vi
       .fn()
       .mockResolvedValue(mockMovie["1"]);

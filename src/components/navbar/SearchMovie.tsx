@@ -24,11 +24,14 @@ function SearchMovie() {
   });
 
   // Nollställ resultaten när query är tomt
-  useEffect(() => {
-    if (!query) {
-      setResults([]); // Töm resultatlistan när sökningen är tom
-    }
-  }, [query]);
+  useEffect(
+    function () {
+      if (!query) {
+        setResults([]); // Töm resultatlistan när sökningen är tom
+      }
+    },
+    [query],
+  );
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
