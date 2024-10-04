@@ -4,6 +4,7 @@ import { FaEdit } from "react-icons/fa";
 interface EditButtonProps {
   onClick: (event: React.MouseEvent) => void; // Funktion att anropa vid klick
   size?: number; // Storleken på ikonen, kan vara valfri
+  className?: string;
 }
 
 const EditButton: React.FC<EditButtonProps> = ({ onClick, size = 22 }) => {

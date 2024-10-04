@@ -23,15 +23,21 @@ function NavBar() {
   return (
     <>
       {/* Knappar ovanför Header */}
-      <div className="button-container">
-        <BookmarkButton />
-        <MoviesButton />
-        {/* Logga ut-knappen om användaren är inloggad */}
-        {user && (
-          <button onClick={handleLogout} className="button">
-            Logout
-          </button>
-        )}
+      <div className="flex flex-col md:flex-row justify-center lg:justify-end items-center p-4">
+        {" "}
+        {/* Centrera vid sm och md, till höger vid lg och över */}
+        <div className="flex space-x-4">
+          {" "}
+          {/* Skapa utrymme mellan knappar */}
+          <BookmarkButton />
+          <MoviesButton />
+          {/* Logga ut-knappen om användaren är inloggad */}
+          {user && (
+            <button onClick={handleLogout} className="button">
+              Logout
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Header centrerad */}
