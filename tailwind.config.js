@@ -31,6 +31,9 @@ export default {
           color: '#218838',
           transition: 'color 0.3s ease, transform 0.3s ease',
           fontSize: '1.125rem', // Large font-size (18px)
+          padding: '0.6em 1.2em',
+fontWeight: '500',
+  
         },
         '.button:hover': {
           color: '#01d613', // Ljusare grön färg
