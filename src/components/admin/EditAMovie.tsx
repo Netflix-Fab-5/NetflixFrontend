@@ -176,7 +176,7 @@ function EditAMovie() {
             />
           </div>
 
-          <div className="flex flex-col space-y-4 sm:flex-row justify-center items-center sm:space-y-0 sm:space-x-4">
+          <div className="flex flex-col space-y-4 sm:flex-row justify-center items-center sm:space-y-0 sm:space-x-2">
             <button
               type="submit"
               className="max-650:w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
