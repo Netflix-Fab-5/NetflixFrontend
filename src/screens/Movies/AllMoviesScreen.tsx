@@ -57,17 +57,21 @@ function AllMoviesScreen() {
 
   return (
     <div className="w-full min-h-screen p-4">
-      <div className="flex justify-between items-center mb-4 w-full lg:justify-end sm:justify-center">
-        <div className="flex space-x-4">
+      <div className="flex justify-between items-center mb-4 w-full lg:justify-end sm:justify-center overflow-hidden max-650:overflow-hidden">
+        <div className="flex space-x-4 max-650:space-x-1 max-650:p-1 max-650:ml-2">
           <Link to="/" className="button">
-            <button className="button">Home</button>
+            <button className="button max-650:p-2 max-650:mb-2">Home</button>
           </Link>
           <Link to="/favorites" className="button">
-            <button className="button">Favorites</button>
+            <button className="button max-650:p-2 max-650:mb-2">
+              Favorites
+            </button>
           </Link>
           {user && user.email === "admin@mail.com" && (
             <Link to="/movies/add-new-movie" className="button">
-              <button className="button">Add A New Movie</button>
+              <button className="button max-650:p-2 max-650:mb-2">
+                Add A New Movie
+              </button>
             </Link>
           )}
         </div>
