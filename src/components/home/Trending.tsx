@@ -11,33 +11,17 @@ const Trending = () => {
   );
 
   return (
-    <div style={{ marginBottom: "2rem" }}>
+    <div className="mb-8">
       {" "}
       {/* Marginal under sektionen */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "1rem",
-          paddingLeft: "190px",
-        }}
-      >
+      <div className="flex items-center mb-4 justify-center lg:justify-start lg:pl-48">
         {" "}
         {/* Flex container för titel och ikon */}
-        <i
-          className="fas fa-arrow-up"
-          style={{
-            color: "#01d613", // Ikonfärg
-            fontSize: "24px", // Ikonstorlek
-          }}
-        ></i>
-        <h2
-          style={{
-            fontSize: "24px", // Titeln storlek
-            fontWeight: "bold", // Fet stil
-            marginLeft: "10px", // Flyttar titeln 50px till höger
-          }}
-        >
+        <i className="fas fa-arrow-up text-green-500 text-2xl"></i>{" "}
+        {/* Ikonfärg och storlek */}
+        <h2 className="text-2xl font-bold ml-2">
+          {" "}
+          {/* Titeln storlek och stil */}
           Trending Movies
         </h2>
       </div>

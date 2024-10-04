@@ -33,17 +33,10 @@ const Recommended = () => {
   }, [recommendedMovies]);
 
   return (
-    <div style={{ marginBottom: "2rem" }}>
+    <div className="mb-8">
       {" "}
       {/* Marginal under sektionen */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "1rem",
-          paddingLeft: "190px",
-        }}
-      >
+      <div className="flex items-center mb-4 justify-center lg:justify-start lg:pl-48">
         {" "}
         {/* Flex container för titel och ikon */}
         <i
@@ -53,19 +46,15 @@ const Recommended = () => {
             fontSize: "24px", // Ikonstorlek
           }}
         ></i>
-        <h2
-          style={{
-            fontSize: "24px", // Titeln storlek
-            fontWeight: "bold", // Fet stil
-            marginLeft: "10px", // Avstånd mellan ikon och titel
-          }}
-        >
+        <h2 className="text-2xl font-bold ml-2">
+          {" "}
+          {/* Titeln storlek och stil */}
           Recommended Movies
         </h2>
       </div>
       <MovieCarousel
         movies={randomRecommendedMovies}
-        title={"Recommended movies"}
+        title={"Trending movies"}
       />
     </div>
   );
