@@ -13,20 +13,23 @@ function EditAMovie() {
   console.log(movieId);
 
   // UseEffect to fetch the movie data when the component loads
-  useEffect(() => {
-    const fetchMovieData = async () => {
-      if (movieId) {
-        try {
-          const movieData = await handleFetchMovieById(movieId);
-          console.log(movieData);
-          setMovie(movieData);
-        } catch (error) {
-          console.error("Error fetching movie data:", error);
+  useEffect(
+    function () {
+      const fetchMovieData = async function () {
+        if (movieId) {
+          try {
+            const movieData = await handleFetchMovieById(movieId);
+            console.log(movieData);
+            setMovie(movieData);
+          } catch (error) {
+            console.error("Error fetching movie data:", error);
+          }
         }
-      }
-    };
-    fetchMovieData();
-  }, [handleFetchMovieById, movieId]);
+      };
+      fetchMovieData();
+    },
+    [handleFetchMovieById, movieId],
+  );
 
   if (loading) {
     return <div>Laddar...</div>;
@@ -37,28 +40,29 @@ function EditAMovie() {
   }
 
   // Handle form inputs
-  const handleInputChange = (
+  function handleInputChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  ) {
     const { name, value } = e.target;
     setMovie((prev) => (prev ? { ...prev, [name]: value } : prev));
-  };
+  }
 
-  const handleActorsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleActorsChange(e: React.ChangeEvent<HTMLInputElement>) {
     const actors = e.target.value.split(",").map((actor) => actor.trim());
     setMovie((prev) => (prev ? { ...prev, actors } : prev));
-  };
+  }
 
-  const handleTrendingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleTrendingChange(e: React.ChangeEvent<HTMLInputElement>) {
     setMovie((prev) =>
       prev ? { ...prev, isTrending: e.target.checked } : prev,
     );
-  };
+  }
 
   // Form submission handler
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!movieId) return;
+    if (!movie) return;
     const updatedMovie = {
       ...movie,
       isTrending: movie.isTrending !== undefined ? movie.isTrending : false,
@@ -66,7 +70,7 @@ function EditAMovie() {
 
     await editMovie(movieId, updatedMovie);
     setDisplayMessage("Movie updated successfully");
-  };
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-xl">

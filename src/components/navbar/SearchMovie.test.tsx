@@ -7,7 +7,7 @@ import SearchMovie from "./SearchMovie";
 import { MyContext } from "../../constants/context";
 
 // Mocka Fuse.js för att returnera förväntade resultat
-vi.mock("fuse.js", () => {
+vi.mock("fuse.js", function () {
   return {
     default: class Fuse {
       constructor() {}
@@ -33,11 +33,13 @@ vi.mock("fuse.js", () => {
 
 // Mocka useNavigate från react-router-dom
 const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
+vi.mock("react-router-dom", async function () {
   const actual = await vi.importActual("react-router-dom");
   return {
     ...actual,
-    useNavigate: () => mockNavigate, // Mocka useNavigate
+    useNavigate: function () {
+      return mockNavigate;
+    }, // Mocka useNavigate
   };
 });
 
@@ -65,12 +67,12 @@ const mockContextValue = {
   filterMoviesByGenre: vi.fn(),
 };
 
-describe("SearchMovie Component", () => {
-  beforeEach(() => {
+describe("SearchMovie Component", function () {
+  beforeEach(function () {
     vi.resetAllMocks();
   });
 
-  it("should show matching movie when a valid query is typed", async () => {
+  it("should show matching movie when a valid query is typed", async function () {
     const user = userEvent.setup();
 
     render(
@@ -88,13 +90,11 @@ describe("SearchMovie Component", () => {
     // Simulera att användaren skriver "Inception"
     await user.type(searchInput, "Inception");
 
-    await waitFor(() => {
-      // Kontrollera att rätt film visas i resultatlistan
-      expect(screen.getByText("Inception")).toBeInTheDocument();
-    });
+    // Kontrollera att rätt film visas i resultatlistan
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
   });
 
-  it("should not show any movie when an invalid query is typed", async () => {
+  it("should not show any movie when an invalid query is typed", async function () {
     const user = userEvent.setup();
 
     render(
@@ -119,7 +119,7 @@ describe("SearchMovie Component", () => {
     });
   });
 
-  it("should navigate to the movie detail page when a result is clicked", async () => {
+  it("should navigate to the movie detail page when a result is clicked", async function () {
     const user = userEvent.setup();
 
     render(
@@ -136,9 +136,7 @@ describe("SearchMovie Component", () => {
 
     await user.type(searchInput, "Inception");
 
-    await waitFor(() =>
-      expect(screen.getByText("Inception")).toBeInTheDocument(),
-    );
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
 
     // Klicka på resultatet
     const result = screen.getByText("Inception");
@@ -148,7 +146,7 @@ describe("SearchMovie Component", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/movies/inception");
   });
 
-  it("should clear the results when the search query is cleared", async () => {
+  it("should clear the results when the search query is cleared", async function () {
     const user = userEvent.setup();
 
     render(
@@ -165,9 +163,7 @@ describe("SearchMovie Component", () => {
 
     // Skriv "Inception" och vänta tills filmen visas
     await user.type(searchInput, "Inception");
-    await waitFor(() =>
-      expect(screen.getByText("Inception")).toBeInTheDocument(),
-    );
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
 
     // Rensa sökfältet
     await user.clear(searchInput);
@@ -179,7 +175,7 @@ describe("SearchMovie Component", () => {
     });
   });
 
-  it("should show loading message when loading is true", () => {
+  it("should show loading message when loading is true", function () {
     render(
       <BrowserRouter>
         <MyContext.Provider value={{ ...mockContextValue, loading: true }}>
@@ -192,7 +188,7 @@ describe("SearchMovie Component", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("should show error message when error is present", () => {
+  it("should show error message when error is present", function () {
     render(
       <BrowserRouter>
         <MyContext.Provider

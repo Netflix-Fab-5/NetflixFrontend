@@ -58,9 +58,9 @@ beforeEach(() => {
   sessionStorage.clear(); // Clear storage before each test
 });
 
-describe("Trending Component", () => {
+describe("Trending Component", function () {
   // Test 1: Render trending movies
-  it("renders trending movies", () => {
+  it("renders trending movies", function () {
     render(
       <MemoryRouter>
         <MyContext.Provider value={mockContextValue}>
@@ -74,7 +74,7 @@ describe("Trending Component", () => {
   });
 
   // Test 2: Add favorite and check sessionStorage
-  it("adds a movie to favorites and stores it in sessionStorage, then removes it", () => {
+  it("adds a movie to favorites and stores it in sessionStorage, then removes it", function () {
     render(
       <MemoryRouter>
         <MyContext.Provider value={mockContextValue}>

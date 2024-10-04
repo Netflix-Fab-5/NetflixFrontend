@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
@@ -68,12 +68,12 @@ const mockContextValue = {
   filterMoviesByGenre: vi.fn(), // Mockar funktionen för filtrering
 };
 
-describe("GenreFilter Component", () => {
-  beforeEach(() => {
+describe("GenreFilter Component", function () {
+  beforeEach(function () {
     vi.resetAllMocks(); // Återställ alla mockar innan varje test
   });
 
-  it("should filter movies by genre when a genre is clicked", async () => {
+  it("should filter movies by genre when a genre is clicked", async function () {
     const user = userEvent.setup();
 
     render(
@@ -85,12 +85,11 @@ describe("GenreFilter Component", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      // Kontrollera att alla filmer visas initialt
-      expect(screen.getByText("Inception")).toBeInTheDocument();
-      expect(screen.getByText("The Godfather")).toBeInTheDocument();
-      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-    });
+    // Kontrollera att alla filmer visas initialt
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
+    expect(await screen.findByText("The Godfather")).toBeInTheDocument();
+    expect(await screen.findByText("Saving Private Ryan")).toBeInTheDocument();
+
     // Öppna dropdown-menyn
     const dropdownButton = screen.getAllByText("Categories");
     await user.click(dropdownButton[0]);
@@ -105,7 +104,7 @@ describe("GenreFilter Component", () => {
     ]);
   });
 
-  it("should show all movies if no genre is selected", async () => {
+  it("should show all movies if no genre is selected", async function () {
     const user = userEvent.setup();
 
     render(
@@ -117,13 +116,12 @@ describe("GenreFilter Component", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      // Se till att alla filmer visas initialt
-      expect(screen.getByText("Inception")).toBeInTheDocument();
-      expect(screen.getByText("The Godfather")).toBeInTheDocument();
-      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-    });
+    // Se till att alla filmer visas initialt
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
+    expect(await screen.findByText("The Godfather")).toBeInTheDocument();
+    expect(await screen.findByText("Saving Private Ryan")).toBeInTheDocument();
     // Öppna dropdown-menyn
+
     const dropdownButton = screen.getAllByText("Categories");
     await user.click(dropdownButton[0]);
 
@@ -135,14 +133,12 @@ describe("GenreFilter Component", () => {
     await user.click(dramaFilter);
 
     // Kontrollera att alla filmer visas igen
-    await waitFor(() => {
-      expect(screen.getByText("Inception")).toBeInTheDocument();
-      expect(screen.getByText("The Godfather")).toBeInTheDocument();
-      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
+    expect(await screen.findByText("The Godfather")).toBeInTheDocument();
+    expect(await screen.findByText("Saving Private Ryan")).toBeInTheDocument();
   });
 
-  it("should filter movies by multiple genres when multiple genres are clicked", async () => {
+  it("should filter movies by multiple genres when multiple genres are clicked", async function () {
     const user = userEvent.setup();
 
     render(
@@ -173,7 +169,7 @@ describe("GenreFilter Component", () => {
     ]);
   });
 
-  it("should toggle the dropdown menu visibility when clicked", async () => {
+  it("should toggle the dropdown menu visibility when clicked", async function () {
     const user = userEvent.setup();
 
     render(
@@ -198,12 +194,10 @@ describe("GenreFilter Component", () => {
     await user.click(dropdownButton[0]);
 
     // Kontrollera att dropdown-menyn stängs
-    await waitFor(() => {
-      expect(screen.queryByText("Drama")).not.toBeInTheDocument();
-    });
+    expect(screen.queryByText("Drama")).not.toBeInTheDocument();
   });
 
-  it("should show all movies again when a genre is deselected", async () => {
+  it("should show all movies again when a genre is deselected", async function () {
     const user = userEvent.setup();
 
     render(
@@ -227,10 +221,10 @@ describe("GenreFilter Component", () => {
     await user.click(dramaFilter);
 
     // Kontrollera att alla filmer visas igen
-    await waitFor(() => {
-      expect(screen.getByText("Inception")).toBeInTheDocument();
-      expect(screen.getByText("The Godfather")).toBeInTheDocument();
-      expect(screen.getByText("Saving Private Ryan")).toBeInTheDocument();
-    });
+
+    // Kontrollera att alla filmer visas igen
+    expect(await screen.findByText("Inception")).toBeInTheDocument();
+    expect(await screen.findByText("The Godfather")).toBeInTheDocument();
+    expect(await screen.findByText("Saving Private Ryan")).toBeInTheDocument();
   });
 });

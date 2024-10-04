@@ -10,20 +10,26 @@ import { mockContextValue } from "../../tests/mocks/dataMocks";
 import { logoutUser } from "../../firebase/firebaseAuth";
 
 // Mocka useAuth-hooken för att simulera en inloggad användare
-vi.mock("../../hooks/useAuth", () => ({
-  useAuth: vi.fn(() => ({
-    user: { email: "user@mail.com" }, // Mockad användare som är inloggad
-    loading: false,
-  })),
-}));
+vi.mock("../../hooks/useAuth", function () {
+  return {
+    useAuth: vi.fn(function () {
+      return {
+        user: { email: "user@mail.com" }, // Mocked user who is logged in
+        loading: false,
+      };
+    }),
+  };
+});
 
 // Mocka `logoutUser`-funktionen
-vi.mock("../../firebase/firebaseAuth", () => ({
-  logoutUser: vi.fn(), // Mockar funktionen
-}));
+vi.mock("../../firebase/firebaseAuth", function () {
+  return {
+    logoutUser: vi.fn(), // Mockar funktionen
+  };
+});
 
 // Mocka specifika delar av `react-router-dom`, men behåll originalet för `BrowserRouter`
-vi.mock("react-router-dom", async () => {
+vi.mock("react-router-dom", async function () {
   const actual =
     await vi.importActual<typeof import("react-router-dom")>(
       "react-router-dom",
@@ -34,8 +40,8 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-describe("NavBar Logout Button", () => {
-  it("renders Logout button when user is logged in", () => {
+describe("NavBar Logout Button", function () {
+  it("renders Logout button when user is logged in", function () {
     render(
       <MyContext.Provider value={mockContextValue}>
         <Router>
@@ -48,7 +54,7 @@ describe("NavBar Logout Button", () => {
     expect(logoutButton).toBeInTheDocument();
   });
 
-  it("calls logoutUser when Logout button is clicked", async () => {
+  it("calls logoutUser when Logout button is clicked", async function () {
     render(
       <MyContext.Provider value={mockContextValue}>
         <Router>
@@ -64,7 +70,7 @@ describe("NavBar Logout Button", () => {
     expect(logoutUser).toHaveBeenCalledTimes(1);
   });
 
-  it("redirects user to login page after logout", async () => {
+  it("redirects user to login page after logout", async function () {
     const mockNavigate = vi.fn(); // Mocka navigate-funktionen
     (useNavigate as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
       mockNavigate,
@@ -84,7 +90,7 @@ describe("NavBar Logout Button", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 
-  it("shows loading state when loading is true", () => {
+  it("shows loading state when loading is true", function () {
     const loadingContextValue = {
       ...mockContextValue,
       loading: true,
@@ -101,7 +107,7 @@ describe("NavBar Logout Button", () => {
     expect(screen.getByText("Loading movies...")).toBeInTheDocument();
   });
 
-  it("shows error message when error occurs", () => {
+  it("shows error message when error occurs", function () {
     const errorContextValue = {
       ...mockContextValue,
       error: "Failed to fetch movies",

@@ -8,14 +8,18 @@ import { useAuth } from "../../hooks/useAuth";
 import { User } from "firebase/auth";
 
 // Mock useAuth
-vi.mock("../../hooks/useAuth", () => ({
-  useAuth: vi.fn(),
-}));
+vi.mock("../../hooks/useAuth", function () {
+  return {
+    useAuth: vi.fn(),
+  };
+});
 
 // Mock the Firebase
-vi.mock("../../firebase/firebaseApi", () => ({
-  fetchMovieByTitle: vi.fn(),
-}));
+vi.mock("../../firebase/firebaseApi", function () {
+  return {
+    fetchMovieByTitle: vi.fn(),
+  };
+});
 
 // Mocked User data
 const mockUser: User = {
@@ -54,7 +58,7 @@ const mockUser: User = {
   }),
 };
 
-describe("AllMoviesScreen", () => {
+describe("AllMoviesScreen", function () {
   // Mocked movie data
   const mockMovies = {
     "1": {
@@ -93,15 +97,15 @@ describe("AllMoviesScreen", () => {
     filterMoviesByGenre: vi.fn(),
   };
 
-  beforeEach(() => {
+  beforeEach(function () {
     vi.clearAllMocks();
   });
 
-  afterEach(() => {
+  afterEach(function () {
     vi.clearAllMocks();
   });
 
-  it("renders EditButton for admin user", async () => {
+  it("renders EditButton for admin user", async function () {
     // Mock admin
     (useAuth as Mock).mockReturnValue({
       user: { email: "admin@mail.com" },
@@ -123,7 +127,7 @@ describe("AllMoviesScreen", () => {
     expect(editButton).toBeVisible();
   });
 
-  it("should click on EditButton ", async () => {
+  it("should click on EditButton ", async function () {
     // Mock admin
     (useAuth as Mock).mockReturnValue({
       user: { email: "admin@mail.com" },
@@ -145,7 +149,7 @@ describe("AllMoviesScreen", () => {
     expect(editButton).toBeVisible();
   });
 
-  it("does not render EditButton for non-admin user", async () => {
+  it("does not render EditButton for non-admin user", async function () {
     // Mock a non-admin user
     (useAuth as Mock).mockReturnValue({
       user: { email: "user@mail.com" },

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MyContext } from "../../constants/context";
 import AddMovie from "./AddAMovie";
@@ -82,12 +82,12 @@ const mockContextValue = {
   filterMoviesByGenre: vi.fn(),
 };
 
-describe("AddMovie Component", () => {
+describe("AddMovie Component", function () {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should render Add a new movie button ", async () => {
+  it("should render Add a new movie button ", async function () {
     // Render the Add new Movie component with the mocked context
     render(
       <MemoryRouter>
@@ -105,7 +105,7 @@ describe("AddMovie Component", () => {
     expect(submitButton).toBeInTheDocument(); // Checking the button is in the admin screen
   });
 
-  it("should add a new movie successfully", async () => {
+  it("should add a new movie successfully", async function () {
     const user = userEvent.setup();
     // Render the Add new Movie component with the mocked context
     render(
@@ -145,12 +145,12 @@ describe("AddMovie Component", () => {
     await user.click(submitButton);
 
     // wait to display the success msg
-    await waitFor(() =>
-      expect(screen.getByText("Movie added successfully")).toBeInTheDocument(),
-    );
+    expect(
+      await screen.findByText("Movie added successfully"),
+    ).toBeInTheDocument();
   });
 
-  it("should show an error message when adding a movie fails", async () => {
+  it("should show an error message when adding a movie fails", async function () {
     const user = userEvent.setup();
 
     // Update the success to false and errro as desired
@@ -202,11 +202,8 @@ describe("AddMovie Component", () => {
     await user.click(submitButton);
 
     // Wait for the error message to displayed
-    await waitFor(() => {
-      const errorMessage = screen.getByText(
-        "Failed to add new movie. Please try again.",
-      );
-      expect(errorMessage).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText("Failed to add new movie. Please try again."),
+    ).toBeInTheDocument();
   });
 });

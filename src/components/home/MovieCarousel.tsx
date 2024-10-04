@@ -13,28 +13,28 @@ import { getRatingDescription } from "../../constants/ratingUtils";
 import EditButton from "../admin/EditButton";
 import { fetchMovieByTitle } from "../../firebase/firebaseApi";
 
-const createSlug = (title: string) => {
+function createSlug(title: string) {
   return title
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/--+/g, "-")
     .replace(/[^\w-]+/g, "");
-};
+}
 
 interface MovieCarouselProps {
   movies: Movie[];
   title?: string;
 }
 
-const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
+function MovieCarousel({ movies, title }: MovieCarouselProps) {
   const { user } = useAuth();
   const { addFavorite, removeFavorite, favorites } = useContext(MyContext);
   const navigate = useNavigate();
 
-  const handleThumbnailClick = (title: string) => {
+  function handleThumbnailClick(title: string) {
     const slug = createSlug(title);
     navigate(`/movies/${slug}`);
-  };
+  }
 
   return (
     // Här lägger vi till en maxbredd på 80% och skalar ner karusellen på mindre skärmar
@@ -53,18 +53,20 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
         }}
       >
         {movies.map((movie) => {
-          const isFavorite = favorites.some((fav) => fav.title === movie.title);
+          const isFavorite = favorites.some(function (fav) {
+            return fav.title === movie.title;
+          });
 
-          const handleFavoriteToggle = (event: React.MouseEvent) => {
+          function handleFavoriteToggle(event: React.MouseEvent) {
             event.stopPropagation(); // Stoppa händelse från att bubbla upp
             if (isFavorite) {
               removeFavorite(movie);
             } else {
               addFavorite(movie);
             }
-          };
+          }
 
-          const handleEdit = async (title: string) => {
+          async function handleEdit(title: string) {
             const movie = await fetchMovieByTitle(title);
             if (movie) {
               const movieWithId = movie as Movie & { id: string };
@@ -74,13 +76,15 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
             } else {
               console.log("Movie not found");
             }
-          };
+          }
 
           return (
             <SwiperSlide key={movie.title}>
               <div
                 className="relative cursor-pointer min-w-[150px] m-1 flex flex-col items-center justify-center border-none p-0 rounded-lg shadow-lg h-[400px] sm:h-[450px] group" // Carousel item styling + group for hover
-                onClick={() => handleThumbnailClick(movie.title)}
+                onClick={function () {
+                  handleThumbnailClick(movie.title);
+                }}
               >
                 <div className="relative w-full h-full aspect-[16/9]">
                   {" "}
@@ -96,7 +100,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
                   {/* Knappar över bilden */}
                   {user && user.email === "admin@mail.com" && (
                     <EditButton
-                      onClick={(event) => {
+                      onClick={function (event) {
                         event.stopPropagation(); // Stoppa händelse från att bubbla upp
                         handleEdit(movie.title);
                       }}
@@ -134,6 +138,6 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies, title }) => {
       </Swiper>
     </div>
   );
-};
+}
 
 export default MovieCarousel;

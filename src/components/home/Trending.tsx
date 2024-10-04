@@ -2,13 +2,13 @@ import { useContext } from "react";
 import { MyContext } from "../../constants/context";
 import MovieCarousel from "./MovieCarousel";
 
-const Trending = () => {
+function Trending() {
   const { movies } = useContext(MyContext);
 
   // Filtrera de trenderande filmerna
-  const trendingMovies = Object.values(movies || {}).filter(
-    (movie) => movie.isTrending,
-  );
+  const trendingMovies = Object.values(movies || {}).filter(function (movie) {
+    return movie.isTrending;
+  });
 
   return (
     <div className="mb-8">
@@ -28,6 +28,6 @@ const Trending = () => {
       <MovieCarousel movies={trendingMovies} title={"Trending movies"} />
     </div>
   );
-};
+}
 
 export default Trending;

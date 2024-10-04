@@ -67,19 +67,22 @@ function MyContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Lyssna på autentiseringsstatus från Firebase och uppdatera user-state
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(async function (firebaseUser) {
-      if (firebaseUser) {
-        setUser(firebaseUser); // Sätter användaren om någon är inloggad
-        sessionStorage.setItem("user", JSON.stringify(firebaseUser));
-        await handleFetchGenres(); // Hämta genrer efter inloggning
-      } else {
-        setUser(null); // Sätter user till null om ingen är inloggad
-        sessionStorage.removeItem("user"); // Ta bort användarinfo från sessionStorage
-      }
-    });
-    return () => unsubscribe(); // Rensa lyssnaren när komponenten avmonteras
-  }, [handleFetchGenres]);
+  useEffect(
+    function () {
+      const unsubscribe = onAuthStateChanged(async function (firebaseUser) {
+        if (firebaseUser) {
+          setUser(firebaseUser); // Sätter användaren om någon är inloggad
+          sessionStorage.setItem("user", JSON.stringify(firebaseUser));
+          await handleFetchGenres(); // Hämta genrer efter inloggning
+        } else {
+          setUser(null); // Sätter user till null om ingen är inloggad
+          sessionStorage.removeItem("user"); // Ta bort användarinfo från sessionStorage
+        }
+      });
+      return () => unsubscribe(); // Rensa lyssnaren när komponenten avmonteras
+    },
+    [handleFetchGenres],
+  );
 
   // Funktion för att hämta en specifik film
   const handleFetchMovieById = useCallback(async function (

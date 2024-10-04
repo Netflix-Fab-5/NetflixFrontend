@@ -33,41 +33,46 @@ function AddAMovie() {
   };
 
   // Handle actors input as it hase more than one value
-  const handleActorsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleActorsChange(e: React.ChangeEvent<HTMLInputElement>) {
     const actors = e.target.value.split(",").map((actor) => actor.trim());
     setMovie((prev) => ({
       ...prev,
       actors,
     }));
-  };
+  }
 
   // Handle for isTrending checkbox
-  const handleTrendingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleTrendingChange(e: React.ChangeEvent<HTMLInputElement>) {
     setMovie((prev) => ({
       ...prev,
       isTrending: e.target.checked, // Update isTrending on the basis of checkbox
     }));
-  };
+  }
 
   // Handle form submit
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     addMovie(movie); // Add new movie in firesbase
     setMovie(initialMovie); // Reset form with initial state
-  };
+  }
 
   // Hide success msg after 15 sec
-  useEffect(() => {
-    if (success) {
-      setShowSuccess(true);
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-      }, 15000);
+  useEffect(
+    function () {
+      if (success) {
+        setShowSuccess(true);
+        const timer = setTimeout(function () {
+          setShowSuccess(false);
+        }, 15000);
 
-      // Cleanup the timeout when success changes
-      return () => clearTimeout(timer);
-    }
-  }, [success]);
+        // Cleanup the timeout when success changes
+        return function () {
+          clearTimeout(timer);
+        };
+      }
+    },
+    [success],
+  );
 
   return (
     <div className="flex justify-center text-green-600 items-center min-h-screen bg-black text-xl">

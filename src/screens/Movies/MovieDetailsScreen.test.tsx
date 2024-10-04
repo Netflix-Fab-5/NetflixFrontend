@@ -50,12 +50,12 @@ const mockContextValue = {
   success: false,
 };
 
-describe("MovieDetails Component", () => {
-  beforeEach(() => {
+describe("MovieDetails Component", function () {
+  beforeEach(function () {
     vi.clearAllMocks();
   });
 
-  it("should render movie details correctly", async () => {
+  it("should render movie details correctly", async function () {
     const movieSlug = createSlug(mockMovies["1"].title);
 
     render(
@@ -75,7 +75,7 @@ describe("MovieDetails Component", () => {
     expect(screen.getByText("Actor One")).toBeInTheDocument();
   });
 
-  it("should show loading state", () => {
+  it("should show loading state", function () {
     render(
       <MemoryRouter>
         <MyContext.Provider value={{ ...mockContextValue, loading: true }}>
@@ -87,7 +87,7 @@ describe("MovieDetails Component", () => {
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
-  it("should show error message when there is an error", async () => {
+  it("should show error message when there is an error", async function () {
     render(
       <MemoryRouter>
         <MyContext.Provider
@@ -101,7 +101,7 @@ describe("MovieDetails Component", () => {
     expect(screen.getByText(/An error occurred/i)).toBeInTheDocument();
   });
 
-  it("should show no movie found message if the movie doesn't exist", async () => {
+  it("should show no movie found message if the movie doesn't exist", async function () {
     render(
       <MemoryRouter initialEntries={["/movies/non-existing-movie"]}>
         <MyContext.Provider

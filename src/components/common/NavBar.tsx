@@ -10,7 +10,7 @@ function NavBar() {
   const { user } = useAuth(); // Hämta användarinformation för att visa logga ut-knappen endast om användaren är inloggad
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  async function handleLogout() {
     try {
       await logoutUser(); // Logga ut från Firebase
       sessionStorage.clear(); // Rensa sessionStorage
@@ -18,7 +18,7 @@ function NavBar() {
     } catch (error) {
       console.error("Fel vid utloggning:", error);
     }
-  };
+  }
 
   return (
     <>
