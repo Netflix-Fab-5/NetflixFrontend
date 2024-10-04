@@ -38,35 +38,44 @@ function MovieDetails() {
   if (!movie) return <p>No movie found</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">
-        <button className="button">Back to home</button>
-      </Link>
+    <div className="w-full min-h-screen p-4 flex flex-col items-center bg-custom-dark">
+      <div className="w-full flex justify-end mb-4">
+        <Link to="/" className="button">
+          <button className="button max-650:p-2 max-650:mb-2">
+            Back to home
+          </button>
+        </Link>
+      </div>
+
       {movie ? (
-        <div className="bg-white rounded-lg shadow-md p-6 flex">
-          <img
-            src={movie.thumbnail}
-            alt={movie.title}
-            className="w-1/3 h-auto rounded-lg mr-6"
-          />
-          <div className="w-2/3">
-            <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
-            <p className="text-lg mb-2">
-              <strong>Synopsis:</strong> {movie.synopsis}
-            </p>
-            <p className="mb-2">
-              <strong>Year:</strong> {movie.year}
-            </p>
-            <p>
-              <strong>Age limit:</strong>{" "}
-              {getRatingDescription(movie?.rating || "")}
-            </p>
-            <p className="mb-2">
-              <strong>Genre:</strong> {movie.genre}
-            </p>
-            <p className="mb-2">
-              <strong>Actors:</strong> {movie.actors.join(", ")}
-            </p>
+        <div className="rounded-lg shadow-md p-6 border border-green-300 max-w-4xl w-full bg-custom-background text-custom-text">
+          <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
+              <p className="text-lg mb-2">
+                <strong>Synopsis:</strong> {movie.synopsis}
+              </p>
+              <p className="mb-2">
+                <strong>Year:</strong> {movie.year}
+              </p>
+              <p className="mb-2">
+                <strong>Age limit:</strong> {getRatingDescription(movie.rating)}
+              </p>
+              <p className="mb-2">
+                <strong>Genre:</strong> {movie.genre}
+              </p>
+              <p className="mb-2">
+                <strong>Actors:</strong> {movie.actors.join(", ")}
+              </p>
+            </div>
+
+            {/* Movie Thumbnail */}
+            <img
+              src={movie.thumbnail}
+              alt={movie.title}
+              className="w-full h-auto rounded-lg shadow-lg border border-custom-green 
+              md:order-2" /* This ensures the image stays next to the text on larger screens */
+            />
           </div>
         </div>
       ) : (
