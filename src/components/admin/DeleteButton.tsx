@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 interface DeleteButtonProps {
   setDisplayMessage: React.Dispatch<React.SetStateAction<string | null>>;
   movieId: string | undefined;
+  className?: string;
 }
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({
@@ -27,7 +28,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
   return (
     <button
       onClick={handleDelete}
-      className="max-650:w-full delete-button bg-green-600"
+      className="max-650:w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
     >
       Delete
     </button>
