@@ -27,70 +27,36 @@ function FavoriteScreen() {
   }
 
   return (
-    <div style={{ padding: "20px", position: "relative", minHeight: "100vh" }}>
+    <div className="p-5 relative min-h-screen">
       {/* Home button in the top-right corner */}
-      <button
-        className="button"
-        onClick={handleHomeClick}
-        style={{ float: "right" }}
-      >
+      <button className="button float-right" onClick={handleHomeClick}>
         Home
       </button>
 
-      <h1>My favorite movies</h1>
+      <h1 className="text-2xl font-bold">My favorite movies</h1>
 
       {/* Kontrollera om det finns några favoriter */}
       {favorites.length === 0 ? (
-        <p className="text-white mt-60">You dont have any favorites yet.</p>
+        <p className="text-white mt-60">You don't have any favorites yet.</p>
       ) : (
-        <div
-          style={{
-            marginTop: "50px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="mt-12 grid grid-cols-auto-fill gap-5">
           {favorites.map((movie) => (
             <div
               key={movie.title}
-              style={{
-                border: "1px solid #ccc",
-                padding: "15px",
-                borderRadius: "8px",
-                textAlign: "center",
-              }}
+              className="border border-gray-300 p-4 rounded-lg text-center"
             >
               <img
                 src={movie.thumbnail}
                 alt={movie.title}
                 onClick={() => handleThumbnailClick(movie.title)}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  marginBottom: "10px",
-                  cursor: "pointer", // Gör bilden klickbar
-                }}
+                className="w-full h-auto rounded-lg mb-2 cursor-pointer" // Gör bilden klickbar
               />
-              <h3>{movie.title}</h3>
+              <h3 className="text-lg font-semibold">{movie.title}</h3>
               <button
                 onClick={() => removeFavorite(movie)} // Ta bort från favoriter
-                style={{
-                  border: "none",
-                  background: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                }}
+                className="border-none bg-transparent p-0 cursor-pointer"
               >
-                <i
-                  className="fas fa-heart"
-                  style={{
-                    fontSize: "24px",
-                    color: "red",
-                    transition: "color 0.3s ease",
-                  }}
-                ></i>
+                <i className="fas fa-heart text-red-600 text-2xl transition-colors duration-300 ease-in-out"></i>
               </button>
             </div>
           ))}
