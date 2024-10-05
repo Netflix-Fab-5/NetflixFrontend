@@ -38,12 +38,10 @@ function MovieDetails() {
   if (!movie) return <p>No movie found</p>;
 
   return (
-    <div className="w-full min-h-screen p-4 flex flex-col items-center bg-custom-dark">
-      <div className="w-full flex justify-end mb-4">
-        <Link to="/" className="button">
-          <button className="button max-650:p-2 max-650:mb-2">
-            Back to home
-          </button>
+    <div className="w-full min-h-screen p-4 flex flex-col  items-center bg-custom-dark">
+      <div className="w-full flex justify-center lg:justify-end mb-4">
+        <Link to="/">
+          <button className="button ">Back to home</button>
         </Link>
       </div>
 
