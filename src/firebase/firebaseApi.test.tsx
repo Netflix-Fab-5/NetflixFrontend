@@ -66,6 +66,10 @@ describe("Firebase API Tests", () => {
   });
 
   it("should return null when movie is not found", async () => {
+    const consoleLogMock = vi
+      .spyOn(console, "log")
+      .mockImplementation(() => {}); // Mocka console.log
+
     const movieId = "nonexistentMovie";
 
     mockRef.mockReturnValue({ val: vi.fn() }); // Mocka referensen
@@ -76,6 +80,7 @@ describe("Firebase API Tests", () => {
     const movie = await fetchMovieById(movieId);
     expect(movie).toBeNull();
     expect(mockGet).toHaveBeenCalled();
+    consoleLogMock.mockRestore();
   });
 
   it("should add a new movie successfully", async () => {
@@ -86,20 +91,34 @@ describe("Firebase API Tests", () => {
   });
 
   it("should fetch genres from movies", async () => {
+    const consoleLogMock = vi
+      .spyOn(console, "log")
+      .mockImplementation(() => {}); // Mocka console.log
+
     mockGet.mockResolvedValueOnce({
       val: () => mockMovies,
     });
 
     const genres = await fetchGenres();
     expect(genres).toEqual(expect.arrayContaining(["Action", "Drama"]));
+    consoleLogMock.mockRestore();
   });
 
   it("should return empty array when no movies are found", async () => {
+    const consoleWarnMock = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => {});
+
     mockGet.mockResolvedValueOnce({
       val: () => null,
     });
 
     const genres = await fetchGenres();
     expect(genres).toEqual([]);
+    expect(consoleWarnMock).toHaveBeenCalledWith(
+      "No movies found in database.",
+    );
+
+    consoleWarnMock.mockRestore();
   });
 });
