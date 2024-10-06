@@ -39,7 +39,6 @@ function App() {
             <Route path="/favorites" element={<FavoriteScreen />} />
             <Route path="/movies" element={<AllMoviesScreen />} />
             <Route path="/movies/:title" element={<MovieDetailScreen />} />
-            <Route path="/new" element={<AddAMovie />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         )
