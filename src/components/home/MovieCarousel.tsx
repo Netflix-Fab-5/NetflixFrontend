@@ -92,7 +92,7 @@ function MovieCarousel({ movies, title }: MovieCarouselProps) {
                   <img
                     src={movie.thumbnail}
                     alt={movie.title}
-                    className="w-full h-full aspect-[16/9] rounded-lg border-2 border-green-300 opacity-100 transition-all duration-300 ease-in-out group-hover:opacity-20" // Carousel image styling
+                    className="w-full h-full aspect-[16/9] object-cover rounded-lg border-2 border-green-300 opacity-100 transition-all duration-300 ease-in-out group-hover:opacity-20" // Carousel image styling
                   />
                 </div>
                 <div className="absolute top-2 left-2 right-2 z-10 flex justify-between">
