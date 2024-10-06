@@ -71,7 +71,6 @@ function MovieCarousel({ movies, title }: MovieCarouselProps) {
             if (movie) {
               const movieWithId = movie as Movie & { id: string };
               const movieId = movieWithId.id;
-              console.log("edit button", movieId);
               navigate(`/movies/edit/${movieId}`);
             } else {
               console.log("Movie not found");

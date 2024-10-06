@@ -10,7 +10,6 @@ function EditAMovie() {
   const [displayMessage, setDisplayMessage] = useState<string | null>(null);
   const { handleFetchMovieById, editMovie, error, success, loading } =
     useContext(MyContext);
-  console.log(movieId);
 
   // UseEffect to fetch the movie data when the component loads
   useEffect(
@@ -19,7 +18,6 @@ function EditAMovie() {
         if (movieId) {
           try {
             const movieData = await handleFetchMovieById(movieId);
-            console.log(movieData);
             setMovie(movieData);
           } catch (error) {
             console.error("Error fetching movie data:", error);
