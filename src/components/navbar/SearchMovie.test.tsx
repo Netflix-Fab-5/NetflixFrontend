@@ -52,6 +52,7 @@ const mockContextValue = {
   movie: null,
   favorites: [],
   success: false,
+  setSuccess: vi.fn(),
   user: null,
   setUser: vi.fn(),
   handleFetchMovies: vi.fn(),

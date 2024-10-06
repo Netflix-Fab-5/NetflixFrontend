@@ -32,6 +32,7 @@ const mockContextValue = {
   isLoggedIn: true,
   movie: null,
   success: true,
+  setSuccess: vi.fn(),
   registerUser: vi.fn(),
   addMovie: vi.fn(),
   editMovie: vi.fn(),
