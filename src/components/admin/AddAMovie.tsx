@@ -75,7 +75,7 @@ function AddAMovie() {
         };
       }
     },
-    [success],
+    [success, showSuccess, setSuccess],
   );
 
   return (

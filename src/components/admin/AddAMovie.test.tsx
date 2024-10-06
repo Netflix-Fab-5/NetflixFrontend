@@ -86,6 +86,7 @@ function MockContextProvider({ children }: { children: ReactNode }) {
         setError(null); // Rensa eventuella tidigare fel
         return Promise.resolve();
       } catch (err) {
+        console.log(err);
         setError("Failed to add new movie. Please try again."); // Hantera fel
         setSuccess(false); // Sätt success till false om ett fel uppstår
         return Promise.reject(
