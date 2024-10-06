@@ -7,7 +7,15 @@ import { getRatingDescription } from "../../constants/ratingUtils";
 
 function MovieDetails() {
   const { title } = useParams<{ title: string }>();
-  const { movies, loading, error, handleFetchMovies, favorites, removeFavorite, addFavorite } = useContext(MyContext); // Lägg till favorites, removeFavorite och addFavorite
+  const {
+    movies,
+    loading,
+    error,
+    handleFetchMovies,
+    favorites,
+    removeFavorite,
+    addFavorite,
+  } = useContext(MyContext); // Lägg till favorites, removeFavorite och addFavorite
 
   function createSlug(title: string) {
     return slugify(title, { lower: true, strict: true });
@@ -68,8 +76,7 @@ function MovieDetails() {
                 <strong>Year:</strong> {movie.year}
               </p>
               <p className="mb-2">
-                <strong>Age limit:</strong>{" "}
-                {getRatingDescription(movie.rating)}
+                <strong>Age limit:</strong> {getRatingDescription(movie.rating)}
               </p>
               <p className="mb-2">
                 <strong>Genre:</strong> {movie.genre}
