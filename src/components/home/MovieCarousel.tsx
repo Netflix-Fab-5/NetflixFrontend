@@ -46,10 +46,10 @@ function MovieCarousel({ movies, title }: MovieCarouselProps) {
         navigation
         pagination={{ clickable: true }}
         breakpoints={{
-          640: { slidesPerView: 2 }, // Visa 1 slide
-          768: { slidesPerView: 3 }, // Visa 3 slides
-          1024: { slidesPerView: 4 }, // Visa 4 slides
-          1280: { slidesPerView: 5 }, // Visa 5 slides
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+          1280: { slidesPerView: 5 },
         }}
       >
         {movies.map((movie) => {
