@@ -4,7 +4,7 @@ import { Movie } from "../../constants/types";
 import { Link } from "react-router-dom";
 
 function AddAMovie() {
-  const { error, success, addMovie } = useContext(MyContext)!;
+  const { error, success, setSuccess, addMovie } = useContext(MyContext)!;
   const [showSuccess, setShowSuccess] = useState(false);
   const [actorsInput, setActorsInput] = useState("");
 
@@ -62,7 +62,9 @@ function AddAMovie() {
   useEffect(
     function () {
       if (success) {
+        console.log(success);
         setShowSuccess(true);
+        setSuccess(false);
         const timer = setTimeout(function () {
           setShowSuccess(false);
         }, 15000);

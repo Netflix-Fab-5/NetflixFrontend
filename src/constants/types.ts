@@ -22,6 +22,7 @@ export type ContextType = {
   error: string | null;
   setError: (error: string | null) => void;
   success: boolean;
+  setSuccess: (success: boolean) => void;
   user: User | null; // Lägger till användarens state
   setUser: (user: User | null) => void;
   handleFetchMovies: () => Promise<void>;

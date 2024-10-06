@@ -1,3 +1,4 @@
+import { useState, ReactNode } from "react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +8,7 @@ import { User } from "firebase/auth";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
-// Mocked movie data
+// Mockad filmdatabas
 const mockMovies = {
   "1": {
     id: "1",
@@ -22,7 +23,7 @@ const mockMovies = {
   },
 };
 
-// Mocked User data
+// Mockad användardata
 const mockUser: User = {
   uid: "admin-user",
   emailVerified: true,
@@ -40,13 +41,12 @@ const mockUser: User = {
   photoURL: null,
   refreshToken: "mockRefreshToken",
 
-  // Mocking methods
+  // Mockade metoder
   delete: vi.fn().mockResolvedValue(undefined),
   getIdToken: vi.fn().mockResolvedValue("mockIdToken"),
   getIdTokenResult: vi.fn().mockResolvedValue({ token: "mockIdTokenResult" }),
   reload: vi.fn().mockResolvedValue(undefined),
   toJSON: vi.fn().mockReturnValue({
-    // Mock toJSON method
     uid: "admin-user",
     email: "admin@mail.com",
     displayName: "Admin User",
@@ -59,64 +59,127 @@ const mockUser: User = {
   }),
 };
 
-const mockContextValue = {
-  movies: mockMovies,
-  movie: null,
-  filteredMovies: Object.values(mockMovies),
-  genres: [],
-  favorites: [],
-  loading: false,
-  error: null,
-  setError: vi.fn(),
-  success: true,
-  user: mockUser,
-  setUser: vi.fn(),
-  handleFetchMovies: vi.fn(),
-  handleFetchMovieById: vi.fn(),
-  handleFetchMovieByTitle: vi.fn(),
-  addMovie: vi.fn().mockResolvedValue(true),
-  editMovie: vi.fn(),
-  deleteMovie: vi.fn(),
-  addFavorite: vi.fn(),
-  removeFavorite: vi.fn(),
-  filterMoviesByGenre: vi.fn(),
-};
+// Mockad Context Provider
+function MockContextProvider({ children }: { children: ReactNode }) {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const mockContextValue = {
+    movies: mockMovies,
+    movie: null,
+    filteredMovies: Object.values(mockMovies),
+    genres: [],
+    favorites: [],
+    loading: false,
+    error,
+    setError,
+    success,
+    setSuccess,
+    user: mockUser,
+    setUser: vi.fn(),
+    handleFetchMovies: vi.fn(),
+    handleFetchMovieById: vi.fn(),
+    handleFetchMovieByTitle: vi.fn(),
+    addMovie: vi.fn().mockImplementation(async () => {
+      try {
+        setSuccess(true); // Uppdatera success om filmen läggs till framgångsrikt
+        setError(null); // Rensa eventuella tidigare fel
+        return Promise.resolve();
+      } catch (err) {
+        setError("Failed to add new movie. Please try again."); // Hantera fel
+        setSuccess(false); // Sätt success till false om ett fel uppstår
+        return Promise.reject(
+          new Error("Failed to add new movie. Please try again."),
+        );
+      }
+    }),
+    editMovie: vi.fn(),
+    deleteMovie: vi.fn(),
+    addFavorite: vi.fn(),
+    removeFavorite: vi.fn(),
+    filterMoviesByGenre: vi.fn(),
+  };
+
+  return (
+    <MyContext.Provider value={mockContextValue}>{children}</MyContext.Provider>
+  );
+}
+
+// Mockad Context Provider med fel
+function MockContextProviderWithError({ children }: { children: ReactNode }) {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const mockContextValue = {
+    movies: mockMovies,
+    movie: null,
+    filteredMovies: Object.values(mockMovies),
+    genres: [],
+    favorites: [],
+    loading: false,
+    error,
+    setError,
+    success,
+    setSuccess,
+    user: mockUser,
+    setUser: vi.fn(),
+    handleFetchMovies: vi.fn(),
+    handleFetchMovieById: vi.fn(),
+    handleFetchMovieByTitle: vi.fn(),
+    addMovie: vi.fn().mockImplementation(async () => {
+      setError("Failed to add new movie. Please try again."); // Hantera fel
+      setSuccess(false); // Sätt success till false när ett fel uppstår
+      return Promise.reject(
+        new Error("Failed to add new movie. Please try again."),
+      );
+    }),
+    editMovie: vi.fn(),
+    deleteMovie: vi.fn(),
+    addFavorite: vi.fn(),
+    removeFavorite: vi.fn(),
+    filterMoviesByGenre: vi.fn(),
+  };
+
+  return (
+    <MyContext.Provider value={mockContextValue}>{children}</MyContext.Provider>
+  );
+}
 
 describe("AddMovie Component", function () {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should render Add a new movie button ", async function () {
-    // Render the Add new Movie component with the mocked context
+  it("ska rendera knappen 'Add A New Movie'", async function () {
+    // Rendera komponenten med den mockade contexten
     render(
       <MemoryRouter>
-        <MyContext.Provider value={mockContextValue}>
+        <MockContextProvider>
           <AddMovie />
-        </MyContext.Provider>
+        </MockContextProvider>
       </MemoryRouter>,
     );
 
-    // Get the Add new movie button
+    // Hitta knappen
     const submitButton = screen.getByRole("button", {
       name: /Add A New Movie/i,
     });
 
-    expect(submitButton).toBeInTheDocument(); // Checking the button is in the admin screen
+    expect(submitButton).toBeInTheDocument();
   });
 
-  it("should add a new movie successfully", async function () {
+  it("ska lägga till en ny film framgångsrikt", async function () {
     const user = userEvent.setup();
-    // Render the Add new Movie component with the mocked context
+
     render(
       <MemoryRouter>
-        <MyContext.Provider value={mockContextValue}>
+        <MockContextProvider>
           <AddMovie />
-        </MyContext.Provider>
+        </MockContextProvider>
       </MemoryRouter>,
     );
 
-    // Find the form inputs
+    // Hitta formulärfälten
     const titleInput = screen.getByTestId("title-input");
     const yearInput = screen.getByTestId("year-input");
     const genreInput = screen.getByTestId("genre-input");
@@ -126,12 +189,7 @@ describe("AddMovie Component", function () {
     const thumbnailInput = screen.getByTestId("thumbnail-input");
     const isTrending = screen.getByTestId("trending-input");
 
-    // Get the button
-    const submitButton = screen.getByRole("button", {
-      name: /Add A New Movie/i,
-    });
-
-    // Fill the form
+    // Fyll i formuläret
     await user.type(titleInput, "New Movie Title");
     await user.type(yearInput, "2024");
     await user.type(genreInput, "Comedy");
@@ -141,40 +199,27 @@ describe("AddMovie Component", function () {
     await user.type(actorsInput, "Actor One, Actor Two");
     await user.click(isTrending);
 
-    // Click on Add a new movie button
-    await user.click(submitButton);
+    // Klicka på knappen för att lägga till filmen
+    await user.click(screen.getByRole("button", { name: /Add A New Movie/i }));
 
-    // wait to display the success msg
+    // Vänta på att bekräftelsemeddelandet ska visas
     expect(
       await screen.findByText("Movie added successfully"),
     ).toBeInTheDocument();
   });
 
-  it("should show an error message when adding a movie fails", async function () {
+  it("ska visa ett felmeddelande när tillägg av film misslyckas", async function () {
     const user = userEvent.setup();
 
-    // Update the success to false and errro as desired
-    const mockContextWithErrorValue = {
-      ...mockContextValue,
-      success: false,
-      error: "Failed to add new movie. Please try again.",
-      addMovie: vi
-        .fn()
-        .mockRejectedValue(
-          new Error("Failed to add new movie. Please try again."),
-        ),
-    };
-
-    // Render the AddMovie component with the mocked context
     render(
       <MemoryRouter>
-        <MyContext.Provider value={mockContextWithErrorValue}>
+        <MockContextProviderWithError>
           <AddMovie />
-        </MyContext.Provider>
+        </MockContextProviderWithError>
       </MemoryRouter>,
     );
 
-    // Find the form inputs
+    // Hitta formulärfälten
     const titleInput = screen.getByTestId("title-input");
     const yearInput = screen.getByTestId("year-input");
     const genreInput = screen.getByTestId("genre-input");
@@ -184,11 +229,7 @@ describe("AddMovie Component", function () {
     const thumbnailInput = screen.getByTestId("thumbnail-input");
     const isTrending = screen.getByTestId("trending-input");
 
-    const submitButton = screen.getByRole("button", {
-      name: /Add A New Movie/i,
-    }); // get the button
-
-    // Fill the form
+    // Fyll i formuläret
     await user.type(titleInput, "New Movie Title");
     await user.type(yearInput, "2024");
     await user.type(genreInput, "Comedy");
@@ -198,10 +239,10 @@ describe("AddMovie Component", function () {
     await user.type(actorsInput, "Actor One, Actor Two");
     await user.click(isTrending);
 
-    // Click on Add a new movie button
-    await user.click(submitButton);
+    // Klicka på knappen för att lägga till filmen
+    await user.click(screen.getByRole("button", { name: /Add A New Movie/i }));
 
-    // Wait for the error message to displayed
+    // Vänta på att felmeddelandet ska visas
     expect(
       await screen.findByText("Failed to add new movie. Please try again."),
     ).toBeInTheDocument();
