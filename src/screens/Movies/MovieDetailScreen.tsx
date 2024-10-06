@@ -7,7 +7,15 @@ import { getRatingDescription } from "../../constants/ratingUtils";
 
 function MovieDetails() {
   const { title } = useParams<{ title: string }>();
-  const { movies, loading, error, handleFetchMovies } = useContext(MyContext); // movies istället för enskilt movie
+  const {
+    movies,
+    loading,
+    error,
+    handleFetchMovies,
+    favorites,
+    removeFavorite,
+    addFavorite,
+  } = useContext(MyContext); // Lägg till favorites, removeFavorite och addFavorite
 
   function createSlug(title: string) {
     return slugify(title, { lower: true, strict: true });
@@ -33,15 +41,26 @@ function MovieDetails() {
     }
   }, [movie, handleFetchMovies]);
 
+  // Kontrollera om filmen är en favorit
+  const isFavorite = favorites.some((fav) => fav.title === movie?.title);
+
+  function handleFavoriteToggle(movie: Movie, isFavorite: boolean) {
+    if (isFavorite) {
+      removeFavorite(movie); // Ta bort från favoriter
+    } else {
+      addFavorite(movie); // Lägg till som favorit
+    }
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   if (!movie) return <p>No movie found</p>;
 
   return (
-    <div className="w-full min-h-screen p-4 flex flex-col  items-center bg-custom-dark">
+    <div className="w-full min-h-screen p-4 flex flex-col items-center bg-custom-dark">
       <div className="w-full flex justify-center lg:justify-end mb-4">
         <Link to="/">
-          <button className="button ">Back to home</button>
+          <button className="button">Back to home</button>
         </Link>
       </div>
 
@@ -74,6 +93,16 @@ function MovieDetails() {
               className="w-full h-auto rounded-lg shadow-lg border border-custom-green 
               md:order-2" /* This ensures the image stays next to the text on larger screens */
             />
+          </div>
+
+          {/* Favorite button */}
+          <div className="heart-icon-container2 cursor-pointer mt-4">
+            <i
+              title="favorite"
+              className={`fas fa-heart ${isFavorite ? "text-red-500" : "text-lightgray"}  `}
+              style={{ fontSize: "24px", transition: "color 0.3s ease" }}
+              onClick={() => handleFavoriteToggle(movie, isFavorite)}
+            ></i>
           </div>
         </div>
       ) : (
