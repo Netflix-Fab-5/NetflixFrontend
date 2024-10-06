@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { MyContext } from "../../constants/context";
 import Trending from "../../components/home/Trending";
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -60,21 +60,23 @@ beforeEach(() => {
 
 describe("Trending Component", function () {
   // Test 1: Render trending movies
-  it("renders trending movies", function () {
-    render(
-      <MemoryRouter>
-        <MyContext.Provider value={mockContextValue}>
-          <Trending />
-        </MyContext.Provider>
-      </MemoryRouter>,
-    );
+  it("renders trending movies", async function () {
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <MyContext.Provider value={mockContextValue}>
+            <Trending />
+          </MyContext.Provider>
+        </MemoryRouter>,
+      );
+    });
 
     // Check if trending movie is displayed
     expect(screen.getByText("The Godfather: Part II")).toBeInTheDocument();
   });
 
   // Test 2: Add favorite and check sessionStorage
-  it("adds a movie to favorites and stores it in sessionStorage, then removes it", function () {
+  it("adds a movie to favorites and stores it in sessionStorage, then removes it", async function () {
     render(
       <MemoryRouter>
         <MyContext.Provider value={mockContextValue}>
@@ -85,7 +87,9 @@ describe("Trending Component", function () {
 
     // Simulate clicking the bookmark button for Movie 1 to add to favorites
     const bookmarkButton = screen.getByTitle("favorite"); // Adjust selector if necessary
-    fireEvent.click(bookmarkButton);
+    await act(async () => {
+      fireEvent.click(bookmarkButton);
+    });
 
     // Check if addFavorite was called
     expect(mockContextValue.addFavorite).toHaveBeenCalledWith(
@@ -100,7 +104,9 @@ describe("Trending Component", function () {
     expect(storedMovies).toBe(JSON.stringify([mockMovies.movie1]));
 
     // Simulate clicking the bookmark button again to remove from favorites
-    userEvent.click(bookmarkButton);
+    await act(async () => {
+      userEvent.click(bookmarkButton);
+    });
 
     // Remove movie from sessionStorage
     sessionStorage.setItem("movies", JSON.stringify([])); // Simulate removal
