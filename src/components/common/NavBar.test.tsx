@@ -3,12 +3,10 @@ import { vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { useNavigate } from "react-router-dom";
 import "@testing-library/jest-dom";
-import { MemoryRouter } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeScreen from "../../screens/Home/HomeScreen";
 import { MyContext } from "../../constants/context";
 import { mockContextValue } from "../../tests/mocks/dataMocks";
-import { logoutUser } from "../../firebase/firebaseAuth";
 
 // Mocka useAuth-hooken för att simulera en inloggad användare
 vi.mock("../../hooks/useAuth", function () {
