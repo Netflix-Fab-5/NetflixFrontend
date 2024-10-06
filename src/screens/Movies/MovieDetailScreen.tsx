@@ -63,7 +63,7 @@ function MovieDetails() {
                 <strong>Genre:</strong> {movie.genre}
               </p>
               <p className="mb-2">
-                <strong>Actors:</strong> {movie.actors.join(", ")}
+                <strong>Actors:</strong> {movie.actors}
               </p>
             </div>
 
