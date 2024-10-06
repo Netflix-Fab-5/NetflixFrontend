@@ -246,6 +246,7 @@ function MyContextProvider({ children }: { children: ReactNode }) {
         error,
         setError,
         success,
+        setSuccess,
         user,
         setUser,
         handleFetchMovies, // Exponera användarinformation i Context

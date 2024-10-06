@@ -4,15 +4,16 @@ import { Movie } from "../../constants/types";
 import { Link } from "react-router-dom";
 
 function AddAMovie() {
-  const { error, success, addMovie } = useContext(MyContext)!;
+  const { error, success, setSuccess, addMovie } = useContext(MyContext)!;
   const [showSuccess, setShowSuccess] = useState(false);
+  const [actorsInput, setActorsInput] = useState("");
 
   // Initial state of movie
   const initialMovie: Movie = {
     title: "",
     year: 2000,
     rating: "",
-    actors: [""],
+    actors: [],
     genre: "",
     synopsis: "",
     thumbnail: "",
@@ -33,13 +34,9 @@ function AddAMovie() {
   };
 
   // Handle actors input as it hase more than one value
-  function handleActorsChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const actors = e.target.value.split(",").map((actor) => actor.trim());
-    setMovie((prev) => ({
-      ...prev,
-      actors,
-    }));
-  }
+  const handleActorsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setActorsInput(e.target.value); // Hantera skådespelarnas inmatning som en sträng
+  };
 
   // Handle for isTrending checkbox
   function handleTrendingChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -52,15 +49,22 @@ function AddAMovie() {
   // Handle form submit
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    addMovie(movie); // Add new movie in firesbase
+    const movieToAdd = {
+      ...movie,
+      actors: actorsInput.split(",").map((actor) => actor.trim()), // Separera här
+    };
+    addMovie(movieToAdd); // Add new movie in firesbase
     setMovie(initialMovie); // Reset form with initial state
+    setActorsInput("");
   }
 
   // Hide success msg after 15 sec
   useEffect(
     function () {
       if (success) {
+        console.log(success);
         setShowSuccess(true);
+        setSuccess(false);
         const timer = setTimeout(function () {
           setShowSuccess(false);
         }, 15000);
@@ -71,7 +75,7 @@ function AddAMovie() {
         };
       }
     },
-    [success],
+    [success, showSuccess, setSuccess],
   );
 
   return (
@@ -129,7 +133,7 @@ function AddAMovie() {
             <input
               type="text"
               name="actors"
-              value={movie.actors.join(", ")}
+              value={actorsInput}
               onChange={handleActorsChange}
               required
               data-testid="actor-input"

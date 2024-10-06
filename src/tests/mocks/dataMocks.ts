@@ -169,6 +169,7 @@ export const mockContextValue = {
   loading: false,
   error: null,
   success: true,
+  setSuccess: vi.fn(),
   user: mockUser,
   setUser: vi.fn(),
   setError: vi.fn(),

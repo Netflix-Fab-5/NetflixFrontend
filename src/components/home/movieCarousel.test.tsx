@@ -154,6 +154,7 @@ describe("MovieCarousel Component", function () {
     error: null,
     setError: mockSetError,
     success: true,
+    setSuccess: vi.fn(),
     user: null,
     setUser: vi.fn(),
     handleFetchMovies: mockHandleFetchMovies,

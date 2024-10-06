@@ -48,6 +48,7 @@ const mockContextValue = {
   removeFavorite: vi.fn(),
   filterMoviesByGenre: vi.fn(),
   success: false,
+  setSuccess: vi.fn(),
 };
 
 describe("MovieDetails Component", function () {
