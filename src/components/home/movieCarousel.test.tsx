@@ -2,14 +2,21 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MovieCarousel from "./MovieCarousel";
 import { MyContext } from "../../constants/context";
+import { MemoryRouter } from "react-router-dom";
 import { vi, expect, describe, beforeEach, it } from "vitest";
 import { Movie } from "../../constants/types";
+import { act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Mocka användarnavigationen
-vi.mock("react-router-dom", function () {
+vi.mock("react-router-dom", async function () {
+  const actual =
+    await vi.importActual<typeof import("react-router-dom")>(
+      "react-router-dom",
+    );
   return {
-    useNavigate: () => vi.fn(),
+    ...actual,
+    useNavigate: vi.fn(),
   };
 });
 
@@ -165,12 +172,16 @@ describe("MovieCarousel Component", function () {
     vi.clearAllMocks();
   });
 
-  it("should render correctly", function () {
-    render(
-      <MyContext.Provider value={mockContextValue}>
-        <MovieCarousel movies={mockMovies} title="Test Carousel" />
-      </MyContext.Provider>,
-    );
+  it("should render correctly", async function () {
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <MyContext.Provider value={mockContextValue}>
+            <MovieCarousel movies={mockMovies} title="Test Carousel" />
+          </MyContext.Provider>
+        </MemoryRouter>,
+      );
+    });
     expect(screen.getByText("Test Carousel")).toBeInTheDocument();
   });
 
