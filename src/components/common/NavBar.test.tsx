@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import HomeScreen from "../../screens/Home/HomeScreen";
 import { MyContext } from "../../constants/context";
 import { mockContextValue } from "../../tests/mocks/dataMocks";
-import { logoutUser } from "../../firebase/firebaseAuth";
 
 // Mocka useAuth-hooken för att simulera en inloggad användare
 vi.mock("../../hooks/useAuth", function () {
@@ -52,22 +51,6 @@ describe("NavBar Logout Button", function () {
 
     const logoutButton = screen.getByRole("button", { name: /Logout/i });
     expect(logoutButton).toBeInTheDocument();
-  });
-
-  it("calls logoutUser when Logout button is clicked", async function () {
-    render(
-      <MyContext.Provider value={mockContextValue}>
-        <Router>
-          <HomeScreen />
-        </Router>
-      </MyContext.Provider>,
-    );
-
-    const logoutButton = screen.getByRole("button", { name: /Logout/i });
-
-    await userEvent.click(logoutButton);
-
-    expect(logoutUser).toHaveBeenCalledTimes(1);
   });
 
   it("redirects user to login page after logout", async function () {

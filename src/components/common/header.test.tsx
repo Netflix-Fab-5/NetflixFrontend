@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { act } from "@testing-library/react";
 import Head from "./Header";
 import "@testing-library/jest-dom";
 
@@ -47,8 +48,9 @@ describe("Head Component, animation effect", () => {
     expect(localStorage.getItem("netflixEffectRun")).toBeNull();
 
     // Simulera 6 sekunder med fake timers (se till att det överstiger timeout-tiden)
-    vi.advanceTimersByTime(6000);
-
+    act(() => {
+      vi.advanceTimersByTime(6000);
+    });
     // Efter 5 sekunder bör 'netflixEffectRun' vara satt till 'true'
     expect(localStorage.getItem("netflixEffectRun")).toBe("true");
   });
@@ -63,9 +65,10 @@ describe("Head Component, animation effect", () => {
     expect(localStorage.getItem("netflixEffectRun")).toBe("true");
 
     // Simulera 5 sekunder med fake timers för att se att värdet inte ändras
-    vi.useFakeTimers();
-    vi.advanceTimersByTime(5000);
-
+    act(() => {
+      vi.useFakeTimers();
+      vi.advanceTimersByTime(5000);
+    });
     // Se till att värdet förblir 'true' efter tiden
     expect(localStorage.getItem("netflixEffectRun")).toBe("true");
   });

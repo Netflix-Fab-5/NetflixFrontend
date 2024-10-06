@@ -39,8 +39,19 @@ describe("Firebase API Tests", () => {
   const mockPush = push as Mock;
   const mockRef = ref as Mock;
 
+  let consoleLogMock: ReturnType<typeof vi.spyOn>;
+  let consoleWarnMock: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    consoleLogMock = vi.spyOn(console, "log").mockImplementation(() => {});
+    consoleWarnMock = vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    // Återställ console.log och console.warn efter varje test
+    consoleLogMock.mockRestore();
+    consoleWarnMock.mockRestore();
   });
 
   it("should fetch movies successfully", async () => {

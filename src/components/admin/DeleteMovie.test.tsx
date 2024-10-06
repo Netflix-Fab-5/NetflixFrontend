@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MyContext } from "../../constants/context";
 import EditAMovie from "./EditAMovie";
+import AllMoviesScreen from "../../screens/Movies/AllMoviesScreen";
 import { User } from "firebase/auth";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
@@ -114,6 +115,7 @@ describe("EditAMovie Component", function () {
         <MyContext.Provider value={mockContextValue}>
           <Routes>
             <Route path="/edit/:movieId" element={<EditAMovie />} />
+            <Route path="/movies" element={<AllMoviesScreen />} />
           </Routes>
         </MyContext.Provider>
       </MemoryRouter>,
